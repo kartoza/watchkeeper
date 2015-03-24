@@ -126,7 +126,7 @@ web:
     - mapproxy:mapproxy
     - cron:cron
   ports:
-    - "63100:8080"
+    - "59100:8080"
 
 # Exactly the same as web but for staging we use a different port.
 stagingweb:
@@ -145,4 +145,4 @@ stagingweb:
     - mapproxy:mapproxy
     - cron:cron
   ports:
-    - "63101:8080"
+    - "59101:8080"
