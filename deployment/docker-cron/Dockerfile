@@ -6,10 +6,12 @@ MAINTAINER Tim Sutton<tim@kartoza.com>
 RUN yum install -y cronie-anacron.x86_64 postgis.x86_64
 RUN yum install -y xorg-x11-server-Xvfb.x86_64
 
-ENV PYTHONPATH=$PYTHONPATH:/usr/share/qgis/python/
+ENV PYTHONPATH $PYTHONPATH:/usr/share/qgis/python/
 ADD crontab /var/spool/cron/root
 
 # Change the timezone, to the timezone
 RUN cp /usr/share/zoneinfo/Asia/Jakarta  /etc/localtime
 
+# hmm I don not think we should be needing to run xvfb like this
 CMD crond -p -s && Xvfb :99 -ac -screen 0 1280x1024x24
+
