@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'flood_mapper'
+project = u'watchkeeper'
 copyright = u'2013, Phil Thisin'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -167,7 +167,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'flood_mapperdoc'
+htmlhelp_basename = 'watchkeeperdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -186,7 +186,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'flood_mapper.tex', u'flood_mapper Documentation',
+  ('index', 'watchkeeper.tex', u'watchkeeper Documentation',
    u'Phil Thisin', 'manual'),
 ]
 
@@ -216,7 +216,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'flood_mapper', u'flood_mapper Documentation',
+    ('index', 'watchkeeper', u'watchkeeper Documentation',
      [u'Phil Thisin'], 1)
 ]
 
@@ -230,8 +230,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'flood_mapper', u'flood_mapper Documentation',
-   u'Phil Thisin', 'flood_mapper', 'One line description of project.',
+  ('index', 'watchkeeper', u'watchkeeper Documentation',
+   u'Phil Thisin', 'watchkeeper', 'One line description of project.',
    'Miscellaneous'),
 ]
 

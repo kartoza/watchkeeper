@@ -21,7 +21,6 @@ DATABASES = {
 
 # Project apps
 INSTALLED_APPS += (
-    'flood_mapper',
     'user_profile',
 )
 
