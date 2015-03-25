@@ -81,7 +81,7 @@ uwsgi:
     - DATABASE_PASSWORD=docker
     - DATABASE_HOST=db
     - DJANGO_SETTINGS_MODULE=core.settings.prod_docker
-    - VIRTUAL_HOST=users.inasafe.org
+    - VIRTUAL_HOST=watchkeeper.kartoza.org
     - VIRTUAL_PORT=8080
   volumes:
     - ../django_project:/home/web/django_project
