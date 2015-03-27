@@ -7,7 +7,7 @@ LOGGING_OUTPUT_ENABLED = DEBUG
 LOGGING_LOG_SQL = DEBUG
 
 
-PIPELINE_ENABLED = False
+PIPELINE_ENABLED = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Disable caching while in development

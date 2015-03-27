@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# flood_mapper documentation build configuration file, created by
+# watchkeeper documentation build configuration file, created by
 # sphinx-quickstart on Thu Jun  6 10:07:13 2013.
 #
 # This file is execfile()d with the current directory set to its containing dir.
