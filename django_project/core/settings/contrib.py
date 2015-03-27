@@ -4,22 +4,12 @@ from .base import *  # noqa
 # Extra installed apps
 INSTALLED_APPS += (
     'raven.contrib.django.raven_compat',  # enable Raven plugin
-    'pipeline',
     'rest_framework',
 )
 
-# define template function (example for underscore)
-# PIPELINE_TEMPLATE_FUNC = '_.template'
-PIPELINE_YUI_BINARY = '/usr/bin/yui-compressor'
-PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
-PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
-PIPELINE_YUI_JS_ARGUMENTS = '--nomunge'
-PIPELINE_DISABLE_WRAPPER = True
-# enable cached storage - requires uglify.js (node.js)
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
 MIDDLEWARE_CLASSES += (
     'django.middleware.gzip.GZipMiddleware',
-    'pipeline.middleware.MinifyHTMLMiddleware',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',

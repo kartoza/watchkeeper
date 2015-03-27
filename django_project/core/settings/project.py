@@ -23,35 +23,3 @@ DATABASES = {
 INSTALLED_APPS += (
     'user_profile',
 )
-
-
-PIPELINE_JS = {
-    'contrib': {
-        'source_filenames': (
-            'js/jquery-1.11.1.min.js',
-            'js/bootstrap.js',
-            'js/moment.min.js',
-            'js/bootstrap-datetimepicker.min.js',
-        ),
-        'output_filename': 'js/contrib.js',
-    },
-    'appjs': {
-        'source_filenames': (
-            'js/csrf-ajax.js',
-        ),
-        'output_filename': 'js/appjs.js'
-    }
-}
-
-PIPELINE_CSS = {
-    'contrib': {
-        'source_filenames': (
-            'css/bootstrap.min.css',
-            'css/bootstrap-datetimepicker.min.css',
-        ),
-        'output_filename': 'css/contrib.css',
-        'extra_context': {
-            'media': 'screen, projection',
-        },
-    }
-}
