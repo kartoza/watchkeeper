@@ -1,17 +1,24 @@
 #--------- Generic stuff all our Dockerfiles should start with so we get caching ------------
-# Note this base image is based on fedora
-FROM kartoza/qgis-desktop:2.8.0
+# Note this base image is based on debian
+FROM kartoza/django-base
 MAINTAINER Tim Sutton<tim@kartoza.com>
 
-RUN yum install -y cronie-anacron.x86_64 postgis.x86_64
-RUN yum install -y xorg-x11-server-Xvfb.x86_64
+#RUN  ln -s /bin/true /sbin/initctl
 
-ENV PYTHONPATH $PYTHONPATH:/usr/share/qgis/python/
-ADD crontab /var/spool/cron/root
+# Use local cached debs from host (saves your bandwidth!)
+# Change ip below to that of your apt-cacher-ng host
+# Or comment this line out if you do not with to use caching
+ADD 71-apt-cacher-ng /etc/apt/apt.conf.d/71-apt-cacher-ng
 
-# Change the timezone, to the timezone
-RUN cp /usr/share/zoneinfo/Asia/Jakarta  /etc/localtime
 
-# hmm I don not think we should be needing to run xvfb like this
-CMD crond -p -s && Xvfb :99 -ac -screen 0 1280x1024x24
+ADD REQUIREMENTS.txt /REQUIREMENTS.txt
+RUN pip install -r /REQUIREMENTS.txt
+RUN pip install uwsgi
 
+RUN apt-get update -y; apt-get -y --force-yes install yui-compressor
+
+# Open port 8080 as we will be running our uwsgi socket on that
+EXPOSE 8080
+
+WORKDIR /home/web/django_project
+CMD ["uwsgi", "--ini", "/uwsgi.conf"]

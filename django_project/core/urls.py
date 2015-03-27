@@ -12,10 +12,6 @@ urlpatterns = patterns(
     url(r'^accounts/login/$', 'user_profile.views.login'),
     url(r'^accounts/logout/$', 'user_profile.views.logout'),
     url(r'^jkf-admin/', include(admin.site.urls)),
-
-    # include application urls
-    url(r'', include('flood_mapper.urls')),
-
 )
 
 # expose static files and uploded media if DEBUG is active

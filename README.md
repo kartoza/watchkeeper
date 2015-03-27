@@ -78,7 +78,7 @@ fig run collectstatic
 ### Setup nginx reverse proxy
 
 You should create a new nginx virtual host - please see
-``jakarta-flood-maps-nginx.conf`` in the root directory of the source for an example.
+``watchkeeper.nginx.conf`` in the root directory of the source for an example.
 
 
 ## For local development
