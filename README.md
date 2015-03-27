@@ -71,6 +71,10 @@ commented out in your hosts:
 cd deployment
 make run
 make collectstatic
+make shell
+# press enter to activate the shell
+python manage.py createsuperuser
+exit
 ```
 
 ### Setup nginx reverse proxy
@@ -114,6 +118,8 @@ cd django_project
 python manage.py migrate --settings=core.settings.dev_${USER}
 python manage.py collectstatic --noinput --settings=core.settings.dev_${USER}
 python manage.py runserver --settings=core.settings.dev_${USER}
+python manage.py createsuperuser --settings=core.settings.dev_${USER}
+
 ```
 
 **Note:** You can also develop in docker using the instructions provided in
