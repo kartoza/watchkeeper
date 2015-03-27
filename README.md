@@ -52,7 +52,7 @@ git clone git://github.com/kartoza/watchkeeper.git
 
 You need to have http://docker.io and http://www.fig.sh/ installed first.
 
-Note you need at least docker 1.2 - use
+Note you need at least docker 1.5 - use
 the [installation notes](http://docs.docker.com/installation/ubuntulinux/)
 on the official docker page to get it set up.
 
@@ -69,10 +69,8 @@ commented out in your hosts:
 
 ```
 cd deployment
-fig build
-fig up -d uwsgi
-fig run migrate
-fig run collectstatic
+make run
+make collectstatic
 ```
 
 ### Setup nginx reverse proxy
@@ -88,9 +86,7 @@ You should create a new nginx virtual host - please see
 ```
 virtualenv venv
 source venv/bin/activate
-pip install -r REQUIREMENTS-dev.txt
-nodeenv -p --node=0.10.31
-npm -g install yuglify
+pip install -r REQUIREMENTS.txt
 ```
 
 ### Create your dev profile
