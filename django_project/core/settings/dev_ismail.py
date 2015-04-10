@@ -7,7 +7,7 @@ DATABASES = {
         'NAME': 'watchkeeper_db',
         'USER': 'docker',
         'PASSWORD': 'docker',
-        'HOST': '172.17.0.47',
+        'HOST': '172.17.0.6',
         # Set to empty string for default.
         'PORT': '5432',
     }

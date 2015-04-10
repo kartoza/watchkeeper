@@ -70,6 +70,7 @@ target/
 
 # Virtual env
 venv
+venv_watchkeeper
 
 # Node
 django_project/static
