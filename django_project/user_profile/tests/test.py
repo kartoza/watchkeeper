@@ -8,9 +8,9 @@ __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
 
 from django.test import TestCase
-from django.core.exceptions import ValidationError
+# from django.core.exceptions import ValidationError
 from model_factories import OfficialFactory
-from user_profile.models import Official
+# from user_profile.models import Official
 
 
 class OfficialTestCase(TestCase):
