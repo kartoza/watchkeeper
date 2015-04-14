@@ -21,15 +21,15 @@ build:
 	@echo "------------------------------------------------------------------"
 	@echo "Building in production mode"
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID) build
+	@docker-compose -p $(PROJECT_ID) build
 
 web:
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Running in production mode"
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID) up -d web
-	@fig -p $(PROJECT_ID) run uwsgi python manage.py create_reports_directories
+	@docker-compose -p $(PROJECT_ID) up -d web
+	@docker-compose -p $(PROJECT_ID) run uwsgi python manage.py create_reports_directories
 	@dipall
 
 migrate:
@@ -37,14 +37,14 @@ migrate:
 	@echo "------------------------------------------------------------------"
 	@echo "Running migrate static in production mode"
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID) run uwsgi python manage.py migrate
+	@docker-compose -p $(PROJECT_ID) run uwsgi python manage.py migrate
 
 collectstatic:
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Collecting static in production mode"
 	@echo "------------------------------------------------------------------"
-	#@fig -p $(PROJECT_ID) run uwsgi python manage.py collectstatic --noinput
+	#@docker-compose -p $(PROJECT_ID) run uwsgi python manage.py collectstatic --noinput
 	#We need to run collect static in the same context as the running
 	# uwsgi container it seems so I use docker exec here
 	@docker exec -t -i $(PROJECT_ID)_uwsgi_1 python manage.py collectstatic --noinput
@@ -55,35 +55,35 @@ kill:
 	@echo "Killing in production mode"
 	@echo "------------------------------------------------------------------"
 
-	@fig -p $(PROJECT_ID) kill
+	@docker-compose -p $(PROJECT_ID) kill
 
 rm: kill
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Removing production instance!!! "
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID) rm
+	@docker-compose -p $(PROJECT_ID) rm
 
 logs:
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Showing uwsgi logs in production mode"
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID) logs uwsgi
+	@docker-compose -p $(PROJECT_ID) logs uwsgi
 
 nginxlogs:
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Showing nginx logs in production mode"
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID) logs web
+	@docker-compose -p $(PROJECT_ID) logs web
 
 shell:
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Shelling in in production mode"
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID) run uwsgi /bin/bash
+	@docker-compose -p $(PROJECT_ID) run uwsgi /bin/bash
 
 dbshell:
 	@echo
@@ -97,7 +97,7 @@ sentry:
 	@echo "--------------------------"
 	@echo "Running sentry production mode"
 	@echo "--------------------------"
-	@fig  -p $(PROJECT_ID) up -d sentry
+	@docker-compose  -p $(PROJECT_ID) up -d sentry
 	@dipall
 
 maillogs:
@@ -119,14 +119,14 @@ mapproxylogs:
 	@echo "--------------------------"
 	@echo "Showing mapproxy logs in production mode"
 	@echo "--------------------------"
-	@fig -p $(PROJECT_ID) logs mapproxy
+	@docker-compose -p $(PROJECT_ID) logs mapproxy
 
 seed:
 	@echo
 	@echo "--------------------------"
 	@echo "Seeding mapproxy in production mode"
 	@echo "--------------------------"
-	@fig -p $(PROJECT_ID) run mapproxy /usr/local/bin/mapproxy-seed -f /mapproxy/mapproxy.yaml /mapproxy/seed.yaml
+	@docker-compose -p $(PROJECT_ID) run mapproxy /usr/local/bin/mapproxy-seed -f /mapproxy/mapproxy.yaml /mapproxy/seed.yaml
 
 map:
 	@echo
@@ -179,14 +179,14 @@ staging-build:
 	@echo "------------------------------------------------------------------"
 	@echo "Building in staging mode"
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID)-staging build
+	@docker-compose -p $(PROJECT_ID)-staging build
 
 staging-web:
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Running in staging mode"
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID)-staging up -d stagingweb
+	@docker-compose -p $(PROJECT_ID)-staging up -d stagingweb
 	@dipall
 
 staging-migrate:
@@ -194,14 +194,14 @@ staging-migrate:
 	@echo "------------------------------------------------------------------"
 	@echo "Running migrate static in staging mode"
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID)-staging run uwsgi python manage.py migrate
+	@docker-compose -p $(PROJECT_ID)-staging run uwsgi python manage.py migrate
 
 staging-collectstatic:
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Collecting static in staging mode"
 	@echo "------------------------------------------------------------------"
-	#@fig -p $(PROJECT_ID)-staging run uwsgi python manage.py collectstatic --noinput
+	#@docker-compose -p $(PROJECT_ID)-staging run uwsgi python manage.py collectstatic --noinput
 	#We need to run collect static in the same context as the running
 	# uwsgi container it seems so I use docker exec here
 	@docker exec -t -i $(PROJECT_ID)staging_uwsgi_1 python manage.py collectstatic --noinput
@@ -212,35 +212,35 @@ staging-kill:
 	@echo "Killing in staging mode"
 	@echo "------------------------------------------------------------------"
 
-	@fig -p $(PROJECT_ID)-staging kill
+	@docker-compose -p $(PROJECT_ID)-staging kill
 
 staging-rm: kill
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Removing staging instance!!! "
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID)-staging rm
+	@docker-compose -p $(PROJECT_ID)-staging rm
 
 staging-logs:
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Showing uwsgi logs in staging mode"
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID)-staging logs uwsgi
+	@docker-compose -p $(PROJECT_ID)-staging logs uwsgi
 
 staging-nginxlogs:
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Showing nginx logs in staging mode"
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID)-staging logs web
+	@docker-compose -p $(PROJECT_ID)-staging logs web
 
 staging-shell:
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Shelling in in staging mode"
 	@echo "------------------------------------------------------------------"
-	@fig -p $(PROJECT_ID)-staging run uwsgi /bin/bash
+	@docker-compose -p $(PROJECT_ID)-staging run uwsgi /bin/bash
 
 staging-dbshell:
 	@echo
