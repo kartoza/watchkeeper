@@ -17,10 +17,6 @@ DATABASES = {
     }
 }
 
-# Pipeline enabledment in prod environment only
-INSTALLED_APPS += (
-    'pipeline',
-)
 MIDDLEWARE_CLASSES += (
      'pipeline.middleware.MinifyHTMLMiddleware',
 )
@@ -31,49 +27,7 @@ PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
 PIPELINE_YUI_JS_ARGUMENTS = '--nomunge'
 PIPELINE_DISABLE_WRAPPER = True
-# enable cached storage - requires uglify.js (node.js)
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-PIPELINE_JS = {
-    'contrib': {
-        'source_filenames': (
-            'js/jquery-1.11.1.min.js',
-            'js/bootstrap.js',
-            'js/moment.min.js',
-            'event_mapper/js/leaflet.js',
-            'event_mapper/js/material.min.js',
-            'event_mapper/js/ripples.min.js',
-            'event_mapper/js/validate.js',
-            'js/bootstrap-datetimepicker.min.js',
-            'event_mapper/js/jquery.flot.min.js',
-            'event_mapper/js/jquery.flot.time.min.js',
-        ),
-        'output_filename': 'js/contrib.js',
-    },
-    'appjs': {
-        'source_filenames': (
-            'js/csrf-ajax.js',
-            'event_mapper/css/leaflet.css',
-            'event_mapper/css/material-wfont.min.css',
-            'event_mapper/css/ripples.min.css',
-            'event_mapper/css/bnpb-theme.css',
-            'css/bootstrap-datetimepicker.min.css',
-        ),
-        'output_filename': 'js/appjs.js'
-    }
-}
 
-PIPELINE_CSS = {
-    'contrib': {
-        'source_filenames': (
-            'css/bootstrap.min.css',
-            'css/bootstrap-datetimepicker.min.css',
-        ),
-        'output_filename': 'css/contrib.css',
-        'extra_context': {
-            'media': 'screen, projection',
-        },
-    }
-}
 
 # End of pipeline related stuff
 
