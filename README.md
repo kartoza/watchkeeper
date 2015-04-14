@@ -51,6 +51,10 @@ Please read instructions in deployment/README-docker.md for more information.
 **OSX** Specific notes:
 
 * Download Postgresql.app from http://postgresapp.com/
+* Open the psql prompt and do
+  * `create database gis;
+  * `connect gis;`
+  * `CREATE EXTENSION postgis;`
 * Install xcode
 * Install pip (sudo easy_install pip)
 * Install virtualenv (sudo pip install virtualenv)
@@ -59,6 +63,8 @@ Please read instructions in deployment/README-docker.md for more information.
 **All platforms**:
 
 ```
+mkdir /tmp/media
+mkdir /tmp/static
 virtualenv venv
 source venv/bin/activate
 pip install -r REQUIREMENTS.txt
