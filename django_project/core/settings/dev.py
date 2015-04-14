@@ -7,7 +7,8 @@ LOGGING_OUTPUT_ENABLED = DEBUG
 LOGGING_LOG_SQL = DEBUG
 
 
-PIPELINE_ENABLED = True
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Disable caching while in development
