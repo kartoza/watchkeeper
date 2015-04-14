@@ -14,3 +14,4 @@ from django.shortcuts import render
 def index(request):
     """Landing page."""
     return render(request, 'event_mapper/index.html')
+
