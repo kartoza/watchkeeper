@@ -39,13 +39,24 @@ PIPELINE_JS = {
             'js/jquery-1.11.1.min.js',
             'js/bootstrap.js',
             'js/moment.min.js',
+            'event_mapper/js/leaflet.js',
+            'event_mapper/js/material.min.js',
+            'event_mapper/js/ripples.min.js',
+            'event_mapper/js/validate.js',
             'js/bootstrap-datetimepicker.min.js',
+            'event_mapper/js/jquery.flot.min.js',
+            'event_mapper/js/jquery.flot.time.min.js',
         ),
         'output_filename': 'js/contrib.js',
     },
     'appjs': {
         'source_filenames': (
             'js/csrf-ajax.js',
+            'event_mapper/css/leaflet.css',
+            'event_mapper/css/material-wfont.min.css',
+            'event_mapper/css/ripples.min.css',
+            'event_mapper/css/bnpb-theme.css',
+            'css/bootstrap-datetimepicker.min.css',
         ),
         'output_filename': 'js/appjs.js'
     }

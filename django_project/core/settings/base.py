@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Django settings for flood_mapper project.
+# Django settings for watchkeeper project.
 
 from .utils import ABS_PATH
 

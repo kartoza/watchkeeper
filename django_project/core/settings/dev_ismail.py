@@ -4,10 +4,10 @@ from .dev import *  # noqa
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'gis',
+        'NAME': 'watchkeeper_db',
         'USER': 'docker',
         'PASSWORD': 'docker',
-        'HOST': '172.17.0.5',
+        'HOST': '172.17.0.47',
         # Set to empty string for default.
         'PORT': '5432',
     }
