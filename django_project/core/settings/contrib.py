@@ -37,42 +37,45 @@ STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 PIPELINE_JS = {
     'contrib': {
         'source_filenames': (
-            'js/jquery-1.11.1.min.js',
+            'js/jquery-1.11.2.js',
             'js/bootstrap.js',
-            'js/moment.min.js',
+            'js/moment.js',
+            'js/bootstrap-datetimepicker.js',
+            'js/csrf-ajax.js'
+        ),
+        'output_filename': 'js/contrib.js',
+        },
+    'event_mapper_js': {
+        'source_filenames': (
             'event_mapper/js/leaflet.js',
-            'event_mapper/js/material.min.js',
-            'event_mapper/js/ripples.min.js',
+            'event_mapper/js/material.js',
+            'event_mapper/js/ripples.js',
             'event_mapper/js/validate.js',
-            'js/bootstrap-datetimepicker.min.js',
             'event_mapper/js/jquery.flot.min.js',
             'event_mapper/js/jquery.flot.time.min.js',
             'event_mapper/js/event_mapper.js'
         ),
-        'output_filename': 'js/contrib.js',
-        },
-    'appjs': {
-        'source_filenames': (
-            'js/csrf-ajax.js',
-        ),
-        'output_filename': 'js/appjs.js'
+        'output_filename': 'js/event_mapper_js.js'
     }
 }
 
 PIPELINE_CSS = {
     'contrib': {
         'source_filenames': (
-            'css/bootstrap.min.css',
-            'css/bootstrap-datetimepicker.min.css',
-            'event_mapper/css/leaflet.css',
-            'event_mapper/css/material-wfont.min.css',
-            'event_mapper/css/ripples.min.css',
-            'event_mapper/css/bnpb-theme.css',
-            'css/bootstrap-datetimepicker.min.css',
+            'css/bootstrap.css',
+            'css/bootstrap-datetimepicker.css',
         ),
         'output_filename': 'css/contrib.css',
         'extra_context': {
             'media': 'screen, projection',
-            },
-        }
+            }
+    },
+    'event_mapper_css': {
+        'source_filenames': (
+            'event_mapper/css/leaflet.css',
+            'event_mapper/css/material-wfont.min.css',
+            'event_mapper/css/ripples.min.css',
+        ),
+        'output_filename': 'css/event_mapper_css.css',
+    }
 }
