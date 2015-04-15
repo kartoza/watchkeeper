@@ -28,7 +28,6 @@ PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
 PIPELINE_YUI_JS_ARGUMENTS = '--nomunge'
 PIPELINE_DISABLE_WRAPPER = True
 
-
 # End of pipeline related stuff
 
 # Comment if you are not running behind proxy
