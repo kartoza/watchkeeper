@@ -13,7 +13,7 @@ deploy: run migrate collectstatic
 	@echo
 	@echo "------------------------------------------------------------------"
 	@echo "Bringing up fresh instance "
-	@echo "You can access it on http://localhost:59100"
+	@echo "You can access it on http://localhost:49100"
 	@echo "------------------------------------------------------------------"
 
 build:
