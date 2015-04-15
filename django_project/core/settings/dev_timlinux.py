@@ -5,13 +5,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'gis',
-        'USER': 'docker',
-        'PASSWORD': 'docker',
-        'HOST': '172.17.0.6',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': 'localhost',
         # Set to empty string for default.
         'PORT': '5432',
     }
 }
+
+MEDIA_ROOT = '/tmp/media'
+STATIC_ROOT = '/tmp/static'
 
 LOGGING = {
     'version': 1,

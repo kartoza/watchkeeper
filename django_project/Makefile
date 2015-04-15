@@ -1,4 +1,4 @@
-#Rupep8 style checking
+#Run pep8 style checking
 #http://pypi.python.org/pypi/pep8
 pep8:
 	@echo
@@ -15,3 +15,12 @@ pylint:
 	@echo "-----------------"
 	@pylint --version
 	@pylint --reports=n --rcfile=pylintrc setup.py user_profile user || true
+
+test: 
+	@echo
+	@echo "-----------------"
+	@echo "Run test"
+	@echo "Usage:"
+	@echo "make test SETTING=(file setting)"
+	@echo "Running test with file setting = $(SETTING)"
+	@python manage.py test --settings=$(SETTING)

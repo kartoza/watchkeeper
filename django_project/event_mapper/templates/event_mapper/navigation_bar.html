@@ -1,0 +1,48 @@
+<nav class="navbar navbar-bnpb navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Watchkeeper</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li id="nav_home">
+                    <a href="/">
+                        <i class="mdi-maps-map"></i>
+                        Home</a>
+                </li>
+                <li id="nav_alert">
+                    <a href="/alert">
+                        <i class="mdi-maps-pin-drop"></i>
+                        Alert</a>
+                </li>
+                <li id="nav_reports">
+                    <a href="/reports">
+                        <i class="mdi-maps-place"></i>
+                        Reports</a>
+                </li>
+                <li id="nav_contact">
+                    <a href="/contact">
+                        <i class="mdi-editor-insert-drive-file"></i>
+                        Contact</a>
+                </li>
+                <li id="nav_api">
+                    <a href="/api">
+                        <i class="mdi-editor-insert-drive-file"></i>
+                        API</a>
+                </li>
+                {% if not user.is_staff %}
+                    <li id="login_id">
+                        <a href="/accounts/login/?next=/#">
+                            <i class="mdi-social-person"></i>
+                              Login</a></li>
+                {% else %}
+                    <li><a href="/accounts/logout/?next=/#">
+                        <i class="mdi-social-person"></i>
+                        Logout</a></li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+</nav>

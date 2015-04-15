@@ -17,10 +17,6 @@ DATABASES = {
     }
 }
 
-# Pipeline enabledment in prod environment only
-INSTALLED_APPS += (
-    'pipeline',
-)
 MIDDLEWARE_CLASSES += (
      'pipeline.middleware.MinifyHTMLMiddleware',
 )
@@ -31,38 +27,7 @@ PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
 PIPELINE_YUI_JS_ARGUMENTS = '--nomunge'
 PIPELINE_DISABLE_WRAPPER = True
-# enable cached storage - requires uglify.js (node.js)
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-PIPELINE_JS = {
-    'contrib': {
-        'source_filenames': (
-            'js/jquery-1.11.1.min.js',
-            'js/bootstrap.js',
-            'js/moment.min.js',
-            'js/bootstrap-datetimepicker.min.js',
-        ),
-        'output_filename': 'js/contrib.js',
-    },
-    'appjs': {
-        'source_filenames': (
-            'js/csrf-ajax.js',
-        ),
-        'output_filename': 'js/appjs.js'
-    }
-}
 
-PIPELINE_CSS = {
-    'contrib': {
-        'source_filenames': (
-            'css/bootstrap.min.css',
-            'css/bootstrap-datetimepicker.min.css',
-        ),
-        'output_filename': 'css/contrib.css',
-        'extra_context': {
-            'media': 'screen, projection',
-        },
-    }
-}
 
 # End of pipeline related stuff
 
