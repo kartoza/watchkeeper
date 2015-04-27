@@ -15,4 +15,5 @@ urlpatterns = patterns(
     url(r'^$', 'event_mapper.views.index.index'),
     url(r'^accounts/login/$', 'event_mapper.views.user.login'),
     url(r'^accounts/logout/$', 'event_mapper.views.user.logout'),
+    url(r'^accounts/signup/$', 'event_mapper.views.user.sign_up'),
 )

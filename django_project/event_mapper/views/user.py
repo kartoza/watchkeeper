@@ -16,13 +16,11 @@ from django.contrib.auth import (
 
 
 def login(request):
-    """
-    User registration view.
-    """
+    """User registration view."""
     username = ''
     error = ''
     if request.method == 'POST':
-        next = request.POST.get('next')
+        next_url = request.POST.get('next')
         username = request.POST.get('username')
         password = request.POST.get('password')
 
@@ -31,29 +29,37 @@ def login(request):
         if user is not None:
             if user.is_active:
                 django_login(request, user)
-                return redirect(next)
+                return redirect(next_url)
         error = 'invalid username or password'
     elif request.method == 'GET':
-        next = request.GET.get('next')
+        next_url = request.GET.get('next')
     else:
-        next = '/'
+        next_url = '/'
 
-    if not next:
-        next = '/'
+    if not next_url:
+        next_url = '/'
 
     return render_to_response(
         'event_mapper/login_page.html',
         {
             'username': username,
-            'next': next,
+            'next': next_url,
             'error': error
         },
         context_instance=RequestContext(request))
 
 
 def logout(request):
-    """
-    Log out view
-    """
+    """Log out view."""
     django_logout(request)
     return redirect('/')
+
+
+def sign_up(request):
+    """Sign Up view."""
+    return render_to_response(
+        'event_mapper/sign_up_page.html',
+        {
+        },
+        context_instance=RequestContext(request))
+

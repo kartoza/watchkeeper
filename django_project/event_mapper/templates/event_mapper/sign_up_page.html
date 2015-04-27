@@ -1,0 +1,104 @@
+{% extends "event_mapper/base.html" %}
+{% block header %}
+    <script>
+        $(document).ready(function () {
+            $('#signup_id').addClass("active");
+            $('#countries_selection').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                filterPlaceholder: 'Search for country...'
+            });
+        });
+    </script>
+    <title>Sign Up</title>
+{% endblock %}
+
+{% block navigation-bar %}
+    {% include "event_mapper/navigation_bar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="col-lg-3 col-lg-offset-4">
+        <div style="padding-top:100px"></div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="mdi-social-person"></i>
+                    Welcome to Watchkeeper
+                </h3>
+            </div>
+            <div class="panel-body">
+                <form class="form" name="LoginForm" action="/accounts/login/" method="post">
+                    {% csrf_token %}
+                    {% if next %}
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    {% endif %}
+                    <div class="control-group">
+                        <label for="countries_selection">
+                            Please select one or more countries that you would like notifications for
+                        </label>
+                        <select id="countries_selection" multiple="multiple">
+                            <option value="1">South Africa</option>
+                            <option value="2">West Africa</option>
+                            <option value="3">North Africa</option>
+                            <option value="4">East Africa</option>
+                            <option value="5">Central Africa</option>
+                            <option value="6">Top Africa</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label"
+                               for="email">Email</label>
+                        <div class="controls">
+                            <input type="text" class="form-control" name="email" id="email" value="{{ email }}" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="first_name">First Name</label>
+                        <div class="controls">
+                            <input type="text" class="form-control" name="first_name" id="first_name" value="{{ first_name }}" placeholder="First Name">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="last_name">Last Name</label>
+                        <div class="controls">
+                            <input type="text" class="form-control" name="last_name" id="last_name" value="{{ last_name }}" placeholder="Last Name">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="phone_number">Mobile phone number</label>
+                        <div class="controls">
+                            <input type="text" class="form-control" name="phone_number" id="phone_number" value="{{ phone_number }}" placeholder="Phone Number">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="password">Password</label>
+                        <div class="controls">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="confirm_password">Confirm Password </label>
+                        <div class="controls">
+                            <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-block btn-success">Sign Up</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if error %}
+            <div class="alert alert-error">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Error!</strong>
+                {{ error }}
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
