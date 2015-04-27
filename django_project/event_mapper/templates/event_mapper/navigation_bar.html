@@ -5,41 +5,59 @@
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-left">
                 <li id="nav_home">
                     <a href="/">
-                        <i class="mdi-maps-map"></i>
-                        Home</a>
+                        <i class="mdi-action-home"></i>
+                        Home
+                    </a>
                 </li>
                 <li id="nav_alert">
                     <a href="/alert">
-                        <i class="mdi-maps-pin-drop"></i>
-                        Alert</a>
+                        <i class="mdi-alert-warning"></i>
+                        Alert
+                    </a>
                 </li>
                 <li id="nav_reports">
                     <a href="/reports">
-                        <i class="mdi-maps-place"></i>
-                        Reports</a>
+                        <i class="mdi-content-content-paste"></i>
+                        Reports
+                    </a>
                 </li>
                 <li id="nav_contact">
                     <a href="/contact">
-                        <i class="mdi-editor-insert-drive-file"></i>
-                        Contact</a>
+                        <i class="mdi-communication-contacts"></i>
+                        Contact
+                    </a>
                 </li>
                 <li id="nav_api">
                     <a href="/api">
                         <i class="mdi-editor-insert-drive-file"></i>
-                        API</a>
+                        API
+                    </a>
                 </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
                 {% if not user.is_staff %}
                     <li id="login_id">
                         <a href="/accounts/login/?next=/#">
                             <i class="mdi-social-person"></i>
-                              Login</a></li>
+                            Login
+                        </a>
+                    </li>
+                    <li id="login_id">
+                        <a href="/accounts/signup/?next=/#">
+                            <i class="mdi-social-person-add"></i>
+                            Sign Up
+                        </a>
+                    </li>
                 {% else %}
-                    <li><a href="/accounts/logout/?next=/#">
-                        <i class="mdi-social-person"></i>
-                        Logout</a></li>
+                    <li>
+                        <a href="/accounts/logout/?next=/#">
+                            <i class="mdi-action-exit-to-app"></i>
+                            Logout
+                        </a>
+                    </li>
                 {% endif %}
 
             </ul>
