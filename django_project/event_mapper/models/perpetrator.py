@@ -9,7 +9,8 @@ __doc__ = ''
 
 
 import os
-from django.db import models
+
+
 from django.conf.global_settings import MEDIA_ROOT
 from django.utils.text import slugify
 

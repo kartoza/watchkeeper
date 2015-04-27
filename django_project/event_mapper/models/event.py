@@ -17,59 +17,104 @@ from django.contrib.auth.models import User
 
 class Event(models.Model):
     """Event model."""
-    slug = models.SlugField(
-        unique=True,
-        primary_key=True
+    INCIDENT_CODE = 1
+    ADVISORY_CODE = 2
+
+    CATEGORY_CHOICES = (
+        (INCIDENT_CODE, 'Incident'),
+        (ADVISORY_CODE, 'Advisory'),
     )
 
-    name = models.CharField(
-        help_text='A name for the event.',
+    category = models.IntegerField(
+        choices=CATEGORY_CHOICES,
+        verbose_name='Category of the event.',
+        help_text='There are two event categories: Incident and Advisory'
+    )
+
+    location = models.PointField(
+        verbose_name='Location',
+        help_text='The location of the event in point geometry',
+        srid=4326,
         null=False,
-        blank=False,
-        unique=True,
+        blank=False
+    )
+
+    place_name = models.CharField(
+        verbose_name='Place Name',
+        help_text='The name of the event location.',
         max_length=100
     )
 
-    description = models.TextField(
-        help_text='Description for the event.',
-        blank=True,
+    date_time = models.DateTimeField(
+        verbose_name='Date and Time (UTC)',
+        help_text='Date and time when the event happened.'
     )
 
     type = models.ForeignKey(
         EventType,
+        verbose_name='Event Type',
         help_text='The type of the event.'
     )
 
     perpetrator = models.ForeignKey(
         Perpetrator,
+        verbose_name='Perpetrator',
         help_text='The perpetrator of the event.'
     )
 
     victim = models.ForeignKey(
         Victim,
+        verbose_name='Victim',
         help_text='The victim of the event.'
     )
 
-    date_time = models.DateTimeField(
-        verbose_name=u'Date Time (UTC)',
-        help_text='Date and time when the event happened.'
+    killed = models.IntegerField(
+        verbose_name='Killed People',
+        help_text='The number of killed people of the incident.',
+        default=0
+    )
+
+    injured = models.IntegerField(
+        verbose_name='Injured People',
+        help_text='The number of injured people of the incident.',
+        default=0
+    )
+
+    detained = models.IntegerField(
+        verbose_name='Detained People',
+        help_text='The number of detained people of the incident.',
+        default=0
     )
 
     source = models.TextField(
+        verbose_name='Source',
         help_text='The source where the event comes from.',
         blank=True,
     )
 
     notes = models.TextField(
-        help_text='Additional notes for the event',
+        verbose_name='Notes',
+        help_text='Additional notes for the event.',
         blank=True,
         null=True
     )
 
     reported_by = models.ForeignKey(
         User,
+        verbose_name='Event Reporter',
         help_text='The user who reports the event.'
     )
 
-    point_geometry = models.PointField(srid=4326, null=False, blank=False)
+    notified_immediately = models.BooleanField(
+        verbose_name='Notified Immediately',
+        help_text='If True, there will be immediate notification.',
+        default=False
+    )
 
+    notification_sent = models.BooleanField(
+        verbose_name='Notification Sent',
+        help_text='If True, a notification has been sent for this event.',
+        default=False
+    )
+
+    objects = models.GeoManager()
