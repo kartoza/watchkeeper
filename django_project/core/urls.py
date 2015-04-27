@@ -8,8 +8,6 @@ from django.contrib import admin
 urlpatterns = patterns(
     '',
     # Enable the admin:
-    url(r'^accounts/login/$', 'user_profile.views.login'),
-    url(r'^accounts/logout/$', 'user_profile.views.logout'),
     url(r'^wk-admin/', include(admin.site.urls)),
     url(r'^', include('event_mapper.urls')),
 )

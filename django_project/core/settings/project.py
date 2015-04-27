@@ -21,6 +21,5 @@ DATABASES = {
 
 # Project apps
 INSTALLED_APPS += (
-    'user_profile',
-    'event_mapper'
+    'event_mapper',
 )

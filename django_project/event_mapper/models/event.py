@@ -7,12 +7,11 @@ __date__ = '4/10/15'
 __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
 
-from django.db import models
 from django.contrib.gis.db import models
 from event_type import EventType
 from perpetrator import Perpetrator
 from victim import Victim
-from django.contrib.auth.models import User
+from event_mapper.models.user import User
 
 
 class Event(models.Model):

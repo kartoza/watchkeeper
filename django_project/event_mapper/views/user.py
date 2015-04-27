@@ -1,9 +1,12 @@
 # coding=utf-8
-"""Custom login/logout views.
+"""Docstring for this file."""
+__author__ = 'ismailsunni'
+__project_name = 'watchkeeper'
+__filename = 'user'
+__date__ = '4/27/15'
+__copyright__ = 'imajimatika@gmail.com'
+__doc__ = ''
 
-author: christian@kartoza.com
-date: January 2015
-"""
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth import (
@@ -39,7 +42,7 @@ def login(request):
         next = '/'
 
     return render_to_response(
-        'login_page.html',
+        'event_mapper/login_page.html',
         {
             'username': username,
             'next': next,
