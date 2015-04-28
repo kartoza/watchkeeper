@@ -10,6 +10,7 @@ __doc__ = ''
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.gis.db import models
 from event_mapper.models.country import Country
+from event_mapper.models.user_manager import CustomUserManager
 
 
 class User(AbstractBaseUser):
@@ -62,19 +63,33 @@ class User(AbstractBaseUser):
     countries_notified = models.ManyToManyField(
         Country,
         verbose_name='Notified countries',
-        help_text='The countries that user wants to be notified.'
+        help_text='The countries that user wants to be notified.',
     )
+
+    is_active = models.BooleanField(
+        verbose_name='Active Status',
+        help_text='Whether this user is still active or not (a user could be '
+                  'banned or deleted).',
+        default=True)
+
+    is_admin = models.BooleanField(
+        verbose_name='Admin Status',
+        help_text='Whether this user is admin or not.',
+        default=False)
 
     area_of_interest = models.PolygonField(
         srid=4326,
         verbose_name='Area of Interest',
-        help_text='Area of interest of the user.'
+        help_text='Area of interest of the user.',
+        default=None,
+        blank=True,
+        null=True
     )
 
-    objects = models.GeoManager()
+    objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def get_short_name(self):
         return self.first_name
