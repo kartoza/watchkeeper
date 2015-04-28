@@ -10,7 +10,7 @@ __doc__ = ''
 from django.contrib.gis.db import models
 
 
-class Country(models):
+class Country(models.Model):
     """Class for Country."""
 
     class Meta:

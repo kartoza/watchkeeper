@@ -18,6 +18,10 @@ icon_directory = 'victim_icon'
 class Victim(models.Model):
     """Victim model."""
 
+    class Meta:
+        """Meta Class"""
+        app_label = 'event_mapper'
+
     slug = models.SlugField(
         unique=True,
         primary_key=True

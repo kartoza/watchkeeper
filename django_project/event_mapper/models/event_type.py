@@ -19,6 +19,10 @@ icon_directory = 'event_type_icon'
 class EventType(models.Model):
     """Event type model."""
 
+    class Meta:
+        """Meta Class"""
+        app_label = 'event_mapper'
+
     slug = models.SlugField(
         unique=True,
         primary_key=True

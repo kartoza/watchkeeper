@@ -73,7 +73,7 @@ class User(AbstractBaseUser):
 
     objects = models.GeoManager()
 
-    USERNAME_FIELD = email
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
 
     def get_short_name(self):

@@ -10,7 +10,7 @@ __doc__ = ''
 
 import os
 
-
+from django.db import models
 from django.conf.global_settings import MEDIA_ROOT
 from django.utils.text import slugify
 
@@ -19,6 +19,10 @@ icon_directory = 'perpetrator_icon'
 
 class Perpetrator(models.Model):
     """Perpetrator model."""
+
+    class Meta:
+        """Meta Class"""
+        app_label = 'event_mapper'
 
     slug = models.SlugField(
         unique=True,

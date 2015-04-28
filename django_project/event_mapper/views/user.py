@@ -17,20 +17,20 @@ from django.contrib.auth import (
 
 def login(request):
     """User registration view."""
-    username = ''
+    email = ''
     error = ''
     if request.method == 'POST':
         next_url = request.POST.get('next')
-        username = request.POST.get('username')
+        email = request.POST.get('email')
         password = request.POST.get('password')
 
-        user = authenticate(username=username, password=password)
+        user = authenticate(username=email, password=password)
         print user
         if user is not None:
             if user.is_active:
                 django_login(request, user)
                 return redirect(next_url)
-        error = 'invalid username or password'
+        error = 'invalid email or password'
     elif request.method == 'GET':
         next_url = request.GET.get('next')
     else:
@@ -42,7 +42,7 @@ def login(request):
     return render_to_response(
         'event_mapper/login_page.html',
         {
-            'username': username,
+            'email': email,
             'next': next_url,
             'error': error
         },

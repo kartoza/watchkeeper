@@ -16,6 +16,11 @@ from event_mapper.models.user import User
 
 class Event(models.Model):
     """Event model."""
+
+    class Meta:
+        """Meta Class"""
+        app_label = 'event_mapper'
+
     INCIDENT_CODE = 1
     ADVISORY_CODE = 2
 

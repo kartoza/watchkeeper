@@ -6,3 +6,10 @@ __filename = '__init__.py'
 __date__ = '4/10/15'
 __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
+
+from country import Country
+from event import Event
+from event_type import EventType
+from perpetrator import Perpetrator
+from user import User
+from victim import Victim
