@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib.gis import admin
 from django.contrib.auth.admin import UserAdmin
 from event_mapper.forms.user import UserCreationForm, UserChangeForm
 from event_mapper.models.user import User
@@ -43,7 +43,7 @@ class MyUserAdmin(UserAdmin):
     filter_horizontal = ()
 
 
-class CountryAdmin(admin.ModelAdmin):
+class CountryAdmin(admin.GeoModelAdmin):
     fields = ['name', 'polygon_geometry']
 
 
