@@ -16,15 +16,19 @@ class Country(models.Model):
     class Meta:
         """Meta Class"""
         app_label = 'event_mapper'
+        verbose_name_plural = "Countries"
 
     name = models.CharField(
-        verbose_name='Country\s name',
+        verbose_name='Country\'s name',
         help_text='The name of the country.',
         max_length=50,
         null=False,
         blank=False
     )
 
-    polygon_geometry = models.PolygonField()
+    polygon_geometry = models.PolygonField(srid=4326)
 
     objects = models.GeoManager()
+
+    def __str__(self):
+        return self.name

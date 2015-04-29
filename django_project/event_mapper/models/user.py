@@ -64,6 +64,8 @@ class User(AbstractBaseUser):
         Country,
         verbose_name='Notified countries',
         help_text='The countries that user wants to be notified.',
+        null=True,
+        blank=True
     )
 
     is_active = models.BooleanField(

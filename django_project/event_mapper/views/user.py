@@ -13,6 +13,8 @@ from django.contrib.auth import (
     login as django_login,
     authenticate,
     logout as django_logout)
+from django.views.generic.edit import CreateView
+from event_mapper.models.user import User
 
 
 def login(request):
@@ -63,3 +65,7 @@ def sign_up(request):
         },
         context_instance=RequestContext(request))
 
+
+class UserCreate(CreateView):
+    model = User
+    fields = ['email', 'first_name', 'last_name', 'password', 'phone_number']

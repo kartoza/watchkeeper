@@ -24,7 +24,8 @@ class Victim(models.Model):
 
     slug = models.SlugField(
         unique=True,
-        primary_key=True
+        primary_key=True,
+        blank=True
     )
 
     name = models.CharField(
@@ -52,3 +53,6 @@ class Victim(models.Model):
             self.slug = slugify(unicode(self.name))
 
         super(Victim, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name

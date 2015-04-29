@@ -29,67 +29,7 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <form class="form" name="LoginForm" action="/accounts/login/" method="post">
-                    {% csrf_token %}
-                    {% if next %}
-                        <input type="hidden" name="next" value="{{ next }}" />
-                    {% endif %}
-                    <div class="control-group">
-                        <label for="countries_selection">
-                            Please select one or more countries that you would like notifications for
-                        </label>
-                        <select id="countries_selection" multiple="multiple">
-                            <option value="1">South Africa</option>
-                            <option value="2">West Africa</option>
-                            <option value="3">North Africa</option>
-                            <option value="4">East Africa</option>
-                            <option value="5">Central Africa</option>
-                            <option value="6">Top Africa</option>
-                        </select>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label"
-                               for="email">Email</label>
-                        <div class="controls">
-                            <input type="text" class="form-control" name="email" id="email" value="{{ email }}" placeholder="Email">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="first_name">First Name</label>
-                        <div class="controls">
-                            <input type="text" class="form-control" name="first_name" id="first_name" value="{{ first_name }}" placeholder="First Name">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="last_name">Last Name</label>
-                        <div class="controls">
-                            <input type="text" class="form-control" name="last_name" id="last_name" value="{{ last_name }}" placeholder="Last Name">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="phone_number">Mobile phone number</label>
-                        <div class="controls">
-                            <input type="text" class="form-control" name="phone_number" id="phone_number" value="{{ phone_number }}" placeholder="Phone Number">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="password">Password</label>
-                        <div class="controls">
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="confirm_password">Confirm Password </label>
-                        <div class="controls">
-                            <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <div class="controls">
-                            <button type="submit" class="btn btn-block btn-success">Sign Up</button>
-                        </div>
-                    </div>
-                </form>
+                {% include "event_mapper/user/user_create_form.html" %}
             </div>
         </div>
         {% if error %}
