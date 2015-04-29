@@ -96,3 +96,6 @@ mapproxy/cache_data/
 
 # logs in docker containers
 reports
+
+# Development
+django_project/media
