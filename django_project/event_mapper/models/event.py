@@ -122,3 +122,7 @@ class Event(models.Model):
     )
 
     objects = models.GeoManager()
+
+    def __str__(self):
+        return '%s of %s by %s' % (
+            self.get_category_display(), self.type.name, self.perpetrator.name)

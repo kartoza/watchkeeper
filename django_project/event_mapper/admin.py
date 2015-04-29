@@ -8,6 +8,7 @@ from event_mapper.models.event_type import EventType
 from event_mapper.models.perpetrator import Perpetrator
 from event_mapper.models.victim import Victim
 
+
 class MyUserAdmin(UserAdmin):
     # The forms to add and change user instances
     form = UserChangeForm
@@ -44,7 +45,7 @@ class MyUserAdmin(UserAdmin):
 
 
 class CountryAdmin(admin.GeoModelAdmin):
-    fields = ['name', 'polygon_geometry']
+    pass
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -53,13 +54,12 @@ class EventAdmin(admin.ModelAdmin):
         'victim', 'notified_immediately', 'notification_sent', 'reported_by')
     list_filter = (
         'category', 'type', 'perpetrator', 'victim', 'notified_immediately',
-        'notification_sent',  'reported_by',)
+        'notification_sent', 'reported_by',)
     ordering = ('date_time',)
     search_fields = ('reported_by',)
 
 
 class EventTypeAdmin(admin.ModelAdmin):
-    # fieldsets = ('name')
     pass
 
 
