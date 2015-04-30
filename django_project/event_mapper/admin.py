@@ -18,10 +18,12 @@ class MyUserAdmin(UserAdmin):
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
     list_display = ('email', 'first_name', 'phone_number', 'is_admin',
-                    'notified')
-    list_filter = ('is_admin', 'is_active', 'countries_notified', 'notified')
+                    'notified', 'is_confirmed')
+    list_filter = ('is_admin', 'is_active', 'countries_notified', 'notified',
+                   'is_confirmed')
     fieldsets = (
-        ('Credentials', {'fields': ('email', 'password', 'is_active')}),
+        ('Credentials', {'fields': (
+            'email', 'password', 'is_active', 'key', 'is_confirmed')}),
         ('Personal info', {'fields': (
             'first_name', 'last_name', 'phone_number')}),
         ('Permissions', {'fields': ('is_admin',)}),
@@ -32,7 +34,7 @@ class MyUserAdmin(UserAdmin):
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
         ('Credentials', {'fields': (
-            'email', 'password1', 'password2', 'is_active')}),
+            'email', 'password1', 'password2', 'is_active', 'is_confirmed')}),
         ('Personal info', {'fields': (
             'first_name', 'last_name', 'phone_number')}),
         ('Permissions', {'fields': ('is_admin',)}),

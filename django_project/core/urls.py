@@ -9,7 +9,7 @@ urlpatterns = patterns(
     '',
     # Enable the admin:
     url(r'^wk-admin/', include(admin.site.urls)),
-    url(r'^', include('event_mapper.urls')),
+    url(r'^', include('event_mapper.urls', namespace='event_mapper')),
 )
 
 # expose static files and uploaded media if DEBUG is active

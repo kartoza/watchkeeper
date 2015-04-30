@@ -88,6 +88,18 @@ class User(AbstractBaseUser):
         null=True
     )
 
+    key = models.CharField(
+        verbose_name='Confirmation Key',
+        help_text='Confirmation key for user to activate their account.',
+        max_length=40,
+        default='0000000000000000000000000000000000000000')
+
+    is_confirmed = models.BooleanField(
+        verbose_name='Confirmation Status',
+        help_text='Whether this user has approved their entry by email.',
+        null=False,
+        default=False)
+
     @property
     def is_superuser(self):
         return self.is_admin

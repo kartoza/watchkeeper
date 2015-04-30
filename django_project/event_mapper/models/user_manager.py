@@ -10,6 +10,7 @@ __doc__ = ''
 
 from django.contrib.gis.db.models import GeoManager
 from django.contrib.auth.models import BaseUserManager
+from django.utils.crypto import get_random_string
 
 
 class CustomUserManager(BaseUserManager, GeoManager):
@@ -30,6 +31,7 @@ class CustomUserManager(BaseUserManager, GeoManager):
         if not email:
             raise ValueError('User must have email.')
 
+        key = get_random_string()
         user = self.model(
             email=self.normalize_email(email),
             first_name=first_name,
@@ -37,6 +39,7 @@ class CustomUserManager(BaseUserManager, GeoManager):
             phone_number=phone_number,
             notified=notified,
             area_of_interest=area_of_interest,
+            key=key
         )
 
         user.set_password(password)
