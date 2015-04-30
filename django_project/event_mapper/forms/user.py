@@ -2,6 +2,7 @@
 """Docstring for this file."""
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.utils.crypto import get_random_string
 from event_mapper.models import User
 
 __author__ = 'ismailsunni'
@@ -36,6 +37,7 @@ class UserCreationForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(UserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        user.key = get_random_string()
         if commit:
             user.save()
         return user

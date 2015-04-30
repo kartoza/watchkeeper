@@ -24,6 +24,7 @@ from django.core.urlresolvers import reverse
 from event_mapper.utilities.decorators import login_forbidden
 from event_mapper.forms.user import UserCreationForm
 from event_mapper.models.user import User
+from django.contrib.messages import get_messages
 
 
 @login_forbidden

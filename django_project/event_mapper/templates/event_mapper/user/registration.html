@@ -8,9 +8,19 @@
 {% endblock %}
 
 {% block content %}
-    <div class="col-lg-3 col-lg-offset-4">
+    <div class="col-lg-5 col-lg-offset-3">
         <div style="padding-top:100px"></div>
         <div class="panel panel-primary">
+            {% if messages %}
+                {% for message in messages %}
+                    {% if 'success' in message.tags %}
+                        <div class="alert alert-dismissable alert-success">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="mdi-social-person"></i>
