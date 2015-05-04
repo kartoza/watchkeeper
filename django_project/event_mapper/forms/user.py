@@ -67,9 +67,10 @@ class UserCreationForm(forms.ModelForm):
     countries_notified = forms.ModelMultipleChoiceField(
         label=get_verbose_name(User, 'countries_notified'),
         help_text=get_help_text(User, 'countries_notified'),
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.SelectMultiple(
+            attrs={'class': 'form-control normal_case'}),
         required=False,
-        queryset=Country.objects.order_by('name'),
+        queryset=Country.objects.order_by(),
     )
 
     password1 = forms.CharField(

@@ -35,7 +35,7 @@ def register(request):
     # MAIL SENDER
     mail_sender = 'noreply@watchkeeper.org'
     if request.method == 'POST':
-        form = UserCreationForm(request.POST, request.FILES)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             form.save_m2m()
