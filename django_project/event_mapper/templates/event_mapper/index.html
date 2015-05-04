@@ -4,9 +4,10 @@
         $(document).ready(function () {
             show_map();
             set_offset();
+            $('#nav_home').addClass("active");
         });
     </script>
-{% endblock %}
+{% endblock header %}
 
 {% block content %}
     <div class="container-fluid">
@@ -29,4 +30,4 @@
            class="btn btn-danger btn-fab btn-raised glyphicon glyphicon-chevron-right"
            onclick="toggle_side_panel()"></a>
     </div>
-{% endblock %}
+{% endblock content %}

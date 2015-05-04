@@ -12,7 +12,7 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns(
     '',
-    url(r'^$', 'event_mapper.views.index.index'),
+    url(r'^$', 'event_mapper.views.index.index', name='index'),
     url(r'^accounts/login/$', 'event_mapper.views.user.login', name='login'),
     url(r'^accounts/logout/$', 'event_mapper.views.user.logout', name='logout'),
     url(r'^accounts/register/$', 'event_mapper.views.user.register',

@@ -3,7 +3,9 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.crypto import get_random_string
-from event_mapper.models import User
+from event_mapper.models.user import User
+from event_mapper.models.country import Country
+from event_mapper.utilities.commons import get_verbose_name
 
 __author__ = 'ismailsunni'
 __project_name = 'watchkeeper'
@@ -16,14 +18,71 @@ __doc__ = ''
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(
-        label='Password confirmation', widget=forms.PasswordInput)
-
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name', 'phone_number',
                   'notified', 'countries_notified')
+
+    email = forms.EmailField(
+        label=get_verbose_name(User, 'email'),
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'john@doe.com'})
+        )
+
+    first_name = forms.CharField(
+        label=get_verbose_name(User, 'first_name'),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'John'})
+    )
+
+    last_name = forms.CharField(
+        label=get_verbose_name(User, 'last_name'),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Doe'})
+    )
+
+    phone_number = forms.CharField(
+        label=get_verbose_name(User, 'phone_number'),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': '+6281234567890'})
+    )
+
+    notified = forms.BooleanField(
+        label=get_verbose_name(User, 'notified'),
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-control'})
+    )
+
+    countries_notified = forms.ModelMultipleChoiceField(
+        label=get_verbose_name(User, 'countries_notified'),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        queryset=Country.objects,
+    )
+
+    password1 = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Your s3cr3T password'})
+    )
+
+    password2 = forms.CharField(
+        label='Confirm Password',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Your s3cr3T password'})
+    )
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -61,3 +120,26 @@ class UserChangeForm(forms.ModelForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
+
+class LoginForm(forms.Form):
+    """Form for user to log in."""
+    class Meta:
+        """Meta of the form."""
+        fields = ['email', 'password']
+
+    email = forms.EmailField(
+        label=get_verbose_name(User, 'email'),
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'john@doe.com'})
+    )
+    password = forms.CharField(
+        label=get_verbose_name(User, 'password'),
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Your s3cr3T password'})
+    )
+

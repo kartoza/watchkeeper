@@ -10,7 +10,7 @@ __doc__ = ''
 from django.contrib.auth.decorators import user_passes_test
 
 
-def login_forbidden(function=None, redirect_to='user_map:index'):
+def login_forbidden(function=None, redirect_to='event_mapper:index'):
     """Decorator for views that checks that the user is NOT logged in.
 
     :param function: The function parameter for this decorator.

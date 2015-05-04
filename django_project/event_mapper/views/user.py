@@ -20,11 +20,12 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.forms.forms import NON_FIELD_ERRORS
+from django.forms.util import ErrorList
 
 from event_mapper.utilities.decorators import login_forbidden
-from event_mapper.forms.user import UserCreationForm
+from event_mapper.forms.user import UserCreationForm, LoginForm
 from event_mapper.models.user import User
-from django.contrib.messages import get_messages
 
 
 @login_forbidden
@@ -65,7 +66,7 @@ def register(request):
     else:
         form = UserCreationForm()
     return render_to_response(
-        'event_mapper/user/registration.html',
+        'event_mapper/user/registration_page.html',
         {'form': form},
         context_instance=RequestContext(request)
     )
@@ -116,37 +117,48 @@ def confirm_registration(request, uid, key):
         context_instance=RequestContext(request)
     )
 
+
+@login_forbidden
 def login(request):
-    """User registration view."""
-    email = ''
-    error = ''
+    """User login view."""
     if request.method == 'POST':
-        next_url = request.POST.get('next')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        next_page = request.GET.get('next', '')
+        if next_page == '':
+            next_page = reverse('event_mapper:index')
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            user = authenticate(
+                email=request.POST['email'],
+                password=request.POST['password']
+            )
+            if user is not None:
+                if user.is_active and user.is_confirmed:
+                    django_login(request, user)
 
-        user = authenticate(username=email, password=password)
-        print user
-        if user is not None:
-            if user.is_active:
-                django_login(request, user)
-                return redirect(next_url)
-        error = 'invalid email or password'
-    elif request.method == 'GET':
-        next_url = request.GET.get('next')
+                    return HttpResponseRedirect(next_page)
+                if not user.is_active:
+                    errors = form._errors.setdefault(
+                        NON_FIELD_ERRORS, ErrorList())
+                    errors.append(
+                        'The user is not active. Please contact our '
+                        'administrator to resolve this.')
+                if not user.is_confirmed:
+                    errors = form._errors.setdefault(
+                        NON_FIELD_ERRORS, ErrorList())
+                    errors.append(
+                        'Please confirm you registration email first!')
+            else:
+                errors = form._errors.setdefault(
+                    NON_FIELD_ERRORS, ErrorList())
+                errors.append(
+                    'Please enter a correct email and password. '
+                    'Note that both fields may be case-sensitive.')
     else:
-        next_url = '/'
-
-    if not next_url:
-        next_url = '/'
+        form = LoginForm()
 
     return render_to_response(
-        'event_mapper/login_page.html',
-        {
-            'email': email,
-            'next': next_url,
-            'error': error
-        },
+        'event_mapper/user/login_page.html',
+        {'form': form},
         context_instance=RequestContext(request))
 
 
