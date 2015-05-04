@@ -13,9 +13,9 @@ from django.conf.urls import patterns, url
 urlpatterns = patterns(
     '',
     url(r'^$', 'event_mapper.views.index.index', name='index'),
-    url(r'^accounts/login/$', 'event_mapper.views.user.login', name='login'),
-    url(r'^accounts/logout/$', 'event_mapper.views.user.logout', name='logout'),
-    url(r'^accounts/register/$', 'event_mapper.views.user.register',
+    url(r'^login$', 'event_mapper.views.user.login', name='login'),
+    url(r'^logout$', 'event_mapper.views.user.logout', name='logout'),
+    url(r'^register$', 'event_mapper.views.user.register',
         name='register'),
     url(r'^account-confirmation/(?P<uid>[0-9A-Za-z_\-]+)/(?P<key>.+)/$',
         'event_mapper.views.user.confirm_registration',

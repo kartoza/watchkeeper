@@ -5,7 +5,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.crypto import get_random_string
 from event_mapper.models.user import User
 from event_mapper.models.country import Country
-from event_mapper.utilities.commons import get_verbose_name
+from event_mapper.utilities.commons import get_verbose_name, get_help_text
 
 __author__ = 'ismailsunni'
 __project_name = 'watchkeeper'
@@ -25,6 +25,7 @@ class UserCreationForm(forms.ModelForm):
 
     email = forms.EmailField(
         label=get_verbose_name(User, 'email'),
+        help_text=get_help_text(User, 'email'),
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
@@ -49,6 +50,7 @@ class UserCreationForm(forms.ModelForm):
 
     phone_number = forms.CharField(
         label=get_verbose_name(User, 'phone_number'),
+        help_text=get_help_text(User, 'phone_number'),
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -57,15 +59,17 @@ class UserCreationForm(forms.ModelForm):
 
     notified = forms.BooleanField(
         label=get_verbose_name(User, 'notified'),
+        help_text=get_help_text(User, 'notified'),
         widget=forms.CheckboxInput(
             attrs={'class': 'form-control'})
     )
 
     countries_notified = forms.ModelMultipleChoiceField(
         label=get_verbose_name(User, 'countries_notified'),
+        help_text=get_help_text(User, 'countries_notified'),
         widget=forms.CheckboxSelectMultiple,
         required=False,
-        queryset=Country.objects,
+        queryset=Country.objects.order_by('name'),
     )
 
     password1 = forms.CharField(
