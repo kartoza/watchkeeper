@@ -50,7 +50,7 @@ class Event(models.Model):
     )
 
     date_time = models.DateTimeField(
-        verbose_name='Date and Time (UTC)',
+        verbose_name='Date and Time',
         help_text='Date and time when the event happened.'
     )
 
@@ -69,7 +69,8 @@ class Event(models.Model):
     victim = models.ForeignKey(
         Victim,
         verbose_name='Victim',
-        help_text='The victim of the event.'
+        help_text='The victim of the event.',
+        default=0
     )
 
     killed = models.IntegerField(
