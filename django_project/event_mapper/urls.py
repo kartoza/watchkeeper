@@ -22,6 +22,7 @@ urlpatterns = patterns(
     url(r'^account-confirmation/(?P<uid>[0-9A-Za-z_\-]+)/(?P<key>.+)/$',
         'event_mapper.views.user.confirm_registration',
         name='confirm_registration'),
+    url(r'^profile$', 'event_mapper.views.user.profile', name='profile'),
 
     # Event related urls
     url(r'^add_alert', 'event_mapper.views.event.add_event', name='add_event'),

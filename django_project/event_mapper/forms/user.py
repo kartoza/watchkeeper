@@ -127,6 +127,73 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
+class ProfileForm(forms.ModelForm):
+    """A form for profile."""
+    # password = ReadOnlyPasswordHashField()
+
+    class Meta:
+        model = User
+        fields = ('email', 'first_name', 'last_name', 'phone_number',
+                  'notified', 'countries_notified')
+
+    email = forms.EmailField(
+        label=get_verbose_name(User, 'email'),
+        help_text=get_help_text(User, 'email'),
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'readonly': 'readonly',
+                'placeholder': 'john@doe.com'})
+    )
+
+    first_name = forms.CharField(
+        label=get_verbose_name(User, 'first_name'),
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'})
+    )
+
+    last_name = forms.CharField(
+        label=get_verbose_name(User, 'last_name'),
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'})
+    )
+
+    phone_number = forms.CharField(
+        label=get_verbose_name(User, 'phone_number'),
+        help_text=get_help_text(User, 'phone_number'),
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'})
+    )
+
+    notified = forms.BooleanField(
+        label=get_verbose_name(User, 'notified'),
+        help_text=get_help_text(User, 'notified'),
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-control'})
+    )
+
+    countries_notified = forms.ModelMultipleChoiceField(
+        label=get_verbose_name(User, 'countries_notified'),
+        help_text=get_help_text(User, 'countries_notified'),
+        widget=forms.SelectMultiple(
+            attrs={'class': 'form-control normal_case'}),
+        required=False,
+        queryset=Country.objects.order_by(),
+    )
+
+    # def clean_password2(self):
+    #     # Check that the two password entries match
+    #     password1 = self.cleaned_data.get("password1")
+    #     password2 = self.cleaned_data.get("password2")
+    #     if password1 and password2 and password1 != password2:
+    #         raise forms.ValidationError("Passwords don't match")
+    #     return password2
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(ProfileForm, self).__init__(*args, **kwargs)
+
+
 class LoginForm(forms.Form):
     """Form for user to log in."""
     class Meta:
