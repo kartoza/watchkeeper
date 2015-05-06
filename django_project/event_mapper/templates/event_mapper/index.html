@@ -4,16 +4,10 @@
         $(document).ready(function () {
             show_map();
             set_offset();
+            $('#nav_home').addClass("active");
         });
-
     </script>
-    <title>Watchkeeper</title>
-{%  endblock %}
-{% load bootstrap_tags %}
-
-{% block navigation-bar %}
-{% include "event_mapper/navigation_bar.html" %}
-{%  endblock %}
+{% endblock header %}
 
 {% block content %}
     <div class="container-fluid">
@@ -36,4 +30,4 @@
            class="btn btn-danger btn-fab btn-raised glyphicon glyphicon-chevron-right"
            onclick="toggle_side_panel()"></a>
     </div>
-{%  endblock %}
+{% endblock content %}

@@ -1,0 +1,37 @@
+{% extends "event_mapper/base.html" %}
+{% block header %}
+    <script>
+        $(document).ready(function () {
+            $('#register_id').addClass("active");
+            $('#id_countries_notified').multiselect();
+        });
+    </script>
+    <title>Registration</title>
+{% endblock %}
+
+{% block content %}
+    <div class="col-lg-5 col-lg-offset-3">
+        <div style="padding-top:100px"></div>
+        <div class="panel panel-primary">
+            {% if messages %}
+                {% for message in messages %}
+                    {% if 'success' in message.tags %}
+                        <div class="alert alert-dismissable alert-success">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="mdi-social-person"></i>
+                    Welcome to Watchkeeper
+                </h3>
+            </div>
+            <div class="panel-body">
+                {% include "event_mapper/user/registration_form.html" %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
