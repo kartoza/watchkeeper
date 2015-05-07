@@ -17,16 +17,20 @@ class MyUserAdmin(UserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('email', 'first_name', 'phone_number', 'is_admin',
-                    'notified', 'is_confirmed')
-    list_filter = ('is_admin', 'is_active', 'countries_notified', 'notified',
-                   'is_confirmed')
+    list_display = (
+        'email', 'first_name', 'last_name', 'is_admin', 'is_staff',
+        'is_data_captor', 'is_active', 'notified',
+        'is_confirmed')
+    list_filter = (
+        'is_admin', 'is_staff', 'is_data_captor', 'is_active',
+        'countries_notified', 'notified', 'is_confirmed')
     fieldsets = (
         ('Credentials', {'fields': (
             'email', 'password', 'is_active', 'key', 'is_confirmed')}),
         ('Personal info', {'fields': (
             'first_name', 'last_name', 'phone_number')}),
-        ('Permissions', {'fields': ('is_admin',)}),
+        ('Permissions', {'fields': (
+            'is_admin', 'is_staff', 'is_data_captor')}),
         ('Notification', {'fields': (
             'countries_notified', 'area_of_interest', 'notified')}),
     )
@@ -37,7 +41,8 @@ class MyUserAdmin(UserAdmin):
             'email', 'password1', 'password2', 'is_active', 'is_confirmed')}),
         ('Personal info', {'fields': (
             'first_name', 'last_name', 'phone_number')}),
-        ('Permissions', {'fields': ('is_admin',)}),
+        ('Permissions', {'fields': (
+            'is_admin', 'is_staff', 'is_data_captor')}),
         ('Notification', {'fields': (
             'countries_notified', 'area_of_interest', 'notified')}),
     )

@@ -63,7 +63,8 @@ class UserCreationForm(forms.ModelForm):
         label=get_verbose_name(User, 'notified'),
         help_text=get_help_text(User, 'notified'),
         widget=forms.CheckboxInput(
-            attrs={'class': 'form-control'})
+            attrs={'class': 'form-control'}),
+        required=False,
     )
 
     countries_notified = forms.ModelMultipleChoiceField(
@@ -120,7 +121,7 @@ class UserChangeForm(forms.ModelForm):
         model = User
         fields = ('email', 'password', 'first_name', 'last_name',
                   'phone_number', 'notified', 'countries_notified',
-                  'is_active', 'is_admin')
+                  'is_active', 'is_admin', 'is_staff')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.

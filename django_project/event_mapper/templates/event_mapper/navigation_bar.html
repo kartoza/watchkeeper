@@ -18,7 +18,7 @@
                         Alert
                     </a>
                 </li>
-                {% if user.is_authenticated %}
+                {% if user.is_data_captor or user.is_staff or user.is_admin %}
                 <li id="nav_add_alert">
                     <a href="/add_alert">
                         <i class="mdi-content-add-box"></i>
@@ -26,12 +26,14 @@
                     </a>
                 </li>
                 {% endif %}
-{#                <li id="nav_reports">#}
-{#                    <a href="/reports">#}
-{#                        <i class="mdi-content-content-paste"></i>#}
-{#                        Reports#}
-{#                    </a>#}
-{#                </li>#}
+                {% if user.is_authenticated %}
+                <li id="nav_reports">
+                    <a href="/reports">
+                        <i class="mdi-content-content-paste"></i>
+                        Reports
+                    </a>
+                </li>
+                {% endif %}
                 <li id="nav_contact">
                     <a href="/contact">
                         <i class="mdi-communication-contacts"></i>
@@ -69,6 +71,9 @@
                         <ul class="dropdown-menu">
                             <li><a href="/profile">Update Profile</a></li>
                             <li><a href="/change_password">Change Password</a></li>
+                            {% if user.is_staff or user.is_admin %}
+                            <li><a href="/wk-admin">Admin Page</a></li>
+                            {% endif %}
                         </ul>
                     </li>
                     <li>

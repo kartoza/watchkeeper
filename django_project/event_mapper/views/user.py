@@ -191,8 +191,6 @@ def profile(request):
     )
 
 
-from django.contrib.auth.forms import PasswordChangeForm
-
 @login_required
 def change_password(request):
     if request.method == 'POST':
