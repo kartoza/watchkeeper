@@ -18,12 +18,14 @@
                         Alert
                     </a>
                 </li>
+                {% if user.is_authenticated %}
                 <li id="nav_add_alert">
                     <a href="/add_alert">
                         <i class="mdi-content-add-box"></i>
                         Add Alert
                     </a>
                 </li>
+                {% endif %}
 {#                <li id="nav_reports">#}
 {#                    <a href="/reports">#}
 {#                        <i class="mdi-content-content-paste"></i>#}
