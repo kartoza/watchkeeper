@@ -1,8 +1,10 @@
 # coding=utf-8
 """Docstring for this file."""
 from django import forms
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.crypto import get_random_string
+from collections import OrderedDict
 from event_mapper.models.user import User
 from event_mapper.models.country import Country
 from event_mapper.utilities.commons import get_verbose_name, get_help_text
@@ -129,8 +131,6 @@ class UserChangeForm(forms.ModelForm):
 
 class ProfileForm(forms.ModelForm):
     """A form for profile."""
-    # password = ReadOnlyPasswordHashField()
-
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name', 'phone_number',
@@ -181,14 +181,6 @@ class ProfileForm(forms.ModelForm):
         queryset=Country.objects.order_by(),
     )
 
-    # def clean_password2(self):
-    #     # Check that the two password entries match
-    #     password1 = self.cleaned_data.get("password1")
-    #     password2 = self.cleaned_data.get("password2")
-    #     if password1 and password2 and password1 != password2:
-    #         raise forms.ValidationError("Passwords don't match")
-    #     return password2
-
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super(ProfileForm, self).__init__(*args, **kwargs)
@@ -215,3 +207,31 @@ class LoginForm(forms.Form):
                 'placeholder': 'Your s3cr3T password'})
     )
 
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    """Form for changing user's password"""
+    class Meta:
+        """Meta of the form."""
+        fields = ['old_password', 'new_password1', 'new_password2']
+
+    old_password = forms.CharField(
+        label="Old password",
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control'})
+    )
+
+    new_password1 = forms.CharField(
+        label="New password",
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control'})
+    )
+    new_password2 = forms.CharField(
+        label="New password confirmation",
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control'})
+    )
+
+CustomPasswordChangeForm.base_fields = OrderedDict(
+    (k, CustomPasswordChangeForm.base_fields[k])
+    for k in ['old_password', 'new_password1', 'new_password2']
+)

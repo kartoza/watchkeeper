@@ -24,24 +24,24 @@
                         Add Alert
                     </a>
                 </li>
-                <li id="nav_reports">
-                    <a href="/reports">
-                        <i class="mdi-content-content-paste"></i>
-                        Reports
-                    </a>
-                </li>
+{#                <li id="nav_reports">#}
+{#                    <a href="/reports">#}
+{#                        <i class="mdi-content-content-paste"></i>#}
+{#                        Reports#}
+{#                    </a>#}
+{#                </li>#}
                 <li id="nav_contact">
                     <a href="/contact">
                         <i class="mdi-communication-contacts"></i>
                         Contact
                     </a>
                 </li>
-                <li id="nav_api">
-                    <a href="/api">
-                        <i class="mdi-editor-insert-drive-file"></i>
-                        API
-                    </a>
-                </li>
+{#                <li id="nav_api">#}
+{#                    <a href="/api">#}
+{#                        <i class="mdi-editor-insert-drive-file"></i>#}
+{#                        API#}
+{#                    </a>#}
+{#                </li>#}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if not user.is_authenticated %}
@@ -58,11 +58,16 @@
                         </a>
                     </li>
                 {% else %}
-                    <li id="profile_id">
-                        <a href="/profile">
+                    <li id="profile_id" class="dropdown">
+                        <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="mdi-social-person"></i>
                             Profile
+                            <b class="caret"></b>
                         </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/profile">Update Profile</a></li>
+                            <li><a href="/change_password">Change Password</a></li>
+                        </ul>
                     </li>
                     <li>
                         <a href="/logout">
@@ -71,7 +76,6 @@
                         </a>
                     </li>
                 {% endif %}
-
             </ul>
         </div>
     </div>

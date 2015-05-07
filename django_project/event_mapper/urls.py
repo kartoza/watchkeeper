@@ -23,6 +23,8 @@ urlpatterns = patterns(
         'event_mapper.views.user.confirm_registration',
         name='confirm_registration'),
     url(r'^profile$', 'event_mapper.views.user.profile', name='profile'),
+    url(r'^change_password', 'event_mapper.views.user.change_password',
+        name='change_password'),
 
     # Event related urls
     url(r'^add_alert', 'event_mapper.views.event.add_event', name='add_event'),

@@ -26,7 +26,8 @@ from django.contrib.auth.decorators import login_required
 
 
 from event_mapper.utilities.decorators import login_forbidden
-from event_mapper.forms.user import UserCreationForm, LoginForm, ProfileForm
+from event_mapper.forms.user import (
+    UserCreationForm, LoginForm, ProfileForm, CustomPasswordChangeForm)
 from event_mapper.models.user import User
 
 
@@ -185,6 +186,29 @@ def profile(request):
         form = ProfileForm(instance=request.user)
     return render_to_response(
         'event_mapper/user/profile_page.html',
+        {'form': form},
+        context_instance=RequestContext(request)
+    )
+
+
+from django.contrib.auth.forms import PasswordChangeForm
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            message = (
+                'You have successfully changed your password! Please sign in '
+                'to continue updating your profile.')
+            messages.success(request, message)
+            return HttpResponseRedirect(
+                reverse('event_mapper:index'))
+    else:
+        form = CustomPasswordChangeForm(user=request.user)
+    return render_to_response(
+        'event_mapper/user/change_password_page.html',
         {'form': form},
         context_instance=RequestContext(request)
     )

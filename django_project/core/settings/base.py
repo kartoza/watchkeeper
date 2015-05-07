@@ -87,3 +87,5 @@ INSTALLED_APPS = (
 )
 
 AUTH_USER_MODEL = 'event_mapper.User'
+
+LOGIN_URL = '/login'
