@@ -53,7 +53,9 @@ PIPELINE_JS = {
             'event_mapper/js/validate.js',
             'event_mapper/js/jquery.flot.min.js',
             'event_mapper/js/jquery.flot.time.min.js',
+            'event_mapper/js/jquery-ui.js',
             'event_mapper/js/bootstrap-multiselect.js',
+            # "https://maps.googleapis.com/maps/api/js?sensor=false",
             'event_mapper/js/event_mapper.js'
         ),
         'output_filename': 'js/event_mapper_js.js'
@@ -77,6 +79,7 @@ PIPELINE_CSS = {
             'event_mapper/css/material-wfont.min.css',
             'event_mapper/css/ripples.min.css',
             'event_mapper/css/bootstrap-multiselect.css',
+            'event_mapper/css/jquery-ui.css',
             'event_mapper/css/event_mapper.css',
         ),
         'output_filename': 'css/event_mapper_css.css',

@@ -78,7 +78,16 @@ function add_marker_on_click(e){
     map.addLayer(new_event_marker);
 }
 
+
+function set_longitude_form(longitude){
+    $('#id_longitude').val(longitude);
+}
+
+function set_latitude_form(latitude){
+    $('#id_latitude').val(latitude);
+}
+
 function set_long_lat_form(latlng){
-    $('#id_longitude').val(latlng.lng);
-    $('#id_latitude').val(latlng.lat);
+    set_latitude_form(latlng.lat);
+    set_longitude_form(latlng.lng);
 }

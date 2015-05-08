@@ -1,5 +1,6 @@
 {% extends "event_mapper/base.html" %}
 {% block header %}
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script>
         $(document).ready(function () {
             show_map([
@@ -36,6 +37,42 @@
                     injured_field.hide();
                     detained_input.hide();
                     detained_field.hide();
+                }
+            });
+            function log( message ) {
+                alert(message);
+            }
+            $("#id_place_name").autocomplete({
+                source: function( request, response ) {
+                    $.ajax({
+                        url: "http://gd.geobytes.com/AutoCompleteCity",
+                        dataType: "jsonp",
+                        data: {
+                            q: request.term
+                        },
+                        success: function( data ) {
+                            response( data );
+                        }
+                    });
+                },
+                minLength: 3,
+                select: function( event, ui ) {
+                    geocoder.geocode( { 'address': $('#id_place_name').val()},
+                            function(results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            set_longitude_form(results[0].geometry.location.lng());
+                            set_latitude_form(results[0].geometry.location.lat());
+                        } else {
+                            alert("Something got wrong with location " +
+                            "autocomplete." + status);
+                        }
+                    });
+                },
+                open: function() {
+                    $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+                },
+                close: function() {
+                    $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
                 }
             });
         });
