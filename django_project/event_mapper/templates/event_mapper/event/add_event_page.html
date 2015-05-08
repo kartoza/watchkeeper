@@ -10,6 +10,9 @@
             $('#id_date_time').datetimepicker({
                 format: 'DD/MM/YYYY HH:mm'
             });
+
+            map.on('click', add_marker_on_click);
+
             $('input:radio[name=category]').change(function() {
                 var killed_input = $('#id_killed');
                 var killed_field = $("label[for=id_killed]")

@@ -3,13 +3,13 @@
  */
 
 var map;
+var new_event_marker;
 
 function show_map(bounds) {
     'use strict';
     $('#navigationbar').css('height', window.innerHeight * 0.1);
     $('#map').css('height', window.innerHeight * 0.9);
     if (bounds){
-        //map = L.map('map').setView([-6.2000, 106.8167], 11);
         map = L.map('map').fitBounds(bounds);
     }else{
         map = L.map('map').setView([-6.2000, 106.8167], 11);
@@ -63,7 +63,22 @@ function toggle_side_panel() {
     }
 }
 
-function map_change_bound(){
-
+function add_marker_on_click(e){
+    if (new_event_marker){
+        map.removeLayer(new_event_marker);
+    }
+    new_event_marker = new L.marker(e.latlng, {id:'uni', draggable:'true'});
+    set_long_lat_form(e.latlng);
+    new_event_marker.on('dragend', function(event){
+        var new_event_marker = event.target;
+        var position = new_event_marker.getLatLng();
+        set_long_lat_form(position)
+        new_event_marker.setLatLng(position,{id:'uni', draggable:'true'});
+    });
+    map.addLayer(new_event_marker);
 }
 
+function set_long_lat_form(latlng){
+    $('#id_longitude').val(latlng.lng);
+    $('#id_latitude').val(latlng.lat);
+}
