@@ -64,7 +64,8 @@ class EventCreationForm(models.ModelForm):
     date_time = forms.DateTimeField(
         label=get_verbose_name(Event, 'date_time'),
         widget=forms.DateTimeInput(
-            attrs={'class': 'form-control datepicker'})
+            attrs={'class': 'form-control datepicker',
+                   'placholder': 'DD/MM.YYY hh:mm'})
     )
 
     type = forms.ModelChoiceField(
@@ -147,6 +148,16 @@ class EventCreationForm(models.ModelForm):
         event.notification_sent = False
         event.reported_by = self.user
         event.location = Point(data['latitude'], data['longitude'])
+        if event.category == event.ADVISORY_CODE:
+            event.killed = 0
+            event.injured = 0
+            event.detained = 0
+        if not event.killed:
+            event.killed = 0
+        if not event.injured:
+            event.injured = 0
+        if not event.detained:
+            event.detained = 0
         if commit:
             event.save()
         return event

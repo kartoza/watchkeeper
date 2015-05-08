@@ -7,10 +7,33 @@
                 [{{ user.north }}, {{ user.east }}]]);
             set_offset();
             $('#nav_add_alert').addClass("active");
-        });
-        $(function () {
             $('#id_date_time').datetimepicker({
-                format: 'DD/MM/YYYY HH:mm
+                format: 'DD/MM/YYYY HH:mm'
+            });
+            $('input:radio[name=category]').change(function() {
+                var killed_input = $('#id_killed');
+                var killed_field = $("label[for=id_killed]")
+                var injured_input = $('#id_injured');
+                var injured_field = $("label[for=id_injured]")
+                var detained_input = $('#id_detained');
+                var detained_field = $("label[for=id_detained]")
+                if (this.value == '1') {
+                    killed_input.show();
+                    killed_field.show();
+                    injured_input.show();
+                    injured_field.show();
+                    detained_input.show();
+                    detained_field.show();
+                }
+                else if (this.value == '2') {
+                    {#Advisory#}
+                    killed_input.hide();
+                    killed_field.hide();
+                    injured_input.hide();
+                    injured_field.hide();
+                    detained_input.hide();
+                    detained_field.hide();
+                }
             });
         });
     </script>
