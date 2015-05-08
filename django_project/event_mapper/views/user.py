@@ -170,6 +170,7 @@ def logout(request):
     django_logout(request)
     return redirect('/')
 
+
 @login_required
 def profile(request):
     if request.method == 'POST':
@@ -179,7 +180,7 @@ def profile(request):
             user.save()
             form.save_m2m()
             messages.success(
-                request, 'You have successfully changed your information!')
+                request, 'You have successfully changed your profile!')
             return HttpResponseRedirect(
                 reverse('event_mapper:profile'))
     else:

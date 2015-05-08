@@ -2,13 +2,15 @@
 {% block header %}
     <script>
         $(document).ready(function () {
-            show_map();
+            show_map([
+                [{{ user.south }}, {{ user.west }}],
+                [{{ user.north }}, {{ user.east }}]]);
             set_offset();
             $('#nav_add_alert').addClass("active");
         });
         $(function () {
             $('#id_date_time').datetimepicker({
-                format: 'DD/MM/YYYY HH:mm',
+                format: 'DD/MM/YYYY HH:mm
             });
         });
     </script>

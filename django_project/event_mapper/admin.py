@@ -32,7 +32,9 @@ class MyUserAdmin(UserAdmin):
         ('Permissions', {'fields': (
             'is_admin', 'is_staff', 'is_data_captor')}),
         ('Notification', {'fields': (
-            'countries_notified', 'area_of_interest', 'notified')}),
+            'countries_notified', 'notified')}),
+        ('Area of Interest', {'fields': (
+            'north', 'east', 'south', 'west')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
@@ -44,7 +46,9 @@ class MyUserAdmin(UserAdmin):
         ('Permissions', {'fields': (
             'is_admin', 'is_staff', 'is_data_captor')}),
         ('Notification', {'fields': (
-            'countries_notified', 'area_of_interest', 'notified')}),
+            'countries_notified', 'notified')}),
+        ('Area of Interest', {'fields': (
+            'north', 'east', 'south', 'west')}),
     )
     search_fields = ('email',)
     ordering = ('email',)

@@ -89,13 +89,28 @@ class User(AbstractBaseUser):
         help_text='Data Captor can add event.',
         default=False)
 
-    area_of_interest = models.PolygonField(
-        srid=4326,
-        verbose_name='Area of Interest',
-        help_text='Area of interest of the user.',
-        default=None,
-        blank=True,
-        null=True
+    north = models.FloatField(
+        verbose_name='North',
+        help_text='The north boundary of area of interest',
+        default=22
+    )
+
+    east = models.FloatField(
+        verbose_name='East',
+        help_text='The east boundary of area of interest',
+        default=160
+    )
+
+    south = models.FloatField(
+        verbose_name='South',
+        help_text='The south boundary of area of interest',
+        default=-27
+    )
+
+    west = models.FloatField(
+        verbose_name='West',
+        help_text='The west boundary of area of interest',
+        default=83
     )
 
     key = models.CharField(

@@ -23,7 +23,8 @@ class UserCreationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name', 'phone_number',
-                  'notified', 'countries_notified')
+                  'notified', 'countries_notified', 'north', 'east', 'south',
+                  'west')
 
     email = forms.EmailField(
         label=get_verbose_name(User, 'email'),
@@ -92,6 +93,26 @@ class UserCreationForm(forms.ModelForm):
                 'placeholder': 'Your s3cr3T password'})
     )
 
+    north = forms.CharField(
+        widget=forms.HiddenInput,
+        required=False
+    )
+
+    east = forms.CharField(
+        widget=forms.HiddenInput,
+        required=False
+    )
+
+    south = forms.CharField(
+        widget=forms.HiddenInput,
+        required=False
+    )
+
+    west = forms.CharField(
+        widget=forms.HiddenInput,
+        required=False
+    )
+
     def clean_password2(self):
         # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")
@@ -134,8 +155,9 @@ class ProfileForm(forms.ModelForm):
     """A form for profile."""
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'phone_number',
-                  'notified', 'countries_notified')
+        fields = (
+            'email', 'first_name', 'last_name', 'phone_number', 'notified',
+            'countries_notified', 'north', 'east', 'south', 'west')
 
     email = forms.EmailField(
         label=get_verbose_name(User, 'email'),
@@ -180,6 +202,34 @@ class ProfileForm(forms.ModelForm):
             attrs={'class': 'form-control normal_case'}),
         required=False,
         queryset=Country.objects.order_by(),
+    )
+
+    north = forms.FloatField(
+        label=get_verbose_name(User, 'north'),
+        help_text=get_help_text(User, 'north'),
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'})
+    )
+
+    east = forms.FloatField(
+        label=get_verbose_name(User, 'east'),
+        help_text=get_help_text(User, 'east'),
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'})
+    )
+
+    south = forms.FloatField(
+        label=get_verbose_name(User, 'south'),
+        help_text=get_help_text(User, 'south'),
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'})
+    )
+
+    west = forms.FloatField(
+        label=get_verbose_name(User, 'west'),
+        help_text=get_help_text(User, 'west'),
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'})
     )
 
     def __init__(self, *args, **kwargs):

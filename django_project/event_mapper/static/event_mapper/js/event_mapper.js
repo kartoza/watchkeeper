@@ -4,11 +4,16 @@
 
 var map;
 
-function show_map() {
+function show_map(bounds) {
     'use strict';
     $('#navigationbar').css('height', window.innerHeight * 0.1);
     $('#map').css('height', window.innerHeight * 0.9);
-    map = L.map('map').setView([-6.2000, 106.8167], 11);
+    if (bounds){
+        //map = L.map('map').setView([-6.2000, 106.8167], 11);
+        map = L.map('map').fitBounds(bounds);
+    }else{
+        map = L.map('map').setView([-6.2000, 106.8167], 11);
+    }
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -57,3 +62,8 @@ function toggle_side_panel() {
         map.invalidateSize();
     }
 }
+
+function map_change_bound(){
+
+}
+

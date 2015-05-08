@@ -1,5 +1,6 @@
 <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
+    <p>Or use the map to set the boundaries.</p>
     <input type="submit" class="btn btn-primary" value="Update" />
 </form>
