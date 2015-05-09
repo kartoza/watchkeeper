@@ -55,8 +55,8 @@ PIPELINE_JS = {
             'event_mapper/js/jquery.flot.time.min.js',
             'event_mapper/js/jquery-ui.js',
             'event_mapper/js/bootstrap-multiselect.js',
-            # "https://maps.googleapis.com/maps/api/js?sensor=false",
-            'event_mapper/js/event_mapper.js'
+            'event_mapper/js/event_mapper.js',
+            'event_mapper/js/add_event.js',
         ),
         'output_filename': 'js/event_mapper_js.js'
     }

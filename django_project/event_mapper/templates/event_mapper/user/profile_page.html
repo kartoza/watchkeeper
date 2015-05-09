@@ -2,9 +2,12 @@
 {% block header %}
     <script>
         $(document).ready(function () {
-            show_map([
-                        [{{ user.south }}, {{ user.west }}],
-                        [{{ user.north }}, {{ user.east }}]]);
+            var context = {
+                'bounds':[
+                    [{{ user.south }}, {{ user.west }}],
+                    [{{ user.north }}, {{ user.east }}]]
+            };
+            show_map(context);
             set_offset();
             $('#profile_id').addClass("active");
             $('#id_countries_notified').multiselect();

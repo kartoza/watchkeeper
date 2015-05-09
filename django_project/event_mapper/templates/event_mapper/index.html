@@ -4,9 +4,12 @@
         $(document).ready(function () {
             {% if user.is_authenticated %}
                 {% if user.north %}
-                    show_map([
-                        [{{ user.south }}, {{ user.west }}],
-                        [{{ user.north }}, {{ user.east }}]]);
+                    var context = {
+                        'bounds':[
+                            [{{ user.south }}, {{ user.west }}],
+                            [{{ user.north }}, {{ user.east }}]]
+                    };
+                    show_map(context);
                 {% else %}
                     show_map();
                 {% endif %}
