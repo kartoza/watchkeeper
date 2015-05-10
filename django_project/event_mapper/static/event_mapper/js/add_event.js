@@ -4,32 +4,36 @@
 
 var new_event_marker;
 
+function show_hide_killed(radio_button){
+    var killed_input = $('#id_killed');
+    var killed_field = $("label[for=id_killed]")
+    var injured_input = $('#id_injured');
+    var injured_field = $("label[for=id_injured]")
+    var detained_input = $('#id_detained');
+    var detained_field = $("label[for=id_detained]")
+    if (radio_button.value == '1') {
+        // Incident, show all
+        killed_input.show();
+        killed_field.show();
+        injured_input.show();
+        injured_field.show();
+        detained_input.show();
+        detained_field.show();
+    }
+    else if (radio_button.value == '2'){
+        // Advisory, hide all
+        killed_input.hide();
+        killed_field.hide();
+        injured_input.hide();
+        injured_field.hide();
+        detained_input.hide();
+        detained_field.hide();
+    }
+}
+
 function update_incident_advisory(){
     $('input:radio[name=category]').change(function() {
-        var killed_input = $('#id_killed');
-        var killed_field = $("label[for=id_killed]")
-        var injured_input = $('#id_injured');
-        var injured_field = $("label[for=id_injured]")
-        var detained_input = $('#id_detained');
-        var detained_field = $("label[for=id_detained]")
-        if (this.value == '1') {
-            // Incident, show all
-            killed_input.show();
-            killed_field.show();
-            injured_input.show();
-            injured_field.show();
-            detained_input.show();
-            detained_field.show();
-        }
-        else if (this.value == '2'){
-            // Advisory, hide all
-            killed_input.hide();
-            killed_field.hide();
-            injured_input.hide();
-            injured_field.hide();
-            detained_input.hide();
-            detained_field.hide();
-        }
+     show_hide_killed(this);
     });
 }
 
@@ -111,4 +115,48 @@ function set_latitude_form(latitude){
 function set_long_lat_form(latlng){
     set_latitude_form(latlng.lat);
     set_longitude_form(latlng.lng);
+}
+
+function show_hide_form(state){
+    $('#add_even_form').find('p').each(function(index, element){
+        if (state === 'hide'){
+            $(element).hide();
+        } else if (state === 'show'){
+            $(element).show();
+        } else{
+            $(element).show();
+        }
+    });
+}
+
+var notes_seen = false;
+
+function toggle_notes(){
+    if (notes_seen){
+        // Show all fields
+        show_hide_form('show');
+        // Show / hides killed
+        update_incident_advisory();
+        // Hide notes
+        show_hide_notes('hide');
+
+    } else {
+        // Hide all fields
+        show_hide_form('hide');
+        // Show notes
+        show_hide_notes('show');
+    }
+    notes_seen = ! notes_seen;
+}
+
+function show_hide_notes(state){
+    var p_notes = $('#id_notes').parent().parent();
+    var toggle_button = $('#toggle_notes_button');
+    if (state === 'hide'){
+        p_notes.hide();
+        toggle_button.val('Add Notes');
+    } else if (state == 'show'){
+        p_notes.show();
+        toggle_button.val('Back');
+    }
 }

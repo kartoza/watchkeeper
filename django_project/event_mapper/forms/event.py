@@ -35,13 +35,13 @@ class EventCreationForm(models.ModelForm):
     longitude = forms.FloatField(
         label='Longitude',
         widget=forms.NumberInput(
-            attrs={'class': 'form-control', 'step': '0.01'}),
+            attrs={'class': 'form-control'}),
     )
 
     latitude = forms.FloatField(
         label='Latitude',
         widget=forms.NumberInput(
-            attrs={'class': 'form-control', 'step': '0.01'}),
+            attrs={'class': 'form-control'}),
     )
 
     category = forms.ChoiceField(
@@ -132,10 +132,11 @@ class EventCreationForm(models.ModelForm):
 
     notes = forms.CharField(
         label=get_verbose_name(Event, 'notes'),
-        help_text=get_help_text(Event, 'notes'),
+        # help_text=get_help_text(Event, 'notes'),
         widget=forms.Textarea(
-            attrs={'class': 'form-control'}),
-        required=False
+            attrs={'class': 'form-control',
+                   'placeholder': get_help_text(Event, 'notes')}),
+        required=False,
     )
 
     def __init__(self, *args, **kwargs):
