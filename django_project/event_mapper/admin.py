@@ -57,11 +57,11 @@ class MyUserAdmin(UserAdmin):
     filter_horizontal = ()
 
 
-class CountryAdmin(admin.GeoModelAdmin):
+class CountryAdmin(admin.OSMGeoAdmin):
     pass
 
 
-class EventAdmin(admin.ModelAdmin):
+class EventAdmin(admin.OSMGeoAdmin):
     list_display = (
         'category', 'place_name', 'date_time', 'type', 'perpetrator',
         'victim', 'notified_immediately', 'notification_sent', 'reported_by')
@@ -84,12 +84,34 @@ class VictimAdmin(admin.ModelAdmin):
     pass
 
 
-class MovementAdmin(admin.GeoModelAdmin):
-    pass
+class MovementAdmin(admin.OSMGeoAdmin):
+    list_display = (
+        'name', 'rating', 'notified_immediately', 'notification_sent',
+        'last_updater', 'last_updated_time')
+
+    list_filter = (
+        'notified_immediately', 'notification_sent', 'last_updater',
+        'last_updated_time')
+
+    fieldsets = (
+        ('Information', {'fields': (
+            'name', 'region', 'previous_rating', 'rating', 'notes')}),
+        ('Notification', {'fields': (
+            'notified_immediately', 'notification_sent',)}),
+        ('Update', {'fields': (
+            'last_updated_time',)}),
+    )
+
+    readonly_fields = ('last_updated_time', 'previous_rating')
+
+    def save_model(self, request, obj, form, change):
+        obj.last_updater = request.user
+        obj.save()
 
 
 class RatingAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('label', 'level')
+    ordering = ('level',)
 
 
 admin.site.register(User, MyUserAdmin)

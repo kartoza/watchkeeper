@@ -8,6 +8,8 @@ __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
 
 from django.contrib.gis.db import models
+from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 
 from event_mapper.models.user import User
 from event_mapper.models.rating import Rating
@@ -32,6 +34,14 @@ class Movement(models.Model):
         srid=4326,
         null=False,
         blank=False
+    )
+
+    previous_rating = models.ForeignKey(
+        Rating,
+        verbose_name='Previous Rating',
+        help_text='The previous rating of the movement.',
+        related_name='previous_rating',
+        null=True,
     )
 
     rating = models.ForeignKey(
@@ -65,7 +75,30 @@ class Movement(models.Model):
         help_text='The last user who update the movement.'
     )
 
+    last_updated_time = models.DateTimeField(
+        verbose_name='Last Updated Time',
+        help_text='When the movement updated for the most recent.',
+        null=False,
+        blank=True,
+        default=timezone.now,
+    )
+
     objects = models.GeoManager()
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        """Overloaded save method."""
+        try:
+            original_object = Movement.objects.get(pk=self.pk)
+            if self.rating != original_object.rating:
+                self.notification_sent = False
+                self.last_updated_time = timezone.now()
+                self.previous_rating = original_object.rating
+        except ObjectDoesNotExist:
+            # New object
+            self.notification_sent = False
+            self.last_updated_time = timezone.now()
+
+        super(Movement, self).save(*args, **kwargs)
