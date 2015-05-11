@@ -12,20 +12,37 @@
                         Home
                     </a>
                 </li>
-                <li id="nav_alert">
-                    <a href="/alert">
-                        <i class="mdi-alert-warning"></i>
-                        Alert
-                    </a>
-                </li>
                 {% if user.is_data_captor or user.is_staff or user.is_admin %}
-                <li id="nav_add_alert">
-                    <a href="/add_alert">
-                        <i class="mdi-content-add-box"></i>
-                        Add Alert
+                    <li id="nav_alert" class="dropdpwm">
+                        <a href="/alert" data-target="#"
+                           class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="mdi-alert-warning"></i>
+                            Alert
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/add_alert">
+                                <i class="mdi-content-add-box"></i>
+                                Add Alert
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li id="nav_alert">
+                        <a href="/alert">
+                            <i class="mdi-alert-warning"></i>
+                            Alert
+                        </a>
+                    </li>
+                {% endif %}
+                <li id="nav_movement">
+                    <a href="/movement">
+                        <i class="mdi-maps-directions-walk"></i>
+                        Movement
                     </a>
                 </li>
-                {% endif %}
                 {% if user.is_authenticated %}
                 <li id="nav_reports">
                     <a href="/reports">

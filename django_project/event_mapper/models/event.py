@@ -70,7 +70,6 @@ class Event(models.Model):
         Victim,
         verbose_name='Victim',
         help_text='The victim of the event.',
-        default=0,
     )
 
     killed = models.IntegerField(

@@ -29,6 +29,9 @@ urlpatterns = patterns(
     # Event related urls
     url(r'^add_alert', 'event_mapper.views.event.add_event', name='add_event'),
 
+    # Movement related urls
+    url(r'^movement', 'event_mapper.views.movement.movement', name='movement'),
+
     # Static page urls
     url(r'^contact', 'event_mapper.views.front_end.contact', name='contact'),
 )

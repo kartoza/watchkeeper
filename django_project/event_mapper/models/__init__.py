@@ -13,3 +13,5 @@ from event_type import EventType
 from perpetrator import Perpetrator
 from user import User
 from victim import Victim
+from rating import Rating
+from movement import Movement

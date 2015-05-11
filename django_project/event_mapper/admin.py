@@ -7,6 +7,8 @@ from event_mapper.models.event import Event
 from event_mapper.models.event_type import EventType
 from event_mapper.models.perpetrator import Perpetrator
 from event_mapper.models.victim import Victim
+from event_mapper.models.movement import Movement
+from event_mapper.models.rating import Rating
 
 
 class MyUserAdmin(UserAdmin):
@@ -81,9 +83,20 @@ class PerpetratorAdmin(admin.ModelAdmin):
 class VictimAdmin(admin.ModelAdmin):
     pass
 
+
+class MovementAdmin(admin.GeoModelAdmin):
+    pass
+
+
+class RatingAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(User, MyUserAdmin)
 admin.site.register(Country, CountryAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(EventType, EventTypeAdmin)
 admin.site.register(Perpetrator, PerpetratorAdmin)
 admin.site.register(Victim, VictimAdmin)
+admin.site.register(Movement, MovementAdmin)
+admin.site.register(Rating, RatingAdmin)
