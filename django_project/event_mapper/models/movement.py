@@ -12,7 +12,6 @@ from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 
 from event_mapper.models.user import User
-from event_mapper.models.rating import Rating
 
 
 class Movement(models.Model):
@@ -21,6 +20,44 @@ class Movement(models.Model):
     class Meta:
         """Meta class."""
         app_label = 'event_mapper'
+
+    INSIGNIFICANT_CODE = 1
+    LOW_CODE = 2
+    MODERATE_CODE = 3
+    HIGH_CODE = 4
+    EXTREME_CODE = 5
+
+    RISK_LEVELS = (
+        (INSIGNIFICANT_CODE, 'Insignificant'),
+        (LOW_CODE, 'Low'),
+        (MODERATE_CODE, 'Moderate'),
+        (HIGH_CODE, 'High'),
+        (EXTREME_CODE, 'Extreme'),
+    )
+
+    NORMAL_CODE = 1
+    MISSION_ESSENTIAL_CODE = 2
+    MISSION_CRITICAL_CODE = 3
+    BLACKOUT_CODE = 4
+
+    MOVEMENT_STATES = (
+        (NORMAL_CODE, 'Normal'),
+        (MISSION_ESSENTIAL_CODE, 'Mission Essential'),
+        (MISSION_CRITICAL_CODE, 'Mission Critical'),
+        (BLACKOUT_CODE, 'Blackout'),
+    )
+
+    risk_level = models.IntegerField(
+        choices=RISK_LEVELS,
+        verbose_name='Risk Level',
+        help_text='Risk level of the region.'
+    )
+
+    movement_state = models.IntegerField(
+        choices=MOVEMENT_STATES,
+        verbose_name='Movement State',
+        help_text='Movement state of the region.'
+    )
 
     name = models.CharField(
         verbose_name='Movement Name',
@@ -36,19 +73,19 @@ class Movement(models.Model):
         blank=False
     )
 
-    previous_rating = models.ForeignKey(
-        Rating,
-        verbose_name='Previous Rating',
-        help_text='The previous rating of the movement.',
-        related_name='previous_rating',
-        null=True,
-    )
-
-    rating = models.ForeignKey(
-        Rating,
-        verbose_name='Rating',
-        help_text='The rating of the movement.'
-    )
+    # previous_rating = models.ForeignKey(
+    #     Rating,
+    #     verbose_name='Previous Rating',
+    #     help_text='The previous rating of the movement.',
+    #     related_name='previous_rating',
+    #     null=True,
+    # )
+    #
+    # rating = models.ForeignKey(
+    #     Rating,
+    #     verbose_name='Rating',
+    #     help_text='The rating of the movement.'
+    # )
 
     notes = models.TextField(
         verbose_name='Notes',
@@ -92,10 +129,11 @@ class Movement(models.Model):
         """Overloaded save method."""
         try:
             original_object = Movement.objects.get(pk=self.pk)
-            if self.rating != original_object.rating:
+            is_change = (self.risk_level != original_object.risk_level or
+                         self.movement_state != original_object.movement_state)
+            if is_change:
                 self.notification_sent = False
                 self.last_updated_time = timezone.now()
-                self.previous_rating = original_object.rating
         except ObjectDoesNotExist:
             # New object
             self.notification_sent = False

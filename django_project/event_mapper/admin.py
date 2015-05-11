@@ -86,23 +86,22 @@ class VictimAdmin(admin.ModelAdmin):
 
 class MovementAdmin(admin.OSMGeoAdmin):
     list_display = (
-        'name', 'rating', 'notified_immediately', 'notification_sent',
-        'last_updater', 'last_updated_time')
+        'name', 'risk_level', 'movement_state', 'notified_immediately',
+        'notification_sent', 'last_updater', 'last_updated_time')
 
     list_filter = (
-        'notified_immediately', 'notification_sent', 'last_updater',
-        'last_updated_time')
+        'risk_level', 'movement_state', 'notified_immediately',
+        'notification_sent', 'last_updater', 'last_updated_time',)
 
     fieldsets = (
         ('Information', {'fields': (
-            'name', 'region', 'previous_rating', 'rating', 'notes')}),
+            'name', 'region', 'risk_level', 'movement_state', 'notes')}),
         ('Notification', {'fields': (
             'notified_immediately', 'notification_sent',)}),
-        ('Update', {'fields': (
-            'last_updated_time',)}),
+        ('Update', {'fields': ('last_updated_time',)}),
     )
 
-    readonly_fields = ('last_updated_time', 'previous_rating')
+    readonly_fields = ('last_updated_time', 'last_updater')
 
     def save_model(self, request, obj, form, change):
         obj.last_updater = request.user

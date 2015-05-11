@@ -30,7 +30,8 @@ class EventCreationForm(models.ModelForm):
         model = Event
         fields = ('category', 'longitude', 'latitude', 'place_name',
                   'date_time', 'type', 'perpetrator', 'victim', 'killed',
-                  'injured', 'detained', 'notified_immediately', 'notes')
+                  'injured', 'detained', 'notified_immediately', 'source',
+                  'notes')
 
     longitude = forms.FloatField(
         label='Longitude',
@@ -64,8 +65,8 @@ class EventCreationForm(models.ModelForm):
     date_time = forms.DateTimeField(
         label=get_verbose_name(Event, 'date_time'),
         widget=forms.DateTimeInput(
-            attrs={'class': 'form-control datepicker',
-                   'placholder': 'DD/MM.YYY hh:mm'})
+            attrs={'class': 'form-control datetimepicker',
+                   'placeholder': 'DD/MM.YYY hh:mm'})
     )
 
     type = forms.ModelChoiceField(
@@ -74,7 +75,7 @@ class EventCreationForm(models.ModelForm):
         required=False,
         queryset=EventType.objects.order_by(),
         widget=forms.Select(
-            attrs={'class': 'form-control datepicker'})
+            attrs={'class': 'form-control'})
     )
 
     perpetrator = forms.ModelChoiceField(
@@ -83,7 +84,7 @@ class EventCreationForm(models.ModelForm):
         required=False,
         queryset=Perpetrator.objects.order_by(),
         widget=forms.Select(
-            attrs={'class': 'form-control datepicker'})
+            attrs={'class': 'form-control'})
     )
 
     victim = forms.ModelChoiceField(
@@ -92,7 +93,7 @@ class EventCreationForm(models.ModelForm):
         required=False,
         queryset=Victim.objects.order_by(),
         widget=forms.Select(
-            attrs={'class': 'form-control datepicker'})
+            attrs={'class': 'form-control'})
     )
 
     killed = forms.IntegerField(
@@ -130,9 +131,16 @@ class EventCreationForm(models.ModelForm):
         required=False
     )
 
+    source = forms.CharField(
+        label=get_verbose_name(Event, 'source'),
+        widget=forms.Textarea(
+            attrs={'class': 'form-control',
+                   'placeholder': get_help_text(Event, 'source')}),
+        required=False,
+    )
+
     notes = forms.CharField(
         label=get_verbose_name(Event, 'notes'),
-        # help_text=get_help_text(Event, 'notes'),
         widget=forms.Textarea(
             attrs={'class': 'form-control',
                    'placeholder': get_help_text(Event, 'notes')}),
