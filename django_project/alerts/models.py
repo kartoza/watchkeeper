@@ -10,7 +10,7 @@ __doc__ = ''
 
 from django.contrib.gis.db import models
 
-from event_mapper.models.user import User
+from django.conf import settings
 
 
 class Alert(models.Model):
@@ -21,7 +21,7 @@ class Alert(models.Model):
         max_length=50,
         null=False,
         blank=False)
-    recipient = models.ForeignKey(User)
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL)
     message_content = models.TextField()
 
     class Meta:

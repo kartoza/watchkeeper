@@ -9,6 +9,7 @@ __doc__ = ''
 
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.gis.db import models
+
 from event_mapper.models.country import Country
 from event_mapper.models.user_manager import CustomUserManager
 
