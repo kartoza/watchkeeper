@@ -86,7 +86,7 @@ class VictimAdmin(admin.ModelAdmin):
 
 class MovementAdmin(admin.OSMGeoAdmin):
     list_display = (
-        'name', 'risk_level', 'movement_state', 'notified_immediately',
+        'country', 'risk_level', 'movement_state', 'notified_immediately',
         'notification_sent', 'last_updater', 'last_updated_time')
 
     list_filter = (
@@ -95,7 +95,7 @@ class MovementAdmin(admin.OSMGeoAdmin):
 
     fieldsets = (
         ('Information', {'fields': (
-            'name', 'region', 'risk_level', 'movement_state', 'notes')}),
+            'country', 'risk_level', 'movement_state', 'notes')}),
         ('Notification', {'fields': (
             'notified_immediately', 'notification_sent',)}),
         ('Update', {'fields': ('last_updated_time',)}),

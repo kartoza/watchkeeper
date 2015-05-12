@@ -11,6 +11,7 @@ from django.contrib.gis.db import models
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 
+from event_mapper.models.country import Country
 from event_mapper.models.user import User
 
 
@@ -59,33 +60,12 @@ class Movement(models.Model):
         help_text='Movement state of the region.'
     )
 
-    name = models.CharField(
-        verbose_name='Movement Name',
-        help_text='The name of the movement.',
-        max_length=100
+    country = models.OneToOneField(
+        Country,
+        primary_key=True,
+        verbose_name='Country',
+        help_text='The country where the movement happens.',
     )
-
-    region = models.PolygonField(
-        verbose_name='Region',
-        help_text='The location of the event in polygon geometry',
-        srid=4326,
-        null=False,
-        blank=False
-    )
-
-    # previous_rating = models.ForeignKey(
-    #     Rating,
-    #     verbose_name='Previous Rating',
-    #     help_text='The previous rating of the movement.',
-    #     related_name='previous_rating',
-    #     null=True,
-    # )
-    #
-    # rating = models.ForeignKey(
-    #     Rating,
-    #     verbose_name='Rating',
-    #     help_text='The rating of the movement.'
-    # )
 
     notes = models.TextField(
         verbose_name='Notes',
@@ -123,7 +103,7 @@ class Movement(models.Model):
     objects = models.GeoManager()
 
     def __str__(self):
-        return self.name
+        return self.country
 
     def save(self, *args, **kwargs):
         """Overloaded save method."""
