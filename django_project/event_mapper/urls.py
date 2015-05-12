@@ -32,6 +32,8 @@ urlpatterns = patterns(
     # Movement related urls
     url(r'^update_movement', 'event_mapper.views.movement.update_movement',
         name='update_movement'),
+    url(r'^get_country', 'event_mapper.views.movement.get_country',
+        name='get_country'),
 
     # Static page urls
     url(r'^contact', 'event_mapper.views.front_end.contact', name='contact'),

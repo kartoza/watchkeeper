@@ -11,6 +11,56 @@
             show_map(context);
             set_offset();
             $('#nav_movement').addClass("active");
+            $('#id_region').change(function(){
+                console.log('drop down changed');
+                console.log($('option:selected', this).val() + $
+                ('option:selected', this).text());
+                $.ajax({
+                    type: 'POST',
+                    url: '/get_country/',
+                    data: {'country_id': $('option:selected', this).val()},
+                    dataType: 'json',
+                    success: function(json){
+                        console.log('Ajax success');
+                        console.log(json);
+
+                        $('#id_risk_level').val(json['risk_level']);
+                        $('#id_movement_state').val(json['movement_state']);
+                        $('#id_notes').val(json['notes']);
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log(xhr.status + ": " + xhr.responseText);
+                    }
+                        }
+                )
+            });
+            $('#update_movement_form').submit(function(e){
+                console.log('Submitting form');
+                var data = {
+                    'country_id': $('#id_region option:selected').val(),
+                    'risk_level': $('#id_risk_level option:selected').val(),
+                    'movement_state': $('#id_movement_state option:selected').val(),
+                    'notified_immediately': $('#id_notified_immediately ' +
+                    'option:selected').val(),
+                    'notes': $('#id_notes option:selected').val()
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: '/update_movement/',
+{#                    data: $(this).serialize,#}
+                    data:  $('#update_movement_form').serialize() + '&csrfmiddlewaretoken=' + getCookie('csrftoken'),
+                    dataType: 'json',
+                    success: function(json){
+                        console.log('Ajax success');
+                        console.log(json);
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log(xhr.status + ": " + xhr.responseText);
+                    }
+
+                });
+                e.preventDefault()
+            });
         });
     </script>
 {% endblock header %}

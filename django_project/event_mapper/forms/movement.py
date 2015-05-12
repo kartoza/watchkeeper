@@ -16,15 +16,8 @@ from event_mapper.models.movement import Movement
 from event_mapper.models.country import Country
 
 
-class MovementUpdateForm(models.ModelForm):
+class MovementUpdateForm(forms.Form):
     """A form for rating a movement."""
-    class Meta:
-        model = Movement
-        fields = (
-            'region', 'risk_level', 'movement_state', 'notes',
-            'notified_immediately'
-        )
-
     region = forms.ModelChoiceField(
         label='Region',
         queryset=Country.objects.order_by('name'),
@@ -32,7 +25,7 @@ class MovementUpdateForm(models.ModelForm):
             attrs={
                 'class': 'form-control'
             }
-        )
+        ),
     )
 
     risk_level = forms.ChoiceField(
@@ -67,4 +60,27 @@ class MovementUpdateForm(models.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
+        self.country_id = kwargs.pop('country_id', None)
         super(MovementUpdateForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        """Override save method."""
+        data = self.cleaned_data
+        movement = super(MovementUpdateForm, self).save(commit=False)
+
+        movement.last_updater = self.user
+        movement.country = data.region
+        if commit:
+            movement.save()
+        return movement
+
+    def update(self):
+        data = self.cleaned_data
+        country_id = self.cleaned_data['region'].id
+        country = Country.objects.get(pk=country_id)
+        country.movement.risk_level = data['risk_level']
+        country.movement.movement_state = data['movement_state']
+        country.movement.notes = data['notes']
+        country.movement.save()
+        country.save()
+        return country.movement
