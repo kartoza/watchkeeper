@@ -12,4 +12,4 @@ djangorestframework==2.4.4
 markdown
 django-filter
 Pillow
-django-sms-gateway
+# django-sms-gateway  # Use this again once we can work with custom users
