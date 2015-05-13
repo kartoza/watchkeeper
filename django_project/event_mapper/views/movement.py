@@ -53,7 +53,8 @@ def update_movement(request):
 def get_country_information(country_id):
     country = Country.objects.get(pk=country_id)
     country_name = country.name
-    polygon = country.polygon_geometry
+    polygon = country.polygon_geometry.coords
+    polygon_extent = country.polygon_geometry.extent
     try:
         risk_level_id = country.movement.risk_level
         movement_state_id = country.movement.movement_state
@@ -66,24 +67,26 @@ def get_country_information(country_id):
         response = {
             'country_id': country_id,
             'country_name': country_name,
-            # 'polygon': polygon,
+            'polygon': polygon,
             'risk_level_id': risk_level_id,
             'movement_state_id': movement_state_id,
             'notes': notes,
             'risk_level_label': risk_level_label,
-            'movement_state_label': movement_state_label
+            'movement_state_label': movement_state_label,
+            'polygon_extent': polygon_extent
         }
     except Movement.DoesNotExist:
         response = {
             'country_id': country_id,
             'country_name': country_name,
-            # 'polygon': polygon,
+            'polygon': polygon,
             'risk_level_id': 1,
             'movement_state_id': '',
             'notes': '',
             'risk_level_label': 'N/A',
             'movement_state_label': 'N/A',
-            'message': 'Country does not existed.'
+            'message': 'Country does not existed.',
+            'polygon_extent': polygon_extent
         }
 
     return response

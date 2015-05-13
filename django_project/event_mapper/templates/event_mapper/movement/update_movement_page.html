@@ -32,6 +32,28 @@
                                 json['risk_level_label'],
                                 json['movement_state_label']
                         );
+                        var array_polygon = json['polygon'][0];
+                        var index;
+                        for (index = 0; index < array_polygon.length; index++) {
+                            array_polygon[index] = [
+                                array_polygon[index][1],
+                                array_polygon[index][0]]
+                        }
+                        console.log(array_polygon);
+                        add_current_region(array_polygon);
+                        context = {
+                            'bounds': [
+                                [
+                                    json['polygon_extent'][1],
+                                    json['polygon_extent'][0]
+                                ],
+                                [
+                                    json['polygon_extent'][3],
+                                    json['polygon_extent'][2]
+                                ]
+                            ]
+                        };
+                        show_map(context);
                         console.log('Ajax finished');
                     },
                     error: function(xhr, errmsg, err){
