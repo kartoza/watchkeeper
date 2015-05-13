@@ -52,24 +52,37 @@ def get_country(request):
     if request.method == 'POST':
         country_id = request.POST.get('country_id')
         country = Country.objects.get(pk=country_id)
+        country_name = country.name
         polygon = country.polygon_geometry
         try:
-            risk_level = country.movement.risk_level
-            movement_state = country.movement.movement_state
+            risk_level_id = country.movement.risk_level
+            movement_state_id = country.movement.movement_state
             notes = country.movement.notes
 
+            risk_level_label = Movement.get_risk_level_label(risk_level_id)
+            movement_state_label = Movement.get_movement_state_label(
+                movement_state_id)
+
             response = {
-                'risk_level': risk_level,
-                'movement_state': movement_state,
+                'country_id': country_id,
+                'country_name': country_name,
                 # 'polygon': polygon,
-                'notes': notes
+                'risk_level_id': risk_level_id,
+                'movement_state_id': movement_state_id,
+                'notes': notes,
+                'risk_level_label': risk_level_label,
+                'movement_state_label': movement_state_label
             }
         except Movement.DoesNotExist:
             response = {
-                'risk_level': 1,
-                'movement_state': 1,
+                'country_id': country_id,
+                'country_name': country_name,
                 # 'polygon': polygon,
-                'notes': ''
+                'risk_level_id': 1,
+                'movement_state_id': '',
+                'notes': '',
+                'risk_level_label': 'N/A',
+                'movement_state_label': 'N/A'
             }
 
         return HttpResponse(json.dumps(

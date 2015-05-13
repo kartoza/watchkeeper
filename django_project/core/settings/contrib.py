@@ -57,6 +57,7 @@ PIPELINE_JS = {
             'event_mapper/js/bootstrap-multiselect.js',
             'event_mapper/js/event_mapper.js',
             'event_mapper/js/add_event.js',
+            'event_mapper/js/update_movement.js',
         ),
         'output_filename': 'js/event_mapper_js.js'
     }

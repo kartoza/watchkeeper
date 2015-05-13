@@ -24,9 +24,15 @@
                         console.log('Ajax success');
                         console.log(json);
 
-                        $('#id_risk_level').val(json['risk_level']);
-                        $('#id_movement_state').val(json['movement_state']);
+                        $('#id_risk_level').val(json['risk_level_id']);
+                        $('#id_movement_state').val(json['movement_state_id']);
                         $('#id_notes').val(json['notes']);
+                        update_current(
+                                json['country_name'],
+                                json['risk_level_label'],
+                                json['movement_state_label']
+                        );
+                        console.log('Ajax finished');
                     },
                     error: function(xhr, errmsg, err){
                         console.log(xhr.status + ": " + xhr.responseText);
@@ -47,7 +53,6 @@
                 $.ajax({
                     type: 'POST',
                     url: '/update_movement/',
-{#                    data: $(this).serialize,#}
                     data:  $('#update_movement_form').serialize() + '&csrfmiddlewaretoken=' + getCookie('csrftoken'),
                     dataType: 'json',
                     success: function(json){
@@ -91,6 +96,21 @@
                             Update Movement
                         </h4>
                     </div>
+                    {# Current Status #}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Current Rating of <b id="current_region">Region Name</b>
+                        </div>
+                        <div class="panel-body">
+                            <div>
+                                Risk Level : <b id="current_risk_level">N/A</b>
+                            </div>
+                            <div>
+                                Movement State : <b id="current_movement_state">N/A</b>
+                            </div>
+                        </div>
+                    </div>
+                    {# End of Current Status #}
                     <div class="panel-body">
                         {% include "event_mapper/movement/update_movement_form.html" %}
                     </div>

@@ -120,3 +120,15 @@ class Movement(models.Model):
             self.last_updated_time = timezone.now()
 
         super(Movement, self).save(*args, **kwargs)
+
+    @classmethod
+    def get_movement_state_label(cls, index):
+        for the_tuple in cls.MOVEMENT_STATES:
+            if the_tuple[0] == index:
+                return the_tuple[1]
+
+    @classmethod
+    def get_risk_level_label(cls, index):
+        for the_tuple in cls.RISK_LEVELS:
+            if the_tuple[0] == index:
+                return the_tuple[1]

@@ -7,7 +7,6 @@ __date__ = '5/11/15'
 __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
 
-from django.forms import models
 from django import forms
 
 from event_mapper.utilities.commons import get_verbose_name, get_help_text
@@ -29,14 +28,14 @@ class MovementUpdateForm(forms.Form):
     )
 
     risk_level = forms.ChoiceField(
-        label=get_verbose_name(Movement, 'risk_level'),
+        label='New risk level',
         widget=forms.Select(
             attrs={'class': 'form-control'}),
         choices=Movement.RISK_LEVELS,
     )
 
     movement_state = forms.ChoiceField(
-        label=get_verbose_name(Movement, 'movement_state'),
+        label='New movement state',
         widget=forms.Select(
             attrs={'class': 'form-control'}),
         choices=Movement.MOVEMENT_STATES,
