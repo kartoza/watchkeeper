@@ -42,14 +42,6 @@
             });
             $('#update_movement_form').submit(function(e){
                 console.log('Submitting form');
-                var data = {
-                    'country_id': $('#id_region option:selected').val(),
-                    'risk_level': $('#id_risk_level option:selected').val(),
-                    'movement_state': $('#id_movement_state option:selected').val(),
-                    'notified_immediately': $('#id_notified_immediately ' +
-                    'option:selected').val(),
-                    'notes': $('#id_notes option:selected').val()
-                };
                 $.ajax({
                     type: 'POST',
                     url: '/update_movement/',
@@ -58,6 +50,17 @@
                     success: function(json){
                         console.log('Ajax success');
                         console.log(json);
+                        $('#id_risk_level').val(json['risk_level_id']);
+                        $('#id_movement_state').val(json['movement_state_id']);
+                        $('#id_notes').val(json['notes']);
+                        update_current(
+                                json['country_name'],
+                                json['risk_level_label'],
+                                json['movement_state_label']
+                        );
+                        $('#success_panel').show();
+                        $('#success_message').text(json['message']);
+                        console.log('Ajax finished');
                     },
                     error: function(xhr, errmsg, err){
                         console.log(xhr.status + ": " + xhr.responseText);
@@ -80,16 +83,11 @@
             {# side panel #}
             <div class="col-lg-4" id="side_panel" style="padding-top: 10px;">
                 <div class="bs-component">
-                    {% if messages %}
-                        {% for message in messages %}
-                            {% if 'success' in message.tags %}
-                                <div class="alert alert-dismissable alert-success">
-                                    <button type="button" class="close" data-dismiss="alert">×</button>
-                                    {{ message }}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
+                    <div class="alert alert-dismissable alert-success"
+                         id="success_panel" hidden="hidden">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <span id="success_message"></span>
+                    </div>
                     <div class="panel-heading">
                         <h4>
                             <i class="mdi-content-add-box"></i>
