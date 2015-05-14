@@ -3,6 +3,7 @@
  */
 
 var new_event_marker;
+var notes_seen = false;
 
 function show_hide_killed(radio_button){
     var killed_input = $('#id_killed');
@@ -62,11 +63,8 @@ function place_name_autocomplete(){
 
                         set_latitude_form(lat);
                         set_longitude_form(lng);
-                        var context = {
-                            'lat': lat, 'lng': lng
-                        };
+
                         update_new_event_marker(lat, lng);
-                        show_map(context);
                     } else {
                         alert("Something got wrong with location " +
                         "autocomplete." + status);
@@ -82,14 +80,11 @@ function place_name_autocomplete(){
     });
 }
 
-
 function update_new_event_marker(lat, lng){
     if (new_event_marker){
         map.removeLayer(new_event_marker);
     }
     new_event_marker = new L.marker([lat, lng], {id:'uni', draggable:'true'});
-    set_latitude_form(lat);
-    set_longitude_form(lng);
 
     new_event_marker.on('dragend', function(event){
         var new_event_marker = event.target;
@@ -98,10 +93,18 @@ function update_new_event_marker(lat, lng){
         new_event_marker.setLatLng(position,{id:'uni', draggable:'true'});
     });
     new_event_marker.addTo(map);
+
+    var context = {
+        'lat': lat, 'lng': lng
+    };
+    show_map(context);
 }
 
 function add_marker_on_click(e){
     update_new_event_marker(e.latlng.lat, e.latlng.lng);
+    set_latitude_form(e.latlng.lat);
+    set_longitude_form(e.latlng.lng);
+    get_city_from_latlang(e.latlng.lat, e.latlng.lng);
 }
 
 function set_longitude_form(longitude){
@@ -128,8 +131,6 @@ function show_hide_form(state){
         }
     });
 }
-
-var notes_seen = false;
 
 function toggle_notes(){
     if (notes_seen){
@@ -159,4 +160,29 @@ function show_hide_notes(state){
         p_notes.show();
         toggle_button.val('Back');
     }
+}
+
+function get_city_from_latlang(latitude, longitude){
+    var geocoder =  new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(latitude, longitude);
+    var id_place_name = $('#id_place_name');
+    var message;
+
+    geocoder.geocode({
+        'latLng': latlng
+    }, function(result, status){
+        if (status == google.maps.GeocoderStatus.OK){
+            if (result[0]){
+                var address = result[0].formatted_address;
+                id_place_name.val(address);
+            } else {
+                message = 'Please write manually, geocoder failure due to ' + status;
+                $(id_place_name).attr('placeholder', message);
+            }
+        } else {
+            message = 'Geocoder failure due to ' + status;
+            $(id_place_name).attr('placeholder', message);
+        }
+
+    });
 }

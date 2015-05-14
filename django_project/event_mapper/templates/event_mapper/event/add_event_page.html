@@ -15,6 +15,7 @@
                 format: 'DD/MM/YYYY HH:mm'
             });
 
+            {# Click, and generate latlang and place name#}
             map.on('click', add_marker_on_click);
 
             update_incident_advisory();
@@ -22,6 +23,25 @@
             place_name_autocomplete();
 
             show_hide_notes('hide');
+
+            var id_latitude = $('#id_latitude');
+            var id_longitude = $('#id_longitude');
+
+            id_latitude.focusout(function(){
+                var lat_value = id_latitude.val();
+                var long_value = id_longitude.val();
+                if (lat_value && long_value){
+                    get_city_from_latlang(lat_value, long_value);
+                }
+            });
+
+            id_longitude.focusout(function(){
+                var lat_value = id_latitude.val();
+                var long_value = id_longitude.val();
+                if (lat_value && long_value){
+                    get_city_from_latlang(lat_value, long_value);
+                }
+            });
 
         });
     </script>
@@ -41,6 +61,11 @@
                         {% for message in messages %}
                             {% if 'success' in message.tags %}
                                 <div class="alert alert-dismissable alert-success">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    {{ message }}
+                                </div>
+                            {% elif 'error' in message.tags %}
+                                <div class="alert alert-dismissable alert-danger">
                                     <button type="button" class="close" data-dismiss="alert">×</button>
                                     {{ message }}
                                 </div>

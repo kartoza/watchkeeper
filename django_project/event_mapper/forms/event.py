@@ -59,14 +59,14 @@ class EventCreationForm(models.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Sumedang'})
+                'placeholder': 'Type your place or select on the map.'})
     )
 
     date_time = forms.DateTimeField(
         label=get_verbose_name(Event, 'date_time'),
         widget=forms.DateTimeInput(
             attrs={'class': 'form-control datetimepicker',
-                   'placeholder': 'DD/MM.YYY hh:mm'})
+                   'placeholder': 'DD/MM/YYYY hh:mm'})
     )
 
     type = forms.ModelChoiceField(
