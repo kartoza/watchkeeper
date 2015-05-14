@@ -93,3 +93,13 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+function wrap_number(number, min_value, max_value){
+    var delta = max_value - min_value;
+    if (number == max_value){
+        return max_value;
+    }else{
+        return ((number - min_value) % delta + delta) % delta + min_value;
+    }
+
+}

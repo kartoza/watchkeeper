@@ -108,10 +108,12 @@ function add_marker_on_click(e){
 }
 
 function set_longitude_form(longitude){
+    longitude = wrap_number(longitude, -180, 180);
     $('#id_longitude').val(longitude);
 }
 
 function set_latitude_form(latitude){
+    latitude = wrap_number(latitude, -90, 90);
     $('#id_latitude').val(latitude);
 }
 
