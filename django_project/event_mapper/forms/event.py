@@ -170,3 +170,8 @@ class EventCreationForm(models.ModelForm):
         if commit:
             event.save()
         return event
+
+
+class EventDashboardForm(forms.Form):
+    """Form for event dashboard"""
+    pass

@@ -1,0 +1,22 @@
+{
+  "events": {
+    "type": "FeatureCollection",
+    "features": [ {% for event in events %}
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "{{ event.pk}}",
+          "place_name": "{{ event.place_name }}",
+          "category": "{{ event.category }}",
+          "type": "{{ event.type.pk }}",
+          "perpetrator": "{{ event.perpetrator.pk}}",
+          "victim": "{{ event.victim.pk}}"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [{{ event.location.x }}, {{ event.location.y }}]
+        }
+      }{% if not forloop.last %},{% endif %}{% endfor %}
+    ]
+  }
+}

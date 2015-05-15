@@ -10,11 +10,12 @@ __doc__ = ''
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, loader
 from django.template import RequestContext
 
+from event_mapper.models.event import Event
 from event_mapper.forms.event import EventCreationForm
 
 
@@ -41,3 +42,33 @@ def add_event(request):
         {'form': form},
         context_instance=RequestContext(request)
     )
+
+
+@login_required
+def event_dashboard(request):
+    """Show dashboard for the events."""
+    if request.method == 'GET':
+        return render_to_response(
+            'event_mapper/event/event_dashboard_page.html',
+            context_instance=RequestContext(request)
+        )
+    elif request.method == 'POST':
+        # POST
+        pass
+
+
+def get_events(request):
+    """Get events in json format."""
+    if request.method == 'POST':
+        events = Event.objects.all()
+
+        context = {
+            'events': events
+        }
+
+        events_json = loader.render_to_string(
+            'event_mapper/event/events.json',
+            context_instance=RequestContext(request, context))
+
+        return HttpResponse(events_json, content_type='application/json')
+
