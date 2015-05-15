@@ -12,7 +12,7 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns(
     '',
-    url(r'^$', 'event_mapper.views.index.index', name='index'),
+    url(r'^$', 'event_mapper.views.event.index', name='index'),
 
     # User related urls
     url(r'^login$', 'event_mapper.views.user.login', name='login'),
@@ -37,4 +37,6 @@ urlpatterns = patterns(
 
     # Static page urls
     url(r'^contact', 'event_mapper.views.front_end.contact', name='contact'),
+
+    url(r'^reports', 'event_mapper.views.front_end.contact', name='contact'),
 )
