@@ -11,11 +11,13 @@ var icon_urls = [
 ];
 
 var incident_icon = L.icon({
-    iconUrl: icon_urls[0]
+    iconUrl: icon_urls[0],
+    iconAnchor: [16, 37]
 });
 
 var advisory_icon = L.icon({
-    iconUrl: icon_urls[1]
+    iconUrl: icon_urls[1],
+    iconAnchor: [16, 37]
 });
 
 
@@ -52,7 +54,9 @@ function add_event_marker(event_context){
 
 function clear_markers(){
     for(var i  = 0; i < markers.length; i++){
-        map.removeLayer(markers[i]);
+        if (markers[i]){
+            map.removeLayer(markers[i]);
+        }
     }
     markers = [];
 }

@@ -17,9 +17,12 @@
                 show_map();
             {% endif %}
             set_offset();
+        map.on('click', function(e){
+            console.log(e.latlng.lat, e.latlng.lng);
+        });
             $('#nav_home').addClass("active");
             $('#show_events_button').click(function(){
-{#                clear_markers();#}
+                clear_markers();
                 console.log('Calling Ajax');
                 var map_boundaries = map.getBounds();
                 var bbox = {
@@ -32,7 +35,10 @@
                     'sw_lng': wrap_number(
                             map_boundaries._southWest.lng, -180, 180)
                 };
-                console.log(bbox)
+                console.log('ne_lat: ' + bbox['ne_lat']);
+                console.log('ne_lng: ' + bbox['ne_lng']);
+                console.log('sw_lat: ' + bbox['sw_lat']);
+                console.log('sw_lng: ' + bbox['sw_lng']);
                 bbox = JSON.stringify(bbox);
                 $.ajax({
                     type: 'POST',
@@ -41,13 +47,12 @@
                     dataType: 'json',
                     success: function(json){
                         console.log('Ajax success');
-                        console.log(json);
                         var events = json['events']['features'];
                         console.log('There are ' + events.length + ' events');
                         for (var i = 0; i < events.length; i++){
-                            console.log(events[i]);
                             add_event_marker(events[i]);
                         }
+                        $('#num_events').text(events.length);
                     },
                     errors: function(){
                         console.log('Ajax failed');

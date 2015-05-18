@@ -17,6 +17,7 @@ from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.gis.geos import Polygon
+from django.db.models import Q
 
 from event_mapper.models.event import Event
 from event_mapper.forms.event import EventCreationForm
@@ -64,10 +65,29 @@ def event_dashboard(request):
 def get_events(request):
     """Get events in json format."""
     if request.method == 'POST':
-        bbox = json.loads(request.POST.get('bbox'))
-        bbox = (bbox['sw_lng'], bbox['sw_lat'], bbox['ne_lng'], bbox['ne_lat'])
-        geom = Polygon.from_bbox(bbox)
-        events = Event.objects.filter(location__within=geom)
+        bbox_dict = json.loads(request.POST.get('bbox'))
+        bbox = [
+            bbox_dict['sw_lng'], bbox_dict['sw_lat'],
+            bbox_dict['ne_lng'], bbox_dict['ne_lat']
+        ]
+        print bbox
+        if bbox[0] < bbox[2]:
+            geom = Polygon.from_bbox(bbox)
+            events = Event.objects.filter(location__contained=geom)
+        else:
+            # Separate into two bbox
+            bbox1 = [
+                bbox_dict['sw_lng'], bbox_dict['sw_lat'],
+                180, bbox_dict['ne_lat']
+            ]
+            bbox2 = [
+                -180, bbox_dict['sw_lat'],
+                bbox_dict['ne_lng'], bbox_dict['ne_lat']
+            ]
+            geom1 = Polygon.from_bbox(bbox1)
+            geom2 = Polygon.from_bbox(bbox2)
+            events = Event.objects.filter(Q(location__contained=geom1) | Q(
+                location__contained=geom2))
 
         context = {
             'events': events
