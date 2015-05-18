@@ -11,7 +11,7 @@ app = Celery('event_mapper')
 
 CELERY_TIMEZONE = settings.TIME_ZONE
 
-app.config_from_object('django.conf:settings')
+app.config_from_object(os.environ['DJANGO_SETTINGS_MODULE'])
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
