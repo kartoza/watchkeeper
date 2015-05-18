@@ -127,3 +127,8 @@ class Event(models.Model):
     def __str__(self):
         return '%s of %s by %s' % (
             self.get_category_display(), self.type.name, self.perpetrator.name)
+
+    def save(self, *args, **kwargs):
+        if self.notified_immediately and not self.notification_sent:
+            interested_users = User.objects.filter()
+        super(Event, self).save(*args, **kwargs)

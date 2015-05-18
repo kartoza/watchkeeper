@@ -24,3 +24,5 @@ INSTALLED_APPS += (
     'event_mapper',
     'alerts'
 )
+
+DEBUG = True

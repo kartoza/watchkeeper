@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from .base import *  # noqa
+import os
+
 
 # Extra installed apps
 INSTALLED_APPS += (
@@ -83,3 +85,23 @@ PIPELINE_CSS = {
         'output_filename': 'css/event_mapper_css.css',
     }
 }
+#
+# RABBIT_HOSTNAME = os.environ.get('RABBITMQ_PORT_5672_TCP', 'localhost:5672')
+# if RABBIT_HOSTNAME.startswith('tcp://'):
+#     RABBIT_HOSTNAME = RABBIT_HOSTNAME.split('//')[1]
+
+# BROKER_URL = 'amqp://%s:%s@%s//' % (
+#     'admin',  # os.environ['RABBIT_ENV_USER'],
+#     'BU9QWf0P5nsR',  # os.environ['RABBITMQ_ENV_RABBIT_PASSWORD'],
+#     RABBIT_HOSTNAME)
+
+# We don't want to have dead connections stored on rabbitmq
+# BROKER_HEARTBEAT = '?heartbeat=30'
+# BROKER_URL += BROKER_HEARTBEAT
+
+BROKER_URL = 'amqp://guest:guest@%s:5672//' % os.environ['DATABASE_HOST']
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
