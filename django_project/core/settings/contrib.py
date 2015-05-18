@@ -55,6 +55,7 @@ PIPELINE_JS = {
             'event_mapper/js/jquery.flot.time.min.js',
             'event_mapper/js/jquery-ui.js',
             'event_mapper/js/bootstrap-multiselect.js',
+            'event_mapper/js/Chart.js',
             'event_mapper/js/event_mapper.js',
             'event_mapper/js/add_event.js',
             'event_mapper/js/update_movement.js',

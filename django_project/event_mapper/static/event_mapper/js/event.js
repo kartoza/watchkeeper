@@ -9,6 +9,7 @@ var icon_urls = [
     'static/event_mapper/css/images/blue-blast.png',
     'static/event_mapper/css/images/red-blast.png'
 ];
+var pie_chart
 
 var incident_icon = L.icon({
     iconUrl: icon_urls[0],
@@ -73,4 +74,28 @@ function enable_custom_interval(bool){
     $('#end_time_input').prop('disabled', !bool);
     $('#start_time_input').prop('disabled', !bool);
 
+}
+
+function create_chart(mdata) {
+    if (pie_chart){
+        pie_chart.destroy();
+    }
+    console.log('Create chart');
+    console.log(mdata);
+    var container = $("#incident_type_chart").get(0).getContext("2d");
+    var data = [
+        {
+            value: mdata['advisory'],
+            color:"#C74444",
+            highlight: "#FF5A5E",
+            label: "Advisory"
+        },
+        {
+            value: mdata['incident'],
+            color: "#202BAD",
+            highlight: "#5AD3D1",
+            label: "Incident"
+        }
+    ];
+    pie_chart = new Chart(container).Pie(data, {animateScale: true});
 }

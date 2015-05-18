@@ -85,21 +85,34 @@
                     },
                     dataType: 'json',
                     success: function(json){
+                        var num_incident = 0;
+                        var num_advisory = 0;
                         console.log('Ajax success');
                         var events = json['events']['features'];
                         console.log('There are ' + events.length + ' events');
                         for (var i = 0; i < events.length; i++){
                             add_event_marker(events[i]);
+                            if (events[i]['properties']['category'] == 1){
+                                num_incident++;
+                            } else if (events[i]['properties']['category'] == 2){
+                                num_advisory++;
+                            }
                         }
                         $('#num_events').text(events.length);
+                        create_chart(
+                                {
+                                    advisory: num_advisory,
+                                    incident: num_incident
+                                });
                     },
                     errors: function(){
                         console.log('Ajax failed');
                     }
                 })
             });
-        });
 
+            console.log(document.getElementById('incident_type_chart'));
+        });
     </script>
 {% endblock header %}
 
