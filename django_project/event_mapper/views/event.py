@@ -14,6 +14,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, loader
 from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.contrib.gis.geos import Polygon
 
 from event_mapper.models.event import Event
 from event_mapper.forms.event import EventCreationForm
@@ -57,10 +60,14 @@ def event_dashboard(request):
         pass
 
 
+@csrf_exempt
 def get_events(request):
     """Get events in json format."""
     if request.method == 'POST':
-        events = Event.objects.all()
+        bbox = json.loads(request.POST.get('bbox'))
+        bbox = (bbox['sw_lng'], bbox['sw_lat'], bbox['ne_lng'], bbox['ne_lat'])
+        geom = Polygon.from_bbox(bbox)
+        events = Event.objects.filter(location__within=geom)
 
         context = {
             'events': events

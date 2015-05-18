@@ -156,7 +156,7 @@ class EventCreationForm(models.ModelForm):
         event = super(EventCreationForm, self).save(commit=False)
         event.notification_sent = False
         event.reported_by = self.user
-        event.location = Point(data['latitude'], data['longitude'])
+        event.location = Point(data['longitude'], data['latitude'])
         if event.category == event.ADVISORY_CODE:
             event.killed = 0
             event.injured = 0
