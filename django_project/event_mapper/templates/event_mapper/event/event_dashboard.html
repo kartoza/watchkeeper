@@ -1,4 +1,4 @@
-<div id="event_dashboard">
+<div id="event_dashboard" xmlns="http://www.w3.org/1999/html">
     <div class="panel-heading">
         <h4>Dashboard</h4>
     </div>
@@ -15,8 +15,14 @@
             <input type="radio" name="time_interval" id="custom" value="custom">
             <label for="custom">Custom</label>
         </div>
-        <div id="start_date">Start</div>
-        <div id="end_date">End</div>
+        <div>
+            <label for="start_time_input">Start</label>
+            <input type="datetime" id="start_time_input" disabled>
+        </div>
+        <div>
+            <label for="end_time_input">End</label>
+            <input type="datetime" id="end_time_input" disabled>
+        </div>
         <button id="show_events_button">Show Events</button>
     </div>
 </div>

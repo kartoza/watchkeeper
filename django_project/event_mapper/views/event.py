@@ -18,6 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.gis.geos import Polygon
 from django.db.models import Q
+from django.utils import dateparse
 
 from event_mapper.models.event import Event
 from event_mapper.forms.event import EventCreationForm
@@ -66,11 +67,19 @@ def get_events(request):
     """Get events in json format."""
     if request.method == 'POST':
         bbox_dict = json.loads(request.POST.get('bbox'))
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+
+        start_time = dateparse.parse_datetime(start_time)
+        end_time = dateparse.parse_datetime(end_time)
+
+        print start_time
+        print end_time
+
         bbox = [
             bbox_dict['sw_lng'], bbox_dict['sw_lat'],
             bbox_dict['ne_lng'], bbox_dict['ne_lat']
         ]
-        print bbox
         if bbox[0] < bbox[2]:
             geom = Polygon.from_bbox(bbox)
             events = Event.objects.filter(location__contained=geom)
@@ -88,6 +97,9 @@ def get_events(request):
             geom2 = Polygon.from_bbox(bbox2)
             events = Event.objects.filter(Q(location__contained=geom1) | Q(
                 location__contained=geom2))
+
+        events = events.filter(
+            date_time__gt=start_time, date_time__lt=end_time)
 
         context = {
             'events': events

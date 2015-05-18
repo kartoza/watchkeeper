@@ -60,3 +60,17 @@ function clear_markers(){
     }
     markers = [];
 }
+
+function interval_changes(radio_button){
+    if (radio_button.value == 'custom'){
+        enable_custom_interval(true);
+    } else{
+        enable_custom_interval(false);
+    }
+}
+
+function enable_custom_interval(bool){
+    $('#end_time_input').prop('disabled', !bool);
+    $('#start_time_input').prop('disabled', !bool);
+
+}

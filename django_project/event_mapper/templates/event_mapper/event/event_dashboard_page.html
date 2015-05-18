@@ -17,9 +17,28 @@
                 show_map();
             {% endif %}
             set_offset();
-        map.on('click', function(e){
-            console.log(e.latlng.lat, e.latlng.lng);
-        });
+
+            $('input:radio[name=time_interval]').change(function() {
+                interval_changes(this);
+            });
+
+            map.on('click', function(e){
+                console.log(e.latlng.lat, e.latlng.lng);
+            });
+
+            var start_time_input = $('#start_time_input');
+            var end_time_input = $('#end_time_input');
+
+            start_time_input.datetimepicker();
+            end_time_input.datetimepicker();
+
+            start_time_input.on("dp.change", function (e) {
+                end_time_input.data("DateTimePicker").minDate(e.date);
+            });
+            end_time_input.on("dp.change", function (e) {
+                start_time_input.data("DateTimePicker").maxDate(e.date);
+            });
+
             $('#nav_home').addClass("active");
             $('#show_events_button').click(function(){
                 clear_markers();
@@ -35,15 +54,35 @@
                     'sw_lng': wrap_number(
                             map_boundaries._southWest.lng, -180, 180)
                 };
-                console.log('ne_lat: ' + bbox['ne_lat']);
-                console.log('ne_lng: ' + bbox['ne_lng']);
-                console.log('sw_lat: ' + bbox['sw_lat']);
-                console.log('sw_lng: ' + bbox['sw_lng']);
+                var end_time;
+                var start_time;
+                var selected_time_option = $(
+                        'input[name="time_interval"]:checked').val();
+                if (selected_time_option == '24h'){
+                    end_time = moment();
+                    start_time = moment().subtract(1, 'days');
+                } else if (selected_time_option == 'week'){
+                    end_time = moment();
+                    start_time = moment().subtract(7, 'days');
+                } else if (selected_time_option == 'custom'){
+                    end_time = $('#end_time_input');
+                    end_time = moment(end_time);
+
+                    start_time = $('#start_time_input');
+                    start_time = moment(start_time);
+                } else{
+                    end_time = moment();
+                    start_time = moment().subtract(1, 'days');
+                }
                 bbox = JSON.stringify(bbox);
                 $.ajax({
                     type: 'POST',
                     url: '/show_event',
-                    data: {bbox: bbox},
+                    data: {
+                        bbox: bbox,
+                        start_time: start_time.toJSON(),
+                        end_time: end_time.toJSON()
+                    },
                     dataType: 'json',
                     success: function(json){
                         console.log('Ajax success');
