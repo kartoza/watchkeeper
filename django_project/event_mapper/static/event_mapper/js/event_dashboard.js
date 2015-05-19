@@ -207,6 +207,7 @@ function show_dashboard(){
 
 
 function show_event_markers(){
+    show_dashboard();
     clear_markers();
     console.log('Calling Ajax');
     var map_boundaries = map.getBounds();

@@ -26,11 +26,11 @@
             });
 
             map.on('moveend', function(e) {
+                console.log('Map moved');
                 show_event_markers();
             });
 
             start_time_input.focusout(function(){
-
                 show_event_markers();
             });
 

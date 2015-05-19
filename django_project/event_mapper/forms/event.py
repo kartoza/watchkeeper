@@ -65,8 +65,7 @@ class EventCreationForm(models.ModelForm):
     date_time = forms.DateTimeField(
         label=get_verbose_name(Event, 'date_time'),
         widget=forms.DateTimeInput(
-            attrs={'class': 'form-control datetimepicker',
-                   'placeholder': 'DD/MM/YYYY hh:mm'})
+            attrs={'class': 'form-control datetimepicker'})
     )
 
     type = forms.ModelChoiceField(
