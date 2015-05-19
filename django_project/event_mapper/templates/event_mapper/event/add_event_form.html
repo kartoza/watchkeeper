@@ -1,5 +1,7 @@
-<form id="add_even_form" action="" method="post">{% csrf_token %}
-    {{ form.as_p }}
+<form id="add_even_form"  class="form-horizontal" action="" method="post">
+    {% csrf_token %}
+    {% load bootstrap_tags %}
+    {{ form|as_bootstrap }}
     {{ form.errors }}
     {{ form.non_field_errors }}
     <input id='toggle_notes_button' type="button" class="btn btn-primary"

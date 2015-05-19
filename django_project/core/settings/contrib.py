@@ -59,7 +59,7 @@ PIPELINE_JS = {
             'event_mapper/js/event_mapper.js',
             'event_mapper/js/add_event.js',
             'event_mapper/js/update_movement.js',
-            'event_mapper/js/event.js',
+            'event_mapper/js/event_dashboard.js',
         ),
         'output_filename': 'js/event_mapper_js.js'
     }

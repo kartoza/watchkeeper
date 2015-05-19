@@ -1,10 +1,12 @@
-<div id="event_dashboard" xmlns="http://www.w3.org/1999/html">
+<div id="event_dashboard" class="panel panel-primary">
     <div class="panel-heading">
-        <h4>Dashboard</h4>
+        <h4>Event Dashboard</h4>
     </div>
     <div class="panel-body">
-        <div>Incident Type</div>
-        <canvas id="incident_type_chart" width="200" height="200"></canvas>
+        <div align="center"><h3>Event Category</h3></div>
+        <div align="center">
+            <canvas id="incident_type_chart" width="200" height="200"></canvas>
+        </div>
         <div id="alert_box">Num of Alerts: <b id="num_events">0</b></div>
         <div id="time_option">Time options</div>
         <div>
@@ -16,22 +18,32 @@
             <label for="custom">Custom</label>
         </div>
         <div>
-            <label for="start_time_input">Start</label>
+            <label for="start_time_input">Start Time</label>
             <input type="datetime" id="start_time_input" disabled>
         </div>
         <div>
-            <label for="end_time_input">End</label>
+            <label for="end_time_input">End Time</label>
             <input type="datetime" id="end_time_input" disabled>
         </div>
-        <button id="show_events_button">Show Events</button>
     </div>
 </div>
 
-<div id="event_detail" xmlns="http://www.w3.org/1999/html" hidden="hidden">
+<div class="panel panel-primary" id="event_detail" hidden="hidden">
     <div class="panel-heading">
         <h4>Event Detail</h4>
     </div>
     <div class="panel-body">
-
+        <div>Category: <b id="event_detail_category"></b></div>
+        <div>Place name: <b id="event_detail_place_name"></b></div>
+        <div>Date Time: <b id="event_detail_date_time"></b></div>
+        <div>Type: <b id="event_detail_type"></b></div>
+        <div>Perpetrator: <b id="event_detail_perpetrator"></b></div>
+        <div>Victim: <b id="event_detail_victim"></b></div>
+        <div>Killed: <b id="event_detail_killed"></b></div>
+        <div>Injured: <b id="event_detail_injured"></b></div>
+        <div>Detained: <b id="event_detail_detained"></b></div>
+        <div>Source <b id="event_detail_source"></b></div>
+        <div>Notes <b id="event_detail_notes"></b></div>
+        <div>Reported By <b id="event_detail_reported_by"></b></div>
     </div>
 </div>
