@@ -12,7 +12,7 @@
             set_offset();
             $('#nav_alert').addClass("active");
             $('#id_date_time').datetimepicker({
-                format: 'DD/MM/YYYY HH:mm'
+                format: 'YYYY-MM-DD HH:mm:ssZ'
             });
 
             {# Click, and generate latlang and place name#}
@@ -57,29 +57,31 @@
             {# side panel #}
             <div class="col-lg-4" id="side_panel" style="padding-top: 10px;">
                 <div class="bs-component">
-                    {% if messages %}
-                        {% for message in messages %}
-                            {% if 'success' in message.tags %}
-                                <div class="alert alert-dismissable alert-success">
-                                    <button type="button" class="close" data-dismiss="alert">×</button>
-                                    {{ message }}
-                                </div>
-                            {% elif 'error' in message.tags %}
-                                <div class="alert alert-dismissable alert-danger">
-                                    <button type="button" class="close" data-dismiss="alert">×</button>
-                                    {{ message }}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                    <div class="panel-heading">
-                        <h4>
-                            <i class="mdi-content-add-box"></i>
-                            Add Alert
-                        </h4>
-                    </div>
-                    <div class="panel-body">
-                        {% include "event_mapper/event/add_event_form.html" %}
+                    <div class="panel panel-primary">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if 'success' in message.tags %}
+                                    <div class="alert alert-dismissable alert-success">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        {{ message }}
+                                    </div>
+                                {% elif 'error' in message.tags %}
+                                    <div class="alert alert-dismissable alert-danger">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        {{ message }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <div class="panel-heading">
+                            <h4>
+                                <i class="mdi-content-add-box"></i>
+                                Add Alert
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            {% include "event_mapper/event/add_event_form.html" %}
+                        </div>
                     </div>
                 </div>
             </div> {# end side panel #}

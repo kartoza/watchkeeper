@@ -38,6 +38,7 @@
             {# side panel #}
             <div class="col-lg-4" id="side_panel" style="padding-top: 10px;">
                 <div class="bs-component">
+                <div class="panel panel-primary">
                     {% if messages %}
                         {% for message in messages %}
                             {% if 'success' in message.tags %}
@@ -57,6 +58,8 @@
                     <div class="panel-body">
                         {% include "event_mapper/user/profile_form.html" %}
                     </div>
+                </div>
+
                 </div>
             </div> {# end side panel #}
         </div>

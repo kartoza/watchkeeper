@@ -105,36 +105,38 @@
             {# side panel #}
             <div class="col-lg-4" id="side_panel" style="padding-top: 10px;">
                 <div class="bs-component">
-                    {# Message #}
-                    <div class="alert alert-dismissable alert-success"
-                         id="success_panel" hidden="hidden">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        <span id="success_message"></span>
-                    </div>
-                    {# End of Message #}
-                    <div class="panel-heading">
-                        <h4>
-                            <i class="mdi-content-add-box"></i>
-                            Movement Rating
-                        </h4>
-                    </div>
-                    {# Current Status #}
-                    <div class="panel panel-default">
+                    <div class="panel panel-primary">
+                        {# Message #}
+                        <div class="alert alert-dismissable alert-success"
+                             id="success_panel" hidden="hidden">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <span id="success_message"></span>
+                        </div>
+                        {# End of Message #}
                         <div class="panel-heading">
-                            Current Rating of <b id="current_region">Region Name</b>
+                            <h4>
+                                <i class="mdi-content-add-box"></i>
+                                Movement Rating
+                            </h4>
                         </div>
+                        {# Current Status #}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Current Rating of <b id="current_region">Region Name</b>
+                            </div>
+                            <div class="panel-body">
+                                <div>
+                                    Risk Level : <b id="current_risk_level">N/A</b>
+                                </div>
+                                <div>
+                                    Movement State : <b id="current_movement_state">N/A</b>
+                                </div>
+                            </div>
+                        </div>
+                        {# End of Current Status #}
                         <div class="panel-body">
-                            <div>
-                                Risk Level : <b id="current_risk_level">N/A</b>
-                            </div>
-                            <div>
-                                Movement State : <b id="current_movement_state">N/A</b>
-                            </div>
+                            {% include "event_mapper/movement/update_movement_form.html" %}
                         </div>
-                    </div>
-                    {# End of Current Status #}
-                    <div class="panel-body">
-                        {% include "event_mapper/movement/update_movement_form.html" %}
                     </div>
                 </div>
             </div> {# end side panel#}
