@@ -1,14 +1,33 @@
 /**
  * Created by ismailsunni on 4/9/15.
  */
-
+// Variables
 var map;
 
-function show_map() {
+function show_map(context) {
     'use strict';
     $('#navigationbar').css('height', window.innerHeight * 0.1);
     $('#map').css('height', window.innerHeight * 0.9);
-    map = L.map('map').setView([-6.2000, 106.8167], 11);
+    if (context['bounds']){
+        if (map){
+            map.fitBounds(context['bounds']);
+        }else{
+            map = L.map('map').fitBounds(context['bounds']);
+        }
+    }else if(context['lat'] && context['lng']){
+        if (map){
+            map.setView([context['lat'], context['lng']], 11);
+        }else{
+            map = L.map('map').setView([context['lat'], context['lng']], 11);
+        }
+    }
+    else{
+        if (map){
+            map.setView([-6.2000, 106.8167], 11);
+        }else{
+            map = L.map('map').setView([-6.2000, 106.8167], 11);
+        }
+    }
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -56,4 +75,31 @@ function toggle_side_panel() {
         map_div.addClass('col-lg-8');
         map.invalidateSize();
     }
+}
+
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function wrap_number(number, min_value, max_value){
+    var delta = max_value - min_value;
+    if (number == max_value){
+        return max_value;
+    }else{
+        return ((number - min_value) % delta + delta) % delta + min_value;
+    }
+
 }

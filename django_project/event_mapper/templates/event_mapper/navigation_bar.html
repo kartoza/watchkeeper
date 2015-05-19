@@ -12,36 +12,40 @@
                         Home
                     </a>
                 </li>
-                <li id="nav_alert">
-                    <a href="/alert">
-                        <i class="mdi-alert-warning"></i>
-                        Alert
+                {% if user.is_data_captor or user.is_staff or user.is_admin %}
+                    <li id="nav_alert">
+                        <a href="/alert">
+                            <i class="mdi-alert-warning"></i>
+                            Alert
+                        </a>
+                    </li>
+                {% endif %}
+                <li id="nav_movement">
+                    <a href="/update_movement">
+                        <i class="mdi-maps-directions-walk"></i>
+                        Movement
                     </a>
                 </li>
-                <li id="nav_add_alert">
-                    <a href="/add_alert">
-                        <i class="mdi-content-add-box"></i>
-                        Add Alert
-                    </a>
-                </li>
+                {% if user.is_authenticated %}
                 <li id="nav_reports">
                     <a href="/reports">
                         <i class="mdi-content-content-paste"></i>
                         Reports
                     </a>
                 </li>
+                {% endif %}
                 <li id="nav_contact">
                     <a href="/contact">
                         <i class="mdi-communication-contacts"></i>
                         Contact
                     </a>
                 </li>
-                <li id="nav_api">
-                    <a href="/api">
-                        <i class="mdi-editor-insert-drive-file"></i>
-                        API
-                    </a>
-                </li>
+{#                <li id="nav_api">#}
+{#                    <a href="/api">#}
+{#                        <i class="mdi-editor-insert-drive-file"></i>#}
+{#                        API#}
+{#                    </a>#}
+{#                </li>#}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if not user.is_authenticated %}
@@ -58,11 +62,19 @@
                         </a>
                     </li>
                 {% else %}
-                    <li id="profile_id">
-                        <a href="/profile">
+                    <li id="profile_id" class="dropdown">
+                        <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="mdi-social-person"></i>
                             Profile
+                            <b class="caret"></b>
                         </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/profile">Update Profile</a></li>
+                            <li><a href="/change_password">Change Password</a></li>
+                            {% if user.is_staff or user.is_admin %}
+                            <li><a href="/wk-admin">Admin Page</a></li>
+                            {% endif %}
+                        </ul>
                     </li>
                     <li>
                         <a href="/logout">
@@ -71,7 +83,6 @@
                         </a>
                     </li>
                 {% endif %}
-
             </ul>
         </div>
     </div>

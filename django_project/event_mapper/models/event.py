@@ -70,25 +70,27 @@ class Event(models.Model):
         Victim,
         verbose_name='Victim',
         help_text='The victim of the event.',
-        default=0
     )
 
     killed = models.IntegerField(
         verbose_name='Killed People',
         help_text='The number of killed people of the incident.',
-        default=0
+        default=0,
+        blank=True
     )
 
     injured = models.IntegerField(
         verbose_name='Injured People',
         help_text='The number of injured people of the incident.',
-        default=0
+        default=0,
+        blank=True
     )
 
     detained = models.IntegerField(
         verbose_name='Detained People',
         help_text='The number of detained people of the incident.',
-        default=0
+        default=0,
+        blank=True
     )
 
     source = models.TextField(
