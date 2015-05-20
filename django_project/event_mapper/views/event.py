@@ -10,11 +10,17 @@ __doc__ = ''
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, loader
 from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.contrib.gis.geos import Polygon
+from django.db.models import Q
+from django.utils import dateparse
 
+from event_mapper.models.event import Event
 from event_mapper.forms.event import EventCreationForm
 
 
@@ -31,7 +37,7 @@ def add_event(request):
         else:
             errors = form.errors
             error_message = errors
-            messages.success(request, error_message)
+            messages.error(request, error_message)
             return HttpResponseRedirect(reverse('event_mapper:add_event'))
     else:
         form = EventCreationForm(user=request.user)
@@ -41,3 +47,67 @@ def add_event(request):
         {'form': form},
         context_instance=RequestContext(request)
     )
+
+
+@login_required
+def event_dashboard(request):
+    """Show dashboard for the events."""
+    if request.method == 'GET':
+        return render_to_response(
+            'event_mapper/event/event_dashboard_page.html',
+            context_instance=RequestContext(request)
+        )
+    elif request.method == 'POST':
+        # POST
+        pass
+
+
+@csrf_exempt
+def get_events(request):
+    """Get events in json format."""
+    if request.method == 'POST':
+        bbox_dict = json.loads(request.POST.get('bbox'))
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+
+        start_time = dateparse.parse_datetime(start_time)
+        end_time = dateparse.parse_datetime(end_time)
+
+        print start_time
+        print end_time
+
+        bbox = [
+            bbox_dict['sw_lng'], bbox_dict['sw_lat'],
+            bbox_dict['ne_lng'], bbox_dict['ne_lat']
+        ]
+        if bbox[0] < bbox[2]:
+            geom = Polygon.from_bbox(bbox)
+            events = Event.objects.filter(location__contained=geom)
+        else:
+            # Separate into two bbox
+            bbox1 = [
+                bbox_dict['sw_lng'], bbox_dict['sw_lat'],
+                180, bbox_dict['ne_lat']
+            ]
+            bbox2 = [
+                -180, bbox_dict['sw_lat'],
+                bbox_dict['ne_lng'], bbox_dict['ne_lat']
+            ]
+            geom1 = Polygon.from_bbox(bbox1)
+            geom2 = Polygon.from_bbox(bbox2)
+            events = Event.objects.filter(Q(location__contained=geom1) | Q(
+                location__contained=geom2))
+
+        events = events.filter(
+            date_time__gt=start_time, date_time__lt=end_time)
+
+        context = {
+            'events': events
+        }
+
+        events_json = loader.render_to_string(
+            'event_mapper/event/events.json',
+            context_instance=RequestContext(request, context))
+
+        return HttpResponse(events_json, content_type='application/json')
+

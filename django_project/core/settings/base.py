@@ -84,6 +84,10 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'django.contrib.admin',
     'django_forms_bootstrap',
+    'djgeojson',
+    'leaflet',
 )
 
 AUTH_USER_MODEL = 'event_mapper.User'
+
+LOGIN_URL = '/login'

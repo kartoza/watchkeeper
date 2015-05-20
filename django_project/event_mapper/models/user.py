@@ -49,13 +49,13 @@ class User(AbstractBaseUser):
         verbose_name='Your phone number.',
         help_text='It will be used for sending a notification if you want.',
         max_length=25,
-        null=False,
+        null=True,
         blank=True
     )
 
     notified = models.BooleanField(
-        verbose_name='Notification status.',
-        help_text='Set True to get sms notification.',
+        verbose_name='Notification status',
+        help_text='Set true to get sms notification.',
         null=False,
         blank=False,
         default=False
@@ -80,13 +80,38 @@ class User(AbstractBaseUser):
         help_text='Whether this user is admin or not.',
         default=False)
 
-    area_of_interest = models.PolygonField(
-        srid=4326,
-        verbose_name='Area of Interest',
-        help_text='Area of interest of the user.',
-        default=None,
-        blank=True,
-        null=True
+    is_staff = models.BooleanField(
+        verbose_name='Staff Status',
+        help_text='Staff can access wk-admin page.',
+        default=False)
+
+    is_data_captor = models.BooleanField(
+        verbose_name='Data Captor Status',
+        help_text='Data Captor can add event.',
+        default=False)
+
+    north = models.FloatField(
+        verbose_name='North',
+        help_text='The north boundary of area of interest',
+        default=22
+    )
+
+    east = models.FloatField(
+        verbose_name='East',
+        help_text='The east boundary of area of interest',
+        default=160
+    )
+
+    south = models.FloatField(
+        verbose_name='South',
+        help_text='The south boundary of area of interest',
+        default=-27
+    )
+
+    west = models.FloatField(
+        verbose_name='West',
+        help_text='The west boundary of area of interest',
+        default=83
     )
 
     key = models.CharField(
@@ -105,15 +130,11 @@ class User(AbstractBaseUser):
     def is_superuser(self):
         return self.is_admin
 
-    @property
-    def is_staff(self):
-        return self.is_admin
-
     def has_perm(self, perm, obj=None):
-        return self.is_admin
+        return self.is_admin or self.is_staff
 
     def has_module_perms(self, app_label):
-        return self.is_admin
+        return self.is_admin or self.is_staff
 
     objects = CustomUserManager()
 

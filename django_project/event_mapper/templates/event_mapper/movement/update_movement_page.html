@@ -1,0 +1,151 @@
+{% extends "event_mapper/base.html" %}
+{% block header %}
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script>
+        $(document).ready(function () {
+            var context = {
+                'bounds':[
+                    [{{ user.south }}, {{ user.west }}],
+                    [{{ user.north }}, {{ user.east }}]]
+            };
+            show_map(context);
+            set_offset();
+            $('#nav_movement').addClass("active");
+            $('#id_region').change(function(){
+                console.log('drop down changed');
+                console.log($('option:selected', this).val() + $
+                ('option:selected', this).text());
+                $.ajax({
+                    type: 'POST',
+                    url: '/get_country/',
+                    data: {'country_id': $('option:selected', this).val()},
+                    dataType: 'json',
+                    success: function(json){
+                        console.log('Ajax success');
+                        console.log(json);
+
+                        $('#id_risk_level').val(json['risk_level_id']);
+                        $('#id_movement_state').val(json['movement_state_id']);
+                        $('#id_notes').val(json['notes']);
+                        update_current(
+                                json['country_name'],
+                                json['risk_level_label'],
+                                json['movement_state_label']
+                        );
+                        var array_polygon = json['polygon'][0];
+                        var index;
+                        for (index = 0; index < array_polygon.length; index++) {
+                            array_polygon[index] = [
+                                array_polygon[index][1],
+                                array_polygon[index][0]]
+                        }
+                        console.log(array_polygon);
+                        add_current_region(array_polygon);
+                        context = {
+                            'bounds': [
+                                [
+                                    json['polygon_extent'][1],
+                                    json['polygon_extent'][0]
+                                ],
+                                [
+                                    json['polygon_extent'][3],
+                                    json['polygon_extent'][2]
+                                ]
+                            ]
+                        };
+                        show_map(context);
+                        console.log('Ajax finished');
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log(xhr.status + ": " + xhr.responseText);
+                    }
+                        }
+                )
+            });
+            $('#update_movement_form').submit(function(e){
+                console.log('Submitting form');
+                $.ajax({
+                    type: 'POST',
+                    url: '/update_movement/',
+                    data:  $('#update_movement_form').serialize() + '&csrfmiddlewaretoken=' + getCookie('csrftoken'),
+                    dataType: 'json',
+                    success: function(json){
+                        console.log('Ajax success');
+                        console.log(json);
+                        $('#id_risk_level').val(json['risk_level_id']);
+                        $('#id_movement_state').val(json['movement_state_id']);
+                        $('#id_notes').val(json['notes']);
+                        update_current(
+                                json['country_name'],
+                                json['risk_level_label'],
+                                json['movement_state_label']
+                        );
+                        $('#success_panel').show();
+                        $('#success_message').text(json['message']);
+                        console.log('Ajax finished');
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log(xhr.status + ": " + xhr.responseText);
+                    }
+
+                });
+                e.preventDefault()
+            });
+        });
+    </script>
+{% endblock header %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            {# map #}
+            <div class="col-lg-8" style="margin:0; padding:0;">
+                {% include "event_mapper/map.html" %}
+            </div>
+            {# side panel #}
+            <div class="col-lg-4" id="side_panel" style="padding-top: 10px;">
+                <div class="bs-component">
+                    <div class="panel panel-primary">
+                        {# Message #}
+                        <div class="alert alert-dismissable alert-success"
+                             id="success_panel" hidden="hidden">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <span id="success_message"></span>
+                        </div>
+                        {# End of Message #}
+                        <div class="panel-heading">
+                            <h4>
+                                <i class="mdi-content-add-box"></i>
+                                Movement Rating
+                            </h4>
+                        </div>
+                        {# Current Status #}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Current Rating of <b id="current_region">Region Name</b>
+                            </div>
+                            <div class="panel-body">
+                                <div>
+                                    Risk Level : <b id="current_risk_level">N/A</b>
+                                </div>
+                                <div>
+                                    Movement State : <b id="current_movement_state">N/A</b>
+                                </div>
+                            </div>
+                        </div>
+                        {# End of Current Status #}
+                        <div class="panel-body">
+                            {% include "event_mapper/movement/update_movement_form.html" %}
+                        </div>
+                    </div>
+                </div>
+            </div> {# end side panel#}
+        </div>
+        {# show hide toggle #}
+        <a id="show_hide"
+           style="position:absolute; right: 0; bottom: 50px;"
+           href="javascript:void(0)"
+           class="btn btn-danger btn-fab btn-raised glyphicon glyphicon-chevron-right"
+           onclick="toggle_side_panel()"></a>
+    </div>
+{% endblock content %}

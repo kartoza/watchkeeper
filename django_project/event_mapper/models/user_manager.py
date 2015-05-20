@@ -66,6 +66,8 @@ class CustomUserManager(BaseUserManager, GeoManager):
         user.is_confirmed = True
         user.is_active = True
         user.is_admin = True
+        user.is_staff = True
+        user.is_data_captor = True
         user.save(using=self._db)
 
         return user

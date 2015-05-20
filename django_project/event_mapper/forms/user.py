@@ -1,8 +1,10 @@
 # coding=utf-8
 """Docstring for this file."""
 from django import forms
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.crypto import get_random_string
+from collections import OrderedDict
 from event_mapper.models.user import User
 from event_mapper.models.country import Country
 from event_mapper.utilities.commons import get_verbose_name, get_help_text
@@ -21,7 +23,8 @@ class UserCreationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name', 'phone_number',
-                  'notified', 'countries_notified')
+                  'notified', 'countries_notified', 'north', 'east', 'south',
+                  'west')
 
     email = forms.EmailField(
         label=get_verbose_name(User, 'email'),
@@ -61,7 +64,8 @@ class UserCreationForm(forms.ModelForm):
         label=get_verbose_name(User, 'notified'),
         help_text=get_help_text(User, 'notified'),
         widget=forms.CheckboxInput(
-            attrs={'class': 'form-control'})
+            attrs={'class': 'form-control'}),
+        required=False,
     )
 
     countries_notified = forms.ModelMultipleChoiceField(
@@ -87,6 +91,26 @@ class UserCreationForm(forms.ModelForm):
             attrs={
                 'class': 'form-control',
                 'placeholder': 'Your s3cr3T password'})
+    )
+
+    north = forms.CharField(
+        widget=forms.HiddenInput,
+        required=False
+    )
+
+    east = forms.CharField(
+        widget=forms.HiddenInput,
+        required=False
+    )
+
+    south = forms.CharField(
+        widget=forms.HiddenInput,
+        required=False
+    )
+
+    west = forms.CharField(
+        widget=forms.HiddenInput,
+        required=False
     )
 
     def clean_password2(self):
@@ -118,7 +142,7 @@ class UserChangeForm(forms.ModelForm):
         model = User
         fields = ('email', 'password', 'first_name', 'last_name',
                   'phone_number', 'notified', 'countries_notified',
-                  'is_active', 'is_admin')
+                  'is_active', 'is_admin', 'is_staff')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -129,12 +153,11 @@ class UserChangeForm(forms.ModelForm):
 
 class ProfileForm(forms.ModelForm):
     """A form for profile."""
-    # password = ReadOnlyPasswordHashField()
-
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'phone_number',
-                  'notified', 'countries_notified')
+        fields = (
+            'email', 'first_name', 'last_name', 'phone_number', 'notified',
+            'countries_notified', 'north', 'east', 'south', 'west')
 
     email = forms.EmailField(
         label=get_verbose_name(User, 'email'),
@@ -181,13 +204,33 @@ class ProfileForm(forms.ModelForm):
         queryset=Country.objects.order_by(),
     )
 
-    # def clean_password2(self):
-    #     # Check that the two password entries match
-    #     password1 = self.cleaned_data.get("password1")
-    #     password2 = self.cleaned_data.get("password2")
-    #     if password1 and password2 and password1 != password2:
-    #         raise forms.ValidationError("Passwords don't match")
-    #     return password2
+    north = forms.FloatField(
+        label=get_verbose_name(User, 'north'),
+        help_text=get_help_text(User, 'north'),
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'})
+    )
+
+    east = forms.FloatField(
+        label=get_verbose_name(User, 'east'),
+        help_text=get_help_text(User, 'east'),
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'})
+    )
+
+    south = forms.FloatField(
+        label=get_verbose_name(User, 'south'),
+        help_text=get_help_text(User, 'south'),
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'})
+    )
+
+    west = forms.FloatField(
+        label=get_verbose_name(User, 'west'),
+        help_text=get_help_text(User, 'west'),
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'})
+    )
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -215,3 +258,31 @@ class LoginForm(forms.Form):
                 'placeholder': 'Your s3cr3T password'})
     )
 
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    """Form for changing user's password"""
+    class Meta:
+        """Meta of the form."""
+        fields = ['old_password', 'new_password1', 'new_password2']
+
+    old_password = forms.CharField(
+        label="Old password",
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control'})
+    )
+
+    new_password1 = forms.CharField(
+        label="New password",
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control'})
+    )
+    new_password2 = forms.CharField(
+        label="New password confirmation",
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control'})
+    )
+
+CustomPasswordChangeForm.base_fields = OrderedDict(
+    (k, CustomPasswordChangeForm.base_fields[k])
+    for k in ['old_password', 'new_password1', 'new_password2']
+)
