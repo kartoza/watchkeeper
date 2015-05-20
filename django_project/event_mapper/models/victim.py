@@ -41,12 +41,6 @@ class Victim(models.Model):
         blank=True,
     )
 
-    icon = models.ImageField(
-        help_text='The icon for the victim.',
-        upload_to=os.path.join(MEDIA_ROOT, icon_directory),
-        blank=True
-    )
-
     def save(self, *args, **kwargs):
         """Overloaded save method."""
         if not self.slug:
