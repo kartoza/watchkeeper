@@ -48,7 +48,7 @@ smtp:
 db:
   image: kartoza/postgis
   volumes:
-    - ./pg/postgres_data:/var/lib/postgresql
+    - ./pg/postgres_data:/var/tasks/postgresql
   environment:
     - USERNAME=docker
     - PASS=docker

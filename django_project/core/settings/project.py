@@ -22,7 +22,7 @@ DATABASES = {
 # Project apps
 INSTALLED_APPS += (
     'event_mapper',
-    'alerts'
+    'notifications'
 )
 
 DEBUG = True

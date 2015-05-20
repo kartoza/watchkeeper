@@ -13,7 +13,7 @@ from django.contrib.gis.db import models
 from django.conf import settings
 
 
-class Alert(models.Model):
+class Notification(models.Model):
     """Class for Country."""
     date = models.DateTimeField(auto_now_add=True, blank=True)
     alert_type = models.CharField(
@@ -25,7 +25,7 @@ class Alert(models.Model):
     message_content = models.TextField()
 
     class Meta:
-        app_label = 'alerts'
+        app_label = 'notifications'
 
     def __unicode__(self):
         return u'%s %s' % (self.alert_type, self.recipient)
