@@ -127,22 +127,22 @@ worker:
     - db:db
     - rabbitmq:rabbitmq
 
-cron:
-  build: docker-cron
-  hostname: cron
-  environment:
-    - PGPASSWORD=docker
-    - PGUSER=docker
-    - PGPORT=5432
-    - PGHOST=db
-    - PGDATABASE=gis
-  volumes:
-    - ../maps:/home/web/maps
-    - ./reports:/home/web/reports
-    - ./cron-scripts:/home/web/cron-scripts
-    - /tmp/.X11-unix:/tmp/.X11-unix
-  links:
-    - db:db
+#cron:
+#  build: docker-cron
+#  hostname: cron
+#  environment:
+#    - PGPASSWORD=docker
+#    - PGUSER=docker
+#    - PGPORT=5432
+#    - PGHOST=db
+#    - PGDATABASE=gis
+#  volumes:
+#    - ../maps:/home/web/maps
+#    - ./reports:/home/web/reports
+#    - ./cron-scripts:/home/web/cron-scripts
+#    - /tmp/.X11-unix:/tmp/.X11-unix
+#  links:
+#    - db:db
 
 web:
   image: nginx
