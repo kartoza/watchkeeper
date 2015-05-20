@@ -113,7 +113,7 @@ class Event(models.Model):
     )
 
     notified_immediately = models.BooleanField(
-        verbose_name='Notified Immediately',
+        verbose_name='Notify Immediately',
         help_text='If True, there will be immediate notification.',
         default=False
     )
@@ -131,6 +131,8 @@ class Event(models.Model):
             self.get_category_display(), self.type.name, self.perpetrator.name)
 
     def save(self, *args, **kwargs):
-        if self.notified_immediately and not self.notification_sent:
-            interested_users = User.objects.filter()
+        if self.notified_immediately:
+            self.notify_all_interested_users()
+        else:
+            self.notify_
         super(Event, self).save(*args, **kwargs)

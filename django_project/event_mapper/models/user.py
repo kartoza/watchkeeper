@@ -126,6 +126,12 @@ class User(AbstractBaseUser):
         null=False,
         default=False)
 
+    notify_immediately = models.BooleanField(
+        verbose_name='Notify Immediately',
+        help_text='If True, there will be immediate notification.',
+        default=False
+    )
+
     @property
     def is_superuser(self):
         return self.is_admin
