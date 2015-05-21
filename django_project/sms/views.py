@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.utils import simplejson as json
+import simplejson as json
 
 from decimal import Decimal
 import datetime

@@ -18,3 +18,4 @@ django-picklefield  # This is while we package our own sms
 django-uuidfield-2  # This is while we package our own sms
 django-jsonfield  # This is while we package our own sms
 celery
+simplejson
