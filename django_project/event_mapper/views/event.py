@@ -110,4 +110,3 @@ def get_events(request):
             context_instance=RequestContext(request, context))
 
         return HttpResponse(events_json, content_type='application/json')
-

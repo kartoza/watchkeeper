@@ -14,12 +14,14 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from event_mapper.forms.movement import MovementUpdateForm
+from django.contrib.auth.decorators import login_required
 
+from event_mapper.forms.movement import MovementUpdateForm
 from event_mapper.models.country import Country
 from event_mapper.models.movement import Movement
 
 
+@login_required
 def update_movement(request):
     """Update movement."""
     if request.method == 'POST':
@@ -50,6 +52,7 @@ def update_movement(request):
     )
 
 
+@login_required
 def get_country_information(country_id):
     country = Country.objects.get(pk=country_id)
     country_name = country.name
@@ -92,6 +95,7 @@ def get_country_information(country_id):
     return response
 
 
+@login_required
 def get_country(request):
     if request.method == 'POST':
         country_id = request.POST.get('country_id')

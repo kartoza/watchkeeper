@@ -14,7 +14,7 @@ pylint:
 	@echo "Pylint violations"
 	@echo "-----------------"
 	@pylint --version
-	@pylint --reports=n --rcfile=pylintrc setup.py user_profile user || true
+	@pylint --reports=n --rcfile=pylintrc setup.py event_mapper || true
 
 test: 
 	@echo
