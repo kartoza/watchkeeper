@@ -12,5 +12,3 @@ djangorestframework==2.4.4
 markdown
 django-filter
 Pillow
-django-geojson
-django-leaflet
