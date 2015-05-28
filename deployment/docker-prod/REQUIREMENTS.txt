@@ -12,3 +12,10 @@ djangorestframework==2.4.4
 markdown
 django-filter
 Pillow
+django-geojson
+django-leaflet# django-sms-gateway  # Use this again once we can work with custom users
+django-picklefield  # This is while we package our own sms
+django-uuidfield-2  # This is while we package our own sms
+django-jsonfield  # This is while we package our own sms
+celery
+simplejson

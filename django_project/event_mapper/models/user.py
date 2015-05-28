@@ -9,6 +9,7 @@ __doc__ = ''
 
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.gis.db import models
+
 from event_mapper.models.country import Country
 from event_mapper.models.user_manager import CustomUserManager
 
@@ -124,6 +125,12 @@ class User(AbstractBaseUser):
         help_text='Whether this user has approved their entry by email.',
         null=False,
         default=False)
+
+    notify_immediately = models.BooleanField(
+        verbose_name='Notify Immediately',
+        help_text='If True, there will be immediate notification.',
+        default=False
+    )
 
     @property
     def is_superuser(self):

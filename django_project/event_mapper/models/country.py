@@ -26,7 +26,7 @@ class Country(models.Model):
         blank=False
     )
 
-    polygon_geometry = models.PolygonField(srid=4326)
+    polygon_geometry = models.MultiPolygonField(srid=4326)
 
     objects = models.GeoManager()
 

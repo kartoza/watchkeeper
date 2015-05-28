@@ -29,8 +29,6 @@ web:
 	@echo "Running in production mode"
 	@echo "------------------------------------------------------------------"
 	@docker-compose -p $(PROJECT_ID) up -d web
-	@docker-compose -p $(PROJECT_ID) run uwsgi python manage.py create_reports_directories
-	@dipall
 
 migrate:
 	@echo
@@ -48,6 +46,13 @@ collectstatic:
 	#We need to run collect static in the same context as the running
 	# uwsgi container it seems so I use docker exec here
 	@docker exec -t -i $(PROJECT_ID)_uwsgi_1 python manage.py collectstatic --noinput
+
+worker:
+	@echo
+	@echo "------------------------------------------------------------------"
+	@echo "Running worker production mode"
+	@echo "------------------------------------------------------------------"
+	@docker-compose -p $(PROJECT_ID) run worker
 
 kill:
 	@echo
@@ -98,7 +103,6 @@ sentry:
 	@echo "Running sentry production mode"
 	@echo "--------------------------"
 	@docker-compose  -p $(PROJECT_ID) up -d sentry
-	@dipall
 
 maillogs:
 	@echo
@@ -187,7 +191,6 @@ staging-web:
 	@echo "Running in staging mode"
 	@echo "------------------------------------------------------------------"
 	@docker-compose -p $(PROJECT_ID)-staging up -d stagingweb
-	@dipall
 
 staging-migrate:
 	@echo

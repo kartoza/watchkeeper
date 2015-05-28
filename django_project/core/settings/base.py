@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 # Django settings for watchkeeper project.
 
 from .utils import ABS_PATH
