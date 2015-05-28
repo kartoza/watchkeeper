@@ -106,7 +106,7 @@ uwsgi:
 worker:
   build: docker-prod
   hostname: worker
-  command: celery worker -A event_mapper.celeryconf -l info
+  command: celery worker -A event_mapper.celery -l info
   environment:
     - DATABASE_NAME=gis
     - DATABASE_USERNAME=docker

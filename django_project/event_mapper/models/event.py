@@ -8,10 +8,14 @@ __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
 
 from django.contrib.gis.db import models
+
 from event_type import EventType
 from perpetrator import Perpetrator
 from victim import Victim
+
 from event_mapper.models.user import User
+from event_mapper.tasks.notify_all_users import notify_all_users
+from event_mapper.tasks.notify_priority_users import notify_priority_users
 
 
 class Event(models.Model):
@@ -131,8 +135,19 @@ class Event(models.Model):
             self.get_category_display(), self.type.name, self.perpetrator.name)
 
     def save(self, *args, **kwargs):
-        if self.notified_immediately:
-            self.notify_all_interested_users()
-        else:
-            self.notify_
         super(Event, self).save(*args, **kwargs)
+        if self._state.adding:
+            if self.notified_immediately:
+                # This is a priority alert and all users should be notified
+                notify_all_users.delay(self)
+            else:
+                # This is a normal alert and only priority users should be
+                # notified
+                notify_priority_users.delay(self)
+
+
+    def long_message(self):
+        return '%s was reported at %s %s' % (
+            self.__str__(),
+            self.place_name,
+            self.location.get_coords())

@@ -50,7 +50,7 @@ collectstatic:
 worker:
 	@echo
 	@echo "------------------------------------------------------------------"
-	@echo "Running migrate static in production mode"
+	@echo "Running worker production mode"
 	@echo "------------------------------------------------------------------"
 	@docker-compose -p $(PROJECT_ID) run worker
 
