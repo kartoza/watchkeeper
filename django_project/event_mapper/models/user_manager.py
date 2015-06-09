@@ -26,7 +26,6 @@ class CustomUserManager(BaseUserManager, GeoManager):
             last_name,
             phone_number='',
             notified=False,
-            area_of_interest=None,
             password=None):
         if not email:
             raise ValueError('User must have email.')
@@ -38,7 +37,6 @@ class CustomUserManager(BaseUserManager, GeoManager):
             last_name=last_name,
             phone_number=phone_number,
             notified=notified,
-            area_of_interest=area_of_interest,
             key=key
         )
 
