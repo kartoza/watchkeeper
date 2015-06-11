@@ -1,5 +1,6 @@
 # coding=utf-8
 """Docstring for this file."""
+from __future__ import unicode_literals
 __author__ = 'ismailsunni'
 __project_name = 'watchkeeper'
 __filename = 'country'
@@ -30,5 +31,5 @@ class Country(models.Model):
 
     objects = models.GeoManager()
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
