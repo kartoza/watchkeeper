@@ -31,4 +31,7 @@ class Country(models.Model):
     objects = models.GeoManager()
 
     def __str__(self):
+        return str(self.name)
+
+    def __unicode__(self):
         return self.name
