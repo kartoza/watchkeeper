@@ -14,8 +14,6 @@ from perpetrator import Perpetrator
 from victim import Victim
 
 from event_mapper.models.user import User
-from event_mapper.tasks.notify_all_users import notify_all_users
-from event_mapper.tasks.notify_priority_users import notify_priority_users
 
 
 class Event(models.Model):
@@ -136,14 +134,6 @@ class Event(models.Model):
 
     def save(self, *args, **kwargs):
         super(Event, self).save(*args, **kwargs)
-        if self._state.adding:
-            if self.notified_immediately:
-                # This is a priority alert and all users should be notified
-                notify_all_users.delay(self)
-            else:
-                # This is a normal alert and only priority users should be
-                # notified
-                notify_priority_users.delay(self)
 
 
     def long_message(self):
