@@ -201,7 +201,7 @@ class ProfileForm(forms.ModelForm):
         widget=forms.SelectMultiple(
             attrs={'class': 'form-control normal_case'}),
         required=False,
-        queryset=Country.objects.order_by(),
+        queryset=Country.objects.order_by('name'),
     )
 
     north = forms.FloatField(
