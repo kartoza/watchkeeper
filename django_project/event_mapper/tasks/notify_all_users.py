@@ -9,15 +9,16 @@ __doc__ = ''
 
 from celery import shared_task
 
-from django.core.mail import send_mail
 from notifications.tasks.send_email import send_email_message
 from notifications.tasks.send_sms import send_sms_message
 
 from event_mapper.models.user import User
+from event_mapper.models.event import Event
 
 
 @shared_task
-def notify_all_users(event):
+def notify_all_users(event_id):
+    event = Event.objects.get(id=event_id)
     users = User.objects.filter(
         countries_notified__polygon_geometry__contains=event.location)
     message = event.long_message()

@@ -1,6 +1,5 @@
 # coding=utf-8
 """Docstring for this file."""
-from __future__ import unicode_literals
 __author__ = 'ismailsunni'
 __project_name = 'watchkeeper'
 __filename = 'country'
@@ -30,6 +29,9 @@ class Country(models.Model):
     polygon_geometry = models.MultiPolygonField(srid=4326)
 
     objects = models.GeoManager()
+
+    def __str__(self):
+        return str(self.name)
 
     def __unicode__(self):
         return self.name
