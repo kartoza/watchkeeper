@@ -44,7 +44,7 @@ PIPELINE_JS = {
             'js/jquery-1.11.2.js',
             'js/bootstrap.js',
             'js/moment.js',
-            'js/bootstrap-datetimepicker.js',
+            'event_mapper/js/bootstrap-datetimepicker.js',
             'js/csrf-ajax.js'
         ),
         'output_filename': 'js/contrib.js',
@@ -73,7 +73,7 @@ PIPELINE_CSS = {
     'contrib': {
         'source_filenames': (
             'css/bootstrap.css',
-            'css/bootstrap-datetimepicker.css',
+            'event_mapper/css/bootstrap-datetimepicker.css',
         ),
         'output_filename': 'css/contrib.css',
         'extra_context': {
