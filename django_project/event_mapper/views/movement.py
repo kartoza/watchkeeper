@@ -33,17 +33,19 @@ def update_movement(request):
                 'You have successfully update new movement for %s.' %
                 movement.country.name)
             response = get_country_information(country_id)
-            response['message'] = success_message
+            response['success_message'] = success_message
+            response['success'] = True
             return HttpResponse(json.dumps(
                 response,
                 ensure_ascii=False),
                 content_type='application/javascript')
         else:
-            errors = form.errors
-            error_message = errors
-            messages.error(request, error_message)
-            return HttpResponseRedirect(
-                reverse('event_mapper:update_movement'))
+            error_message = form.errors
+            response = {'error_message': error_message, 'success': False}
+            return HttpResponse(json.dumps(
+                response,
+                ensure_ascii=False),
+                content_type='application/javascript')
     else:
         form = MovementUpdateForm(user=request.user)
 
