@@ -2,6 +2,7 @@
  * Created by ismailsunni on 5/9/15.
  */
 
+L.Icon.Default.imagePath = 'static/event_mapper/css/images/leaflet/';
 var new_event_marker;
 var notes_seen = false;
 

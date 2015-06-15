@@ -12,6 +12,8 @@
             set_offset();
             $('#nav_movement').addClass("active");
             $('#id_region').change(function(){
+                $('#success_panel').hide();
+                $('#error_panel').hide();
                 console.log('drop down changed');
                 console.log($('option:selected', this).val() + $
                 ('option:selected', this).text());
@@ -27,6 +29,8 @@
                         $('#id_risk_level').val(json['risk_level_id']);
                         $('#id_movement_state').val(json['movement_state_id']);
                         $('#id_notes').val(json['notes']);
+                        $('#id_notified_immediately').prop(
+                                'checked', json['notified_immediately']);
                         update_current(
                                 json['country_name'],
                                 json['risk_level_label'],
@@ -72,19 +76,26 @@
                     success: function(json){
                         console.log('Ajax success');
                         console.log(json);
-                        $('#id_risk_level').val(json['risk_level_id']);
-                        $('#id_movement_state').val(json['movement_state_id']);
-                        $('#id_notes').val(json['notes']);
-                        update_current(
-                                json['country_name'],
-                                json['risk_level_label'],
-                                json['movement_state_label']
-                        );
-                        $('#success_panel').show();
-                        $('#success_message').text(json['message']);
+                        if (json['success']){
+                            $('#id_risk_level').val(json['risk_level_id']);
+                            $('#id_movement_state').val(json['movement_state_id']);
+                            $('#id_notes').val(json['notes']);
+                            update_current(
+                                    json['country_name'],
+                                    json['risk_level_label'],
+                                    json['movement_state_label']
+                            );
+                            $('#success_panel').show();
+                            $('#success_message').text(json['success_message']);
+                        } else {
+                            $('#error_panel').show();
+                            $('#error_message').text(json['error_message']);
+                        }
                         console.log('Ajax finished');
                     },
                     error: function(xhr, errmsg, err){
+                        $('#error_panel').show();
+                        $('#error_message').text(errmsg);
                         console.log(xhr.status + ": " + xhr.responseText);
                     }
 
@@ -111,6 +122,11 @@
                              id="success_panel" hidden="hidden">
                             <button type="button" class="close" data-dismiss="alert">×</button>
                             <span id="success_message"></span>
+                        </div>
+                        <div class="alert alert-dismissable alert-danger"
+                             id="error_panel" hidden="hidden">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <span id="error_message"></span>
                         </div>
                         {# End of Message #}
                         <div class="panel-heading">

@@ -29,19 +29,23 @@ def update_movement(request):
         if form.is_valid():
             movement = form.update()
             country_id = movement.country.id
-            success_message = 'You have successfully update new movement.'
+            success_message = (
+                'You have successfully update new movement for %s.' %
+                movement.country.name)
             response = get_country_information(country_id)
-            response['message'] = success_message
+            response['success_message'] = success_message
+            response['success'] = True
             return HttpResponse(json.dumps(
                 response,
                 ensure_ascii=False),
                 content_type='application/javascript')
         else:
-            errors = form.errors
-            error_message = errors
-            messages.error(request, error_message)
-            return HttpResponseRedirect(
-                reverse('event_mapper:update_movement'))
+            error_message = form.errors
+            response = {'error_message': error_message, 'success': False}
+            return HttpResponse(json.dumps(
+                response,
+                ensure_ascii=False),
+                content_type='application/javascript')
     else:
         form = MovementUpdateForm(user=request.user)
 
@@ -52,7 +56,6 @@ def update_movement(request):
     )
 
 
-@login_required
 def get_country_information(country_id):
     country = Country.objects.get(pk=country_id)
     country_name = country.name
@@ -62,35 +65,34 @@ def get_country_information(country_id):
         risk_level_id = country.movement.risk_level
         movement_state_id = country.movement.movement_state
         notes = country.movement.notes
+        notified_immediately = country.movement.notified_immediately
 
         risk_level_label = Movement.get_risk_level_label(risk_level_id)
         movement_state_label = Movement.get_movement_state_label(
             movement_state_id)
 
-        response = {
-            'country_id': country_id,
-            'country_name': country_name,
-            'polygon': polygon,
-            'risk_level_id': risk_level_id,
-            'movement_state_id': movement_state_id,
-            'notes': notes,
-            'risk_level_label': risk_level_label,
-            'movement_state_label': movement_state_label,
-            'polygon_extent': polygon_extent
-        }
     except Movement.DoesNotExist:
-        response = {
-            'country_id': country_id,
-            'country_name': country_name,
-            'polygon': polygon,
-            'risk_level_id': 1,
-            'movement_state_id': '',
-            'notes': '',
-            'risk_level_label': 'N/A',
-            'movement_state_label': 'N/A',
-            'message': 'Country does not existed.',
-            'polygon_extent': polygon_extent
-        }
+        risk_level_id = Movement.INSIGNIFICANT_CODE
+        movement_state_id = Movement.NORMAL_CODE
+        notes = ''
+
+        risk_level_label = Movement.get_risk_level_label(risk_level_id)
+        movement_state_label = Movement.get_movement_state_label(
+            movement_state_id)
+        notified_immediately = False
+
+    response = {
+        'country_id': country_id,
+        'country_name': country_name,
+        'polygon': polygon,
+        'risk_level_id': risk_level_id,
+        'movement_state_id': movement_state_id,
+        'notes': notes,
+        'risk_level_label': risk_level_label,
+        'movement_state_label': movement_state_label,
+        'polygon_extent': polygon_extent,
+        'notified_immediately': notified_immediately
+    }
 
     return response
 

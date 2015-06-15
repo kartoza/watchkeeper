@@ -13,6 +13,7 @@ from event_mapper.utilities.commons import get_verbose_name, get_help_text
 
 from event_mapper.models.movement import Movement
 from event_mapper.models.country import Country
+from datetime import datetime
 
 
 class MovementUpdateForm(forms.Form):
@@ -77,9 +78,13 @@ class MovementUpdateForm(forms.Form):
         data = self.cleaned_data
         country_id = self.cleaned_data['region'].id
         country = Country.objects.get(pk=country_id)
+        if not hasattr(country, 'movement'):
+            country.movement = Movement()
         country.movement.risk_level = data['risk_level']
         country.movement.movement_state = data['movement_state']
         country.movement.notes = data['notes']
+        country.movement.last_updater = self.user
+        country.movement.last_updated_time = datetime.now()
         country.movement.save()
         country.save()
         return country.movement
