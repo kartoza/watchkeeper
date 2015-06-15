@@ -11,10 +11,15 @@ function update_current(region_name, risk_level, movement_state){
     $('#current_movement_state').text(movement_state);
 }
 
-function add_current_region(array_polygon){
+function add_current_region_geojson(geojson_data){
     if (current_region){
         map.removeLayer(current_region);
     }
 
-    current_region = L.polygon(array_polygon).addTo(map);
+    current_region = L.geoJson(geojson_data, {
+        style: function () {
+            return {weight: 1, color: "#000000"}
+        }
+    });
+    current_region.addTo(map);
 }
