@@ -28,10 +28,20 @@ class EventCreationForm(models.ModelForm):
     """A form for creating an event."""
     class Meta:
         model = Event
-        fields = ('category', 'longitude', 'latitude', 'place_name',
-                  'date_time', 'type', 'perpetrator', 'victim', 'killed',
-                  'injured', 'detained', 'notified_immediately', 'source',
-                  'notes')
+        fields = (
+            # see issue #29
+            'date_time',  # required
+            'longitude', 'latitude', 'place_name',  # required
+            'type',  # required
+            'category',  # required
+            'notes',
+            'perpetrator',
+            'victim',
+            'killed',
+            'injured',
+            'detained',
+            'notified_immediately',
+            'source')
 
     longitude = forms.FloatField(
         label='Longitude',
