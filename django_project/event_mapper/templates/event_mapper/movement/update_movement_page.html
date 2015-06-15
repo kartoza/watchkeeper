@@ -27,6 +27,8 @@
                         $('#id_risk_level').val(json['risk_level_id']);
                         $('#id_movement_state').val(json['movement_state_id']);
                         $('#id_notes').val(json['notes']);
+                        $('#id_notified_immediately').prop(
+                                'checked', json['notified_immediately']);
                         update_current(
                                 json['country_name'],
                                 json['risk_level_label'],
