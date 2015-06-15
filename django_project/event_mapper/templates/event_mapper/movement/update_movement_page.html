@@ -36,15 +36,8 @@
                                 json['risk_level_label'],
                                 json['movement_state_label']
                         );
-                        var array_polygon = json['polygon'][0];
-                        var index;
-                        for (index = 0; index < array_polygon.length; index++) {
-                            array_polygon[index] = [
-                                array_polygon[index][1],
-                                array_polygon[index][0]]
-                        }
-                        console.log(array_polygon);
-                        add_current_region(array_polygon);
+                        add_current_region_geojson(jQuery.parseJSON(
+                                json['polygon']));
                         context = {
                             'bounds': [
                                 [
