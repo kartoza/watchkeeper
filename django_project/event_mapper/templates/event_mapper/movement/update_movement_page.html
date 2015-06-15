@@ -12,6 +12,7 @@
             set_offset();
             $('#nav_movement').addClass("active");
             $('#id_region').change(function(){
+                $('#success_panel').hide();
                 console.log('drop down changed');
                 console.log($('option:selected', this).val() + $
                 ('option:selected', this).text());

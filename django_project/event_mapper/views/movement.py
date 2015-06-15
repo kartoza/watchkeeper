@@ -29,7 +29,9 @@ def update_movement(request):
         if form.is_valid():
             movement = form.update()
             country_id = movement.country.id
-            success_message = 'You have successfully update new movement.'
+            success_message = (
+                'You have successfully update new movement for %s.' %
+                movement.country.name)
             response = get_country_information(country_id)
             response['message'] = success_message
             return HttpResponse(json.dumps(
