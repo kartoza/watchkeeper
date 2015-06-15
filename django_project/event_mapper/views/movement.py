@@ -59,7 +59,7 @@ def update_movement(request):
 def get_country_information(country_id):
     country = Country.objects.get(pk=country_id)
     country_name = country.name
-    polygon = country.polygon_geometry.coords
+    polygon = country.polygon_geometry.geojson
     polygon_extent = country.polygon_geometry.extent
     try:
         risk_level_id = country.movement.risk_level
