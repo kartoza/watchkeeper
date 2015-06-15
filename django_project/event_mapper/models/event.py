@@ -65,13 +65,17 @@ class Event(models.Model):
     perpetrator = models.ForeignKey(
         Perpetrator,
         verbose_name='Perpetrator',
-        help_text='The perpetrator of the event.'
+        help_text='The perpetrator of the event.',
+        blank=True,
+        null=True
     )
 
     victim = models.ForeignKey(
         Victim,
         verbose_name='Victim',
         help_text='The victim of the event.',
+        blank=True,
+        null=True
     )
 
     killed = models.IntegerField(
@@ -134,7 +138,6 @@ class Event(models.Model):
 
     def save(self, *args, **kwargs):
         super(Event, self).save(*args, **kwargs)
-
 
     def long_message(self):
         return '%s was reported at %s %s' % (
