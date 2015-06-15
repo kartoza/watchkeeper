@@ -59,7 +59,7 @@ function add_event_marker(event_context){
 
 
     // Draw event marker
-    console.log('Adding to ' + [lat, lng]);
+    //console.log('Adding to ' + [lat, lng]);
     if (event_category == 1){
         event_icon = incident_icon;
     } else if (event_category == 2) {
@@ -225,6 +225,7 @@ function show_event_markers(){
     var start_time;
     var selected_time_option = $(
         'input[name="time_interval"]:checked').val();
+
     if (selected_time_option == '24h'){
         end_time = moment();
         start_time = moment().subtract(1, 'days');
@@ -233,14 +234,16 @@ function show_event_markers(){
         start_time = moment().subtract(7, 'days');
     } else if (selected_time_option == 'custom'){
         end_time = $('#end_time_input');
-        end_time = moment(end_time);
+        end_time = moment(end_time.val());
 
         start_time = $('#start_time_input');
-        start_time = moment(start_time);
+        start_time = moment(start_time.val());
     } else{
         end_time = moment();
         start_time = moment().subtract(1, 'days');
     }
+    console.log(start_time);
+    console.log(end_time);
     bbox = JSON.stringify(bbox);
     $.ajax({
         type: 'POST',

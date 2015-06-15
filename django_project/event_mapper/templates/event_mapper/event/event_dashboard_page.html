@@ -40,12 +40,24 @@
             });
 
             start_time_input.datetimepicker({
-                format: 'YYYY-MM-DD HH:mm:ssZ'
-            });
+                format: 'yyyy-mm-dd hh:ii',
+                todayBtn: true,
+                todayHighlight: true,
+                autoclose: true,
+                minuteStep: 1
+            }).on('hide', show_event_markers);
 
             end_time_input.datetimepicker({
-                format: 'YYYY-MM-DD HH:mm:ssZ'
-            });
+                format: 'yyyy-mm-dd hh:ii',
+                todayBtn: true,
+                todayHighlight: true,
+                autoclose: true,
+                minuteStep: 1
+            }).on('hide', show_event_markers);
+
+            start_time_input.val(moment().subtract(1, 'days').format
+            ("YYYY-MM-DD HH:mm"));
+            end_time_input.val(moment().format("YYYY-MM-DD HH:mm"));
 
             start_time_input.on("dp.change", function (e) {
                 end_time_input.data("DateTimePicker").minDate(e.date);
