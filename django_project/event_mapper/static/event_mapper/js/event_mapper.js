@@ -23,9 +23,9 @@ function show_map(context) {
     }
     else{
         if (map){
-            map.setView([-6.2000, 106.8167], 11);
+            map.setView([43, 33], 11);
         }else{
-            map = L.map('map').setView([-6.2000, 106.8167], 11);
+            map = L.map('map').setView([43, 33], 11);
         }
     }
     L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg', {
