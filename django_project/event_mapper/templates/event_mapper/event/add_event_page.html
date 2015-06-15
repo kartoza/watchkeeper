@@ -12,7 +12,11 @@
             set_offset();
             $('#nav_alert').addClass("active");
             $('#id_date_time').datetimepicker({
-                format: 'YYYY-MM-DD HH:mm:ss'
+                format: 'yyyy-mm-dd hh:ii',
+                todayBtn: true,
+                todayHighlight: true,
+                autoclose: true,
+                minuteStep: 1
             });
 
             {# Click, and generate latlang and place name#}
