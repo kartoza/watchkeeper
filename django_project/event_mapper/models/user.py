@@ -57,7 +57,7 @@ class User(AbstractBaseUser):
         verbose_name='Notification status',
         help_text='Set true to get sms notification.',
         null=False,
-        blank=False,
+        blank=True,
         default=False
     )
 
