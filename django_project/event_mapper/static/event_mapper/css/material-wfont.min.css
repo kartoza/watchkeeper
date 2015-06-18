@@ -5231,7 +5231,8 @@ icon-material-lightgrey {
     background-color: #0f9d58
 }
 .panel-info>.panel-heading {
-    background-color: #03a9f4
+    background-color: #03a9f4;
+	border-color: #03a9f4 !important;
 }
 .panel-warning>.panel-heading {
     background-color: #ff5722
