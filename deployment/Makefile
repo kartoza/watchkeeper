@@ -29,7 +29,18 @@ web:
 	@echo "Running in production mode"
 	@echo "------------------------------------------------------------------"
 	@docker-compose -p $(PROJECT_ID) up -d web
-	@docker-compose -p $(PROJECT_ID) up -d dbbackups
+	@docker-compose -p $(PROJECT_ID) up --no-recreate -d dbbackups
+
+nginx:
+	@echo
+	@echo "------------------------------------------------------------------"
+	@echo "Running nginx in production mode"
+	@echo "Normally you should use this only for testing"
+	@echo "In a production environment you will typically use nginx running"
+	@echo "on the host rather if you have a multi-site host."
+	@echo "------------------------------------------------------------------"
+	@docker-compose -p $(PROJECT_ID) up -d nginx
+	@echo "Site should now be available at http://localhost"
 
 migrate:
 	@echo
