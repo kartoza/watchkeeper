@@ -9,6 +9,7 @@ __doc__ = ''
 
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.gis.db import models
+from django.core.validators import RegexValidator
 
 from event_mapper.models.country import Country
 from event_mapper.models.user_manager import CustomUserManager
@@ -20,6 +21,11 @@ class User(AbstractBaseUser):
     class Meta:
         """Meta Class"""
         app_label = 'event_mapper'
+
+    phone_regex = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$',
+        message="Phone number must be entered in the format: "
+                "'+6288888888888'. Up to 15 digits allowed.")
 
     email = models.EmailField(
         verbose_name='Email',
@@ -48,9 +54,10 @@ class User(AbstractBaseUser):
     phone_number = models.CharField(
         verbose_name='Your phone number.',
         help_text='It will be used for sending a notification if you want.',
-        max_length=25,
+        max_length=15,
         null=True,
-        blank=True
+        blank=True,
+        validators=[phone_regex]
     )
 
     notified = models.BooleanField(
