@@ -4399,9 +4399,10 @@ legend {
 .navbar .navbar-brand {
     position: relative;
     height: 60px;
-	width: 147px;
+	width: 200px;
 	background: url(images/logo.png) no-repeat center;
 	display: block;
+	margin-right: 20px;
 }
 .navbar .navbar-brand:focus,
 .navbar .navbar-brand:hover {
@@ -4443,7 +4444,7 @@ legend {
     background-color: transparent
 }
 .navbar .navbar-toggle .icon-bar {
-    background-color: rgba(255, 255, 255, .84)
+    background-color: rgba(0, 0, 0, .45)
 }
 .navbar .navbar-default .navbar-toggle,
 .navbar .navbar-inverse .navbar-toggle {
@@ -4456,8 +4457,8 @@ legend {
 .navbar .navbar-nav>.open>a,
 .navbar .navbar-nav>.open>a:focus,
 .navbar .navbar-nav>.open>a:hover {
-    background-color: rgba(0, 0, 0, .05);
-    color: rgba(255, 255, 255, .84)
+    background-color: rgba(0, 0, 0, .03);
+    color: rgba(0, 0, 0, .45)
 }
 @media (max-width: 767px) {
     .navbar .navbar-nav .open .dropdown-menu>.dropdown-header {
