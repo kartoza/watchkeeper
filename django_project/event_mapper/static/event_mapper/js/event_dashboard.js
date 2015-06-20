@@ -57,7 +57,6 @@ function add_event_marker(event_context){
     var event_notes = event_context['properties']['notes'];
     var event_reported_by = event_context['properties']['reported_by'];
 
-
     // Draw event marker
     //console.log('Adding to ' + [lat, lng]);
     if (event_category == 1){
@@ -205,21 +204,23 @@ function show_dashboard(){
     $('#event_detail').hide();
 }
 
-
 function show_event_markers(){
     show_dashboard();
     clear_markers();
     console.log('Calling Ajax');
     var map_boundaries = map.getBounds();
+    var west = map_boundaries.getWest();
+    var east = map_boundaries.getEast();
+    var north = wrap_number(map_boundaries.getNorth(), -90, 90);
+    var south = wrap_number(map_boundaries.getSouth(), -90, 90);
+    // To handle if the use zoom out, until the lng >180 or < -180
+    if (west < -180){west = -180;}
+    if (east < 180){east = 180;}
     var bbox = {
-        'ne_lat': wrap_number(
-            map_boundaries._northEast.lat, -90, 90),
-        'ne_lng': wrap_number(
-            map_boundaries._northEast.lng, -180, 180),
-        'sw_lat': wrap_number(
-            map_boundaries._southWest.lat, -90, 90),
-        'sw_lng': wrap_number(
-            map_boundaries._southWest.lng, -180, 180)
+        'ne_lat': north,
+        'ne_lng': east,
+        'sw_lat': south,
+        'sw_lng': west
     };
     var end_time;
     var start_time;
