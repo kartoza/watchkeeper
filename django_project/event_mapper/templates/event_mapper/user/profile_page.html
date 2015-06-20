@@ -13,10 +13,10 @@
             $('#id_countries_notified').multiselect();
             map.on('moveend', function(e) {
                 var map_boundaries = map.getBounds();
-                var north = map_boundaries._northEast.lat;
-                var east = map_boundaries._northEast.lng;
-                var south = map_boundaries._southWest.lat;
-                var west = map_boundaries._southWest.lng;
+                var north = map_boundaries.getNorth();
+                var east = map_boundaries.getEast();
+                var south = map_boundaries.getSouth();
+                var west = map_boundaries.getWest();
 
                 $('#id_north').val(wrap_number(north, -90, 90));
                 $('#id_east').val(wrap_number(east, -180, 180));
