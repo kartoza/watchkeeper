@@ -215,7 +215,7 @@ function show_event_markers(){
     var south = wrap_number(map_boundaries.getSouth(), -90, 90);
     // To handle if the use zoom out, until the lng >180 or < -180
     if (west < -180){west = -180;}
-    if (east < 180){east = 180;}
+    if (east > 180){east = 180;}
     var bbox = {
         'ne_lat': north,
         'ne_lng': east,
@@ -270,11 +270,15 @@ function show_event_markers(){
                 }
             }
             $('#num_events').text(events.length);
-            create_chart(
-                {
-                    advisory: num_advisory,
-                    incident: num_incident
-                });
+            var side_panel = $('#side_panel');
+            if (side_panel.is(":visible")) {
+                // Only create chart when the side panel is visible
+                create_chart(
+                    {
+                        advisory: num_advisory,
+                        incident: num_incident
+                    });
+            }
         },
         errors: function(){
             console.log('Ajax failed');
