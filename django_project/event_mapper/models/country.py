@@ -7,31 +7,17 @@ __date__ = '4/20/15'
 __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
 
-from django.contrib.gis.db import models
+from event_mapper.models.boundary import Boundary
 
 
-class Country(models.Model):
+class Country(Boundary):
     """Class for Country."""
 
     class Meta:
         """Meta Class"""
         app_label = 'event_mapper'
-        verbose_name_plural = "Countries"
+        verbose_name_plural = 'Countries'
 
-    name = models.CharField(
-        verbose_name='Country\'s name',
-        help_text='The name of the country.',
-        max_length=50,
-        null=False,
-        blank=False
-    )
 
-    polygon_geometry = models.MultiPolygonField(srid=4326)
-
-    objects = models.GeoManager()
-
-    def __str__(self):
-        return self.__unicode__()
-
-    def __unicode__(self):
-        return self.name
+Country._meta.get_field('name').verbose_name = 'Country name'
+Country._meta.get_field('name').help_text = 'The name of the country.'

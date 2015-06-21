@@ -10,7 +10,9 @@ __doc__ = ''
 from django.contrib.gis.db import models
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.contenttypes import generic
 
+from event_mapper.models.boundary import Boundary
 from event_mapper.models.country import Country
 from event_mapper.models.user import User
 
@@ -60,12 +62,10 @@ class Movement(models.Model):
         help_text='Movement state of the region.'
     )
 
-    country = models.OneToOneField(
-        Country,
-        primary_key=True,
-        verbose_name='Country',
-        help_text='The country where the movement happens.',
-    )
+    boundary = generic.GenericRelation(
+        Boundary,
+        blank=False,
+        null=False)
 
     notes = models.TextField(
         verbose_name='Notes',

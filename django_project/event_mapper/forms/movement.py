@@ -19,7 +19,7 @@ from datetime import datetime
 class MovementUpdateForm(forms.Form):
     """A form for rating a movement."""
     region = forms.ModelChoiceField(
-        label='Region',
+        label='Country',
         queryset=Country.objects.order_by('name'),
         widget=forms.Select(
             attrs={
@@ -27,6 +27,8 @@ class MovementUpdateForm(forms.Form):
             }
         ),
     )
+
+
 
     risk_level = forms.ChoiceField(
         label='New risk level',
