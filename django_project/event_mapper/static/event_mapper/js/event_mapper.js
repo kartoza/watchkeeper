@@ -8,13 +8,13 @@ function show_map(context) {
     'use strict';
     $('#navigationbar').css('height', window.innerHeight * 0.1);
     $('#map').css('height', window.innerHeight * 0.9);
-    if (context['bounds']){
+    if ('bounds' in context){
         if (map){
             map.fitBounds(context['bounds']);
         }else{
             map = L.map('map').fitBounds(context['bounds']);
         }
-    }else if(context['lat'] && context['lng']){
+    }else if(('lat' in context) && ('lng' in context)){
         if (map){
             map.setView([context['lat'], context['lng']], 11);
         }else{
@@ -23,9 +23,9 @@ function show_map(context) {
     }
     else{
         if (map){
-            map.setView([43, 33], 11);
+            map.setView([33.3, 44.3], 6);
         }else{
-            map = L.map('map').setView([43, 33], 11);
+            map = L.map('map').setView([33.3, 44.3], 6);
         }
     }
     L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg', {

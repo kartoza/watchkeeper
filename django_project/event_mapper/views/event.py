@@ -35,10 +35,8 @@ def add_event(request):
             messages.success(request, success_message)
             return HttpResponseRedirect(reverse('event_mapper:add_event'))
         else:
-            errors = form.errors
-            error_message = errors
+            error_message = 'Failed to add event. See error below.'
             messages.error(request, error_message)
-            return HttpResponseRedirect(reverse('event_mapper:add_event'))
     else:
         form = EventCreationForm(user=request.user)
 
