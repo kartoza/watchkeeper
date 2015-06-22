@@ -36,6 +36,8 @@ urlpatterns = patterns(
         name='update_movement'),
     url(r'^get_country', 'event_mapper.views.movement.get_country',
         name='get_country'),
+    url(r'^get_province', 'event_mapper.views.movement.get_province',
+        name='get_province'),
 
     # Static page urls
     url(r'^contact', 'event_mapper.views.front_end.contact', name='contact'),

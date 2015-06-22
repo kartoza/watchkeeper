@@ -15,9 +15,11 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 from event_mapper.forms.movement import MovementUpdateForm
 from event_mapper.models.country import Country
+from event_mapper.models.province import Province
 from event_mapper.models.movement import Movement
 
 
@@ -59,6 +61,8 @@ def update_movement(request):
 def get_country_information(country_id):
     country = Country.objects.get(pk=country_id)
     country_name = country.name
+    provinces = Province.objects.filter(country=country).order_by('name')
+    provinces = [(province.id, province.name) for province in provinces]
     polygon = country.polygon_geometry.geojson
     polygon_extent = country.polygon_geometry.extent
     try:
@@ -83,6 +87,7 @@ def get_country_information(country_id):
 
     response = {
         'country_id': country_id,
+        'provinces': provinces,
         'country_name': country_name,
         'polygon': polygon,
         'risk_level_id': risk_level_id,
@@ -104,6 +109,31 @@ def get_country(request):
         response = get_country_information(country_id)
         return HttpResponse(json.dumps(
             response,
+            ensure_ascii=False),
+            content_type='application/javascript')
+    else:
+        return HttpResponse(
+            json.dumps({'Nothing'}),
+            content_type="application/json"
+        )
+
+
+@login_required
+def get_province(request):
+    if request.method == 'POST':
+        province_id = request.POST.get('province_id')
+        try:
+            province = Province.objects.get(id=province_id)
+        except ObjectDoesNotExist:
+            return HttpResponse(
+                json.dumps({'Nothing'}),
+                content_type="application/json"
+            )
+        context = {
+            'polygon': province.polygon_geometry.geojson
+        }
+        return HttpResponse(json.dumps(
+            context,
             ensure_ascii=False),
             content_type='application/javascript')
     else:

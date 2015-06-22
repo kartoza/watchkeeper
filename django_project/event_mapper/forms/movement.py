@@ -28,7 +28,14 @@ class MovementUpdateForm(forms.Form):
         ),
     )
 
-
+    province = forms.ChoiceField(
+        label='Province/State',
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control'
+            }
+        ),
+    )
 
     risk_level = forms.ChoiceField(
         label='New risk level',
