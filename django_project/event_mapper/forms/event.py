@@ -34,14 +34,15 @@ class EventCreationForm(models.ModelForm):
             'longitude', 'latitude', 'place_name',  # required
             'type',  # required
             'category',  # required
-            'notes',
             'perpetrator',
             'victim',
             'killed',
             'injured',
             'detained',
             'notified_immediately',
-            'source')
+            'source',
+            'notes'
+        )
 
     longitude = forms.FloatField(
         label='Longitude',
@@ -80,8 +81,7 @@ class EventCreationForm(models.ModelForm):
 
     type = forms.ModelChoiceField(
         label=get_verbose_name(Event, 'type'),
-        help_text=get_help_text(Event, 'type'),
-        required=False,
+        required=True,
         queryset=EventType.objects.order_by(),
         widget=forms.Select(
             attrs={'class': 'form-control'})
@@ -136,7 +136,7 @@ class EventCreationForm(models.ModelForm):
         label=get_verbose_name(Event, 'notified_immediately'),
         help_text=get_help_text(Event, 'notified_immediately'),
         widget=forms.CheckboxInput(
-            attrs={'class': 'form-control'}),
+            attrs={'class': ''}),
         required=False
     )
 
