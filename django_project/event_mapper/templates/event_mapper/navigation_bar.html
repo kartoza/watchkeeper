@@ -19,21 +19,21 @@
                             Alert
                         </a>
                     </li>
+                    <li id="nav_movement">
+                        <a href="/update_movement">
+                            <i class="mdi-maps-directions-walk"></i>
+                            Movement
+                        </a>
+                    </li>
                 {% endif %}
-                <li id="nav_movement">
-                    <a href="/update_movement">
-                        <i class="mdi-maps-directions-walk"></i>
-                        Movement
-                    </a>
-                </li>
-                {% if user.is_authenticated %}
-                <li id="nav_reports">
-                    <a href="/reports">
-                        <i class="mdi-content-content-paste"></i>
-                        Reports
-                    </a>
-                </li>
-                {% endif %}
+{#                {% if user.is_authenticated %}#}
+{#                <li id="nav_reports">#}
+{#                    <a href="/reports">#}
+{#                        <i class="mdi-content-content-paste"></i>#}
+{#                        Reports#}
+{#                    </a>#}
+{#                </li>#}
+{#                {% endif %}#}
                 <li id="nav_contact">
                     <a href="/contact">
                         <i class="mdi-communication-contacts"></i>
