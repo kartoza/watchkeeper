@@ -64,7 +64,7 @@ class UserCreationForm(forms.ModelForm):
         label=get_verbose_name(User, 'notified'),
         help_text=get_help_text(User, 'notified'),
         widget=forms.CheckboxInput(
-            attrs={'class': 'form-control'}),
+            attrs={'class': 'form-'}),
         required=False,
     )
 

@@ -38,28 +38,27 @@
             {# side panel #}
             <div class="col-lg-4" id="side_panel" style="padding-top: 10px;">
                 <div class="bs-component">
-                <div class="panel panel-primary">
-                    {% if messages %}
-                        {% for message in messages %}
-                            {% if 'success' in message.tags %}
-                                <div class="alert alert-dismissable alert-success">
-                                    <button type="button" class="close" data-dismiss="alert">×</button>
-                                    {{ message }}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                    <div class="panel-heading">
-                        <h4>
-                            <i class="mdi-social-person"></i>
-                            Update Profile
-                        </h4>
+                    <div class="panel panel-primary">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if 'success' in message.tags %}
+                                    <div class="alert alert-dismissable alert-success">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        {{ message }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <div class="panel-heading">
+                            <h4>
+                                <i class="mdi-social-person"></i>
+                                Update Profile
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            {% include "event_mapper/user/profile_form.html" %}
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        {% include "event_mapper/user/profile_form.html" %}
-                    </div>
-                </div>
-
                 </div>
             </div> {# end side panel #}
         </div>
