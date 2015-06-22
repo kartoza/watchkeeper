@@ -7,23 +7,37 @@
         <div align="center">
             <canvas id="incident_type_chart" width="200" height="200"></canvas>
         </div>
-        <div id="alert_box">Num of Alerts: <b id="num_events">0</b></div>
-        <div id="time_option">Time options</div>
-        <div>
-            <input type="radio" name="time_interval" id="24h" value="24h" checked="true">
-            <label for="24h">24 Hours</label>
-            <input type="radio" name="time_interval" id="week" value="week">
-            <label for="week">Week</label>
-            <input type="radio" name="time_interval" id="custom" value="custom">
-            <label for="custom">Custom</label>
+        <div class="form-control empty" id="alert_box" class="form-control-wrapper">
+            Num of Alerts: <b id="num_events">0</b>
         </div>
-        <div>
+        <p>
+            <div id="time_option">Time options</div>
+                <label for="24h">
+                    <div class="form-control-wrapper">
+                        <input class="form-control" type="radio" name="time_interval" id="24h" value="24h" checked="true">
+                    </div>
+                    24 Hours
+                </label>
+                <label for="week">
+                    <div class="form-control-wrapper">
+                        <input class="form-control" type="radio" name="time_interval" id="week" value="week">
+                    </div>
+                    Week
+                </label>
+                <label for="custom">
+                    <div class="form-control-wrapper">
+                        <input class="form-control" type="radio" name="time_interval" id="custom" value="custom">
+                    </div>
+                    Custom
+                </label>
+            <div class="form-control-wrapper">
+        </p>
             <label for="start_time_input">Start Time</label>
-            <input type="datetime" id="start_time_input" disabled>
+            <input class="form-control empty" type="datetime" id="start_time_input" disabled>
         </div>
-        <div>
+        <div class="form-control-wrapper">
             <label for="end_time_input">End Time</label>
-            <input type="datetime" id="end_time_input" disabled>
+            <input class="form-control empty" type="datetime" id="end_time_input" disabled>
         </div>
     </div>
 </div>

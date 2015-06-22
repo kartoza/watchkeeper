@@ -64,7 +64,7 @@ class UserCreationForm(forms.ModelForm):
         label=get_verbose_name(User, 'notified'),
         help_text=get_help_text(User, 'notified'),
         widget=forms.CheckboxInput(
-            attrs={'class': 'form-control'}),
+            attrs={'class': 'form-'}),
         required=False,
     )
 
@@ -185,14 +185,16 @@ class ProfileForm(forms.ModelForm):
         label=get_verbose_name(User, 'phone_number'),
         help_text=get_help_text(User, 'phone_number'),
         widget=forms.TextInput(
-            attrs={'class': 'form-control'})
+            attrs={'class': 'form-control'}),
+        required=False
     )
 
     notified = forms.BooleanField(
         label=get_verbose_name(User, 'notified'),
         help_text=get_help_text(User, 'notified'),
         widget=forms.CheckboxInput(
-            attrs={'class': 'form-control'})
+            attrs={'class': ''}),
+        required=False
     )
 
     countries_notified = forms.ModelMultipleChoiceField(

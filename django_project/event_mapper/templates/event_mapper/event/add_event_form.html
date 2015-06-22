@@ -1,8 +1,7 @@
-<form id="add_even_form"  class="form-horizontal" action="" method="post">
+{% load bootstrap_tags %}
+<form id="add_even_form"  class="" action="" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    {{ form.errors }}
-    {{ form.non_field_errors }}
+    {{ form | as_bootstrap }}
     <input id='toggle_notes_button' type="button" class="btn btn-primary"
            value="Add Notes" onclick="toggle_notes()" />
     <input type="submit" class="btn btn-primary" value="Add Event" />

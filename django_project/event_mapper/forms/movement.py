@@ -46,7 +46,7 @@ class MovementUpdateForm(forms.Form):
         label=get_verbose_name(Movement, 'notified_immediately'),
         help_text=get_help_text(Movement, 'notified_immediately'),
         widget=forms.CheckboxInput(
-            attrs={'class': 'form-control'}),
+            attrs={'class': ''}),
         required=False
     )
 
