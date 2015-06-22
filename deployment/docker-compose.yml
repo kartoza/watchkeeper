@@ -112,7 +112,7 @@ worker:
     - rabbitmq:rabbitmq
 
 dbbackups:
-  image: kartoza/pg-backups
+  image: kartoza/pg-backup
   hostname: pg-backups
   volumes:
     - ./backups:/backups
