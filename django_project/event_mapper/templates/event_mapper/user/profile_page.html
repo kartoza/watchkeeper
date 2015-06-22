@@ -13,15 +13,15 @@
             $('#id_countries_notified').multiselect();
             map.on('moveend', function(e) {
                 var map_boundaries = map.getBounds();
-                var north = map_boundaries._northEast.lat;
-                var east = map_boundaries._northEast.lng;
-                var south = map_boundaries._southWest.lat;
-                var west = map_boundaries._southWest.lng;
+                var north = map_boundaries.getNorth();
+                var east = map_boundaries.getEast();
+                var south = map_boundaries.getSouth();
+                var west = map_boundaries.getWest();
 
-                $('#id_north').val(wrap_number(north, -90, 90));
-                $('#id_east').val(wrap_number(east, -180, 180));
-                $('#id_south').val(wrap_number(south, -90, 90));
-                $('#id_west').val(wrap_number(west, -180, 180));
+                $('#id_north').val(north);
+                $('#id_east').val(east);
+                $('#id_south').val(south);
+                $('#id_west').val(west);
             })
         });
     </script>
@@ -38,28 +38,27 @@
             {# side panel #}
             <div class="col-lg-4" id="side_panel" style="padding-top: 10px;">
                 <div class="bs-component">
-                <div class="panel panel-primary">
-                    {% if messages %}
-                        {% for message in messages %}
-                            {% if 'success' in message.tags %}
-                                <div class="alert alert-dismissable alert-success">
-                                    <button type="button" class="close" data-dismiss="alert">×</button>
-                                    {{ message }}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                    <div class="panel-heading">
-                        <h4>
-                            <i class="mdi-social-person"></i>
-                            Update Profile
-                        </h4>
+                    <div class="panel panel-primary">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if 'success' in message.tags %}
+                                    <div class="alert alert-dismissable alert-success">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        {{ message }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <div class="panel-heading">
+                            <h4>
+                                <i class="mdi-social-person"></i>
+                                Update Profile
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            {% include "event_mapper/user/profile_form.html" %}
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        {% include "event_mapper/user/profile_form.html" %}
-                    </div>
-                </div>
-
                 </div>
             </div> {# end side panel #}
         </div>

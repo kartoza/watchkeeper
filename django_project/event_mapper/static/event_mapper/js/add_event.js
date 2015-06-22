@@ -8,11 +8,11 @@ var notes_seen = false;
 
 function show_hide_killed(radio_button){
     var killed_input = $('#id_killed');
-    var killed_field = $("label[for=id_killed]")
+    var killed_field = $("label[for=id_killed]");
     var injured_input = $('#id_injured');
-    var injured_field = $("label[for=id_injured]")
+    var injured_field = $("label[for=id_injured]");
     var detained_input = $('#id_detained');
-    var detained_field = $("label[for=id_detained]")
+    var detained_field = $("label[for=id_detained]");
     if (radio_button.value == '1') {
         // Incident, show all
         killed_input.show();
@@ -91,6 +91,7 @@ function update_new_event_marker(lat, lng){
         var new_event_marker = event.target;
         var position = new_event_marker.getLatLng();
         set_long_lat_form(position);
+        get_city_from_latlang(position.lat, position.lng);
         new_event_marker.setLatLng(position,{id:'uni', draggable:'true'});
     });
     new_event_marker.addTo(map);
@@ -101,11 +102,13 @@ function update_new_event_marker(lat, lng){
     show_map(context);
 }
 
-function add_marker_on_click(e){
-    update_new_event_marker(e.latlng.lat, e.latlng.lng);
-    set_latitude_form(e.latlng.lat);
-    set_longitude_form(e.latlng.lng);
-    get_city_from_latlang(e.latlng.lat, e.latlng.lng);
+function add_marker_from_draw(layer){
+    var lat = layer.getLatLng().lat;
+    var lng = layer.getLatLng().lng;
+    update_new_event_marker(lat, lng);
+    set_latitude_form(lat);
+    set_longitude_form(lng);
+    get_city_from_latlang(lat, lng);
 }
 
 function set_longitude_form(longitude){
@@ -124,13 +127,15 @@ function set_long_lat_form(latlng){
 }
 
 function show_hide_form(state){
-    $('#add_even_form').find('p').each(function(index, element){
-        if (state === 'hide'){
-            $(element).hide();
-        } else if (state === 'show'){
-            $(element).show();
-        } else{
-            $(element).show();
+    $('#add_even_form').children().each(function(index, element){
+        if ($(element)[0].nodeName == 'DIV'){
+            if (state === 'hide'){
+                $(element).hide();
+            } else if (state === 'show'){
+                $(element).show();
+            } else{
+                $(element).show();
+            }
         }
     });
 }
@@ -154,13 +159,13 @@ function toggle_notes(){
 }
 
 function show_hide_notes(state){
-    var p_notes = $('#id_notes').parent().parent();
+    var div_id_notes = $('#div_id_notes');
     var toggle_button = $('#toggle_notes_button');
     if (state === 'hide'){
-        p_notes.hide();
+        div_id_notes.hide();
         toggle_button.val('Add Notes');
     } else if (state == 'show'){
-        p_notes.show();
+        div_id_notes.show();
         toggle_button.val('Back');
     }
 }
@@ -180,10 +185,12 @@ function get_city_from_latlang(latitude, longitude){
                 id_place_name.val(address);
             } else {
                 message = 'Please write manually, geocoder failure due to ' + status;
+                id_place_name.val('');
                 $(id_place_name).attr('placeholder', message);
             }
         } else {
-            message = 'Geocoder failure due to ' + status;
+            message = 'Please write manually, geocoder failure due to ' + status;
+            id_place_name.val('');
             $(id_place_name).attr('placeholder', message);
         }
 
