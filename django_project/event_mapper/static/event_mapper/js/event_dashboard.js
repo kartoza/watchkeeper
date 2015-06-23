@@ -113,9 +113,17 @@ function interval_changes(radio_button){
     }
 }
 
-function enable_custom_interval(bool){
-    $('#end_time_input').prop('disabled', !bool);
-    $('#start_time_input').prop('disabled', !bool);
+function enable_custom_interval(show){
+    var start_date_picker = $('#start_time_input');
+    var end_date_picker = $('#end_time_input');
+    if (show) {
+        start_date_picker.parent().parent().show();
+        end_date_picker.parent().parent().show();
+    } else {
+        start_date_picker.parent().parent().hide();
+        end_date_picker.parent().parent().hide();
+    }
+
 
 }
 
