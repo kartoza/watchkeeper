@@ -147,7 +147,10 @@ function create_chart(mdata) {
             label: "Incident"
         }
     ];
-    pie_chart = new Chart(container).Pie(data, {animateScale: true});
+    pie_chart = new Chart(container).Pie(data, {
+        animateScale: true,
+        animationSteps: 50,
+        animationEasing: "linear"});
 }
 
 function on_click_marker(e){
