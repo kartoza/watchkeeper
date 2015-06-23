@@ -68,7 +68,8 @@ function add_event_marker(event_context){
 
     var event_icon = L.icon({
         iconUrl: raw_event_icon,
-        iconAnchor: [30, 60]
+        iconAnchor: [15, 30],
+        iconSize: [30, 30],
     });
 
     if (event_icon) {
