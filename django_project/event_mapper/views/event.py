@@ -71,9 +71,6 @@ def get_events(request):
         start_time = dateparse.parse_datetime(start_time)
         end_time = dateparse.parse_datetime(end_time)
 
-        print start_time
-        print end_time
-
         bbox = [
             bbox_dict['sw_lng'], bbox_dict['sw_lat'],
             bbox_dict['ne_lng'], bbox_dict['ne_lat']
