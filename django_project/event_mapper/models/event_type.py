@@ -37,6 +37,13 @@ class EventType(models.Model):
         max_length=100
     )
 
+    icon = models.ImageField(
+        help_text='Icon for the event type',
+        null=False,
+        blank=False,
+        upload_to=os.path.join(MEDIA_ROOT, icon_directory),
+    )
+
     description = models.TextField(
         help_text='Description for the event type.',
         blank=True,
