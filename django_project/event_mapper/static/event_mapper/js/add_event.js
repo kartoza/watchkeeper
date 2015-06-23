@@ -127,13 +127,15 @@ function set_long_lat_form(latlng){
 }
 
 function show_hide_form(state){
-    $('#add_even_form').find('p').each(function(index, element){
-        if (state === 'hide'){
-            $(element).hide();
-        } else if (state === 'show'){
-            $(element).show();
-        } else{
-            $(element).show();
+    $('#add_even_form').children().each(function(index, element){
+        if ($(element)[0].nodeName == 'DIV'){
+            if (state === 'hide'){
+                $(element).hide();
+            } else if (state === 'show'){
+                $(element).show();
+            } else{
+                $(element).show();
+            }
         }
     });
 }
@@ -157,13 +159,13 @@ function toggle_notes(){
 }
 
 function show_hide_notes(state){
-    var p_notes = $('#id_notes').parent().parent();
+    var div_id_notes = $('#div_id_notes');
     var toggle_button = $('#toggle_notes_button');
     if (state === 'hide'){
-        p_notes.hide();
+        div_id_notes.hide();
         toggle_button.val('Add Notes');
     } else if (state == 'show'){
-        p_notes.show();
+        div_id_notes.show();
         toggle_button.val('Back');
     }
 }
