@@ -17,7 +17,9 @@
           "detained": {{ event.detained }},
           "source": "{{ event.source }}",
           "notes": "{{ event.notes }}",
-          "reported_by": "{{ event.reported_by.get_full_name }}"
+          "reported_by": "{{ event.reported_by.get_full_name }}",
+          "incident_icon": "{{ event.type.incident_icon.url }}",
+          "advisory_icon": "{{ event.type.advisory_icon.url }}"
         },
         "geometry": {
           "type": "Point",

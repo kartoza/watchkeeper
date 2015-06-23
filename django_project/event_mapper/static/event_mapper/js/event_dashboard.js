@@ -37,10 +37,26 @@ var selected_advisory_icon = L.icon({
 });
 
 
+function create_icon(raw_event_icon){
+    return L.icon({
+        iconUrl: raw_event_icon,
+        iconAnchor: [15, 30],
+        iconSize: [30, 30]
+    });
+}
+
+function create_big_icon(raw_event_icon){
+    return L.icon({
+        iconUrl: raw_event_icon,
+        iconAnchor: [25, 50],
+        iconSize: [50, 50]
+    });
+}
+
 function add_event_marker(event_context){
     // Variables
-    var event_marker;
     var event_icon;
+    var event_marker;
     var lat = event_context['geometry']['coordinates'][1];
     var lng = event_context['geometry']['coordinates'][0];
     var event_id = event_context['properties']['id'];
@@ -56,14 +72,20 @@ function add_event_marker(event_context){
     var event_source = event_context['properties']['source'];
     var event_notes = event_context['properties']['notes'];
     var event_reported_by = event_context['properties']['reported_by'];
+    var raw_incident_icon = event_context['properties']['incident_icon'];
+    var raw_advisory_icon = event_context['properties']['advisory_icon'];
+    var raw_active_icon; // The icon that will be used in the dashboard
 
     // Draw event marker
-    //console.log('Adding to ' + [lat, lng]);
+    console.log('Adding to ' + [lat, lng]);
     if (event_category == 1){
-        event_icon = incident_icon;
+        raw_active_icon = raw_incident_icon;
     } else if (event_category == 2) {
-        event_icon = advisory_icon;
+        raw_active_icon = raw_advisory_icon;
     }
+
+    event_icon = create_icon(raw_active_icon);
+
     if (event_icon) {
         event_marker = L.marker(
             [lat, lng],
@@ -82,7 +104,8 @@ function add_event_marker(event_context){
                 event_detained: event_detained,
                 event_source: event_source,
                 event_notes: event_notes,
-                event_reported_by: event_reported_by
+                event_reported_by: event_reported_by,
+                event_raw_active_icon: raw_active_icon
             }
         ).addTo(map);
     }else{
@@ -134,8 +157,8 @@ function create_chart(mdata) {
         },
         {
             value: mdata['incident'],
-            color: "#202BAD",
-            highlight: "#5AD3D1",
+            color: "#EDA44C",
+            highlight: "#FFD39E",
             label: "Incident"
         }
     ];
@@ -159,18 +182,12 @@ function on_click_marker(e){
 }
 
 function set_icon(event, selected){
-    if (event.options.event_category == INCIDENT_CODE){
-        if (selected){
-            event.setIcon(selected_incident_icon);
-        } else{
-            event.setIcon(incident_icon);
-        }
-    } else if (event.options.event_category == ADVISORY_CODE){
-        if (selected){
-            event.setIcon(selected_advisory_icon);
-        } else{
-            event.setIcon(advisory_icon);
-        }
+    if (selected){
+        var big_icon = create_big_icon(event.options.event_raw_active_icon);
+        event.setIcon(big_icon)
+    } else{
+        var normal_icon = create_icon(event.options.event_raw_active_icon);
+        event.setIcon(normal_icon)
     }
     event.options.event_selected = selected;
 }
