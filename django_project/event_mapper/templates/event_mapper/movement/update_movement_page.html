@@ -61,27 +61,6 @@
                 )
             });
 
-            $('#id_province').change(function(){
-                $('#success_panel').hide();
-                $('#error_panel').hide();
-                if ($('option:selected', this).val() == 0){
-                    $('#id_region').change();
-                } else {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/get_province/',
-                        data: {'province_id': $('option:selected', this).val()},
-                        dataType: 'json',
-                        success: function (json) {
-                            add_current_region_geojson(jQuery.parseJSON(
-                                    json['polygon']));
-                        },
-                        error: function (xhr, errmsg, err) {
-                            console.log(xhr.status + ": " + xhr.responseText);
-                        }
-                    });
-                }
-            });
             $('#update_movement_form').submit(function(e){
                 console.log('Submitting form');
                 console.log($('#update_movement_form').serialize());
@@ -119,7 +98,29 @@
                 });
                 e.preventDefault()
             });
-            $('#id_province').parent().parent().hide();
+            var province_dropdown = $('#id_province');
+            province_dropdown.change(function(){
+                $('#success_panel').hide();
+                $('#error_panel').hide();
+                if ($('option:selected', this).val() == 0){
+                    $('#id_region').change();
+                } else {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/get_province/',
+                        data: {'province_id': $('option:selected', this).val()},
+                        dataType: 'json',
+                        success: function (json) {
+                            add_current_region_geojson(jQuery.parseJSON(
+                                    json['polygon']));
+                        },
+                        error: function (xhr, errmsg, err) {
+                            console.log(xhr.status + ": " + xhr.responseText);
+                        }
+                    });
+                }
+            });
+            province_dropdown.parent().parent().hide();
         });
     </script>
 {% endblock header %}
