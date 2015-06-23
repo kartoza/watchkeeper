@@ -110,6 +110,47 @@ def get_country_information(country_id):
     return response
 
 
+def get_province_information(province):
+    province_id = province.pk
+    province_name = province.name
+    country_name = province.country.name
+    polygon = province.polygon_geometry.geojson
+    province_type = ContentType.objects.get_for_model(Province)
+    movement_query = Movement.objects.filter(
+        boundary_type=province_type,
+        boundary_id=province_id)
+    if movement_query:
+        movement = movement_query[0]
+        risk_level_id = movement.risk_level
+        movement_state_id = movement.movement_state
+        notes = movement.notes
+        notified_immediately = movement.notified_immediately
+    else:
+        risk_level_id = Movement.INSIGNIFICANT_CODE
+        movement_state_id = Movement.NORMAL_CODE
+        notes = ''
+        notified_immediately = False
+
+    risk_level_label = Movement.get_risk_level_label(risk_level_id)
+    movement_state_label = Movement.get_movement_state_label(
+        movement_state_id)
+
+    response = {
+        'province_id': province_id,
+        'province_name': province_name,
+        'country_name': country_name,
+        'polygon': polygon,
+        'risk_level_id': risk_level_id,
+        'movement_state_id': movement_state_id,
+        'notes': notes,
+        'risk_level_label': risk_level_label,
+        'movement_state_label': movement_state_label,
+        'notified_immediately': notified_immediately
+    }
+
+    return response
+
+
 @login_required
 def get_country(request):
     if request.method == 'POST':
@@ -137,11 +178,9 @@ def get_province(request):
                 json.dumps({'Nothing'}),
                 content_type="application/json"
             )
-        context = {
-            'polygon': province.polygon_geometry.geojson
-        }
+        response = get_province_information(province)
         return HttpResponse(json.dumps(
-            context,
+            response,
             ensure_ascii=False),
             content_type='application/javascript')
     else:

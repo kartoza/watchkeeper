@@ -113,6 +113,14 @@
                         success: function (json) {
                             add_current_region_geojson(jQuery.parseJSON(
                                     json['polygon']));
+                            update_current(
+                                    json['country_name'] + ' - ' + json['province_name'],
+                                    json['risk_level_label'],
+                                    json['movement_state_label']
+                            );
+                            $('#id_risk_level').val(json['risk_level_id']);
+                            $('#id_movement_state').val(json['movement_state_id']);
+                            $('#id_notes').val(json['notes']);
                         },
                         error: function (xhr, errmsg, err) {
                             console.log(xhr.status + ": " + xhr.responseText);
