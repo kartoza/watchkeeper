@@ -14,6 +14,7 @@ from django.conf.global_settings import MEDIA_ROOT
 from django.utils.text import slugify
 
 icon_directory = 'event_type_icon'
+default_icon = 'static/event_mapper/css/images/leaflet/marker-icon.png'
 
 
 class EventType(models.Model):
@@ -37,11 +38,20 @@ class EventType(models.Model):
         max_length=100
     )
 
-    icon = models.ImageField(
-        help_text='Icon for the event type',
+    incident_icon = models.ImageField(
+        help_text='Icon for the event type incident.',
         null=False,
         blank=False,
         upload_to=os.path.join(MEDIA_ROOT, icon_directory),
+        default=default_icon
+    )
+
+    advisory_icon = models.ImageField(
+        help_text='Icon for the event type advisory.',
+        null=False,
+        blank=False,
+        upload_to=os.path.join(MEDIA_ROOT, icon_directory),
+        default=default_icon
     )
 
     description = models.TextField(
