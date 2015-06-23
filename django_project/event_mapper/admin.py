@@ -1,8 +1,10 @@
+# coding=utf-8
 from django.contrib.gis import admin
 from django.contrib.auth.admin import UserAdmin
 from event_mapper.forms.user import UserCreationForm, UserChangeForm
 from event_mapper.models.user import User
 from event_mapper.models.country import Country
+from event_mapper.models.province import Province
 from event_mapper.models.event import Event
 from event_mapper.models.event_type import EventType
 from event_mapper.models.perpetrator import Perpetrator
@@ -57,7 +59,7 @@ class MyUserAdmin(UserAdmin):
     filter_horizontal = ()
 
 
-class CountryAdmin(admin.OSMGeoAdmin):
+class BoundaryAdmin(admin.OSMGeoAdmin):
     pass
 
 
@@ -85,8 +87,9 @@ class VictimAdmin(admin.ModelAdmin):
 
 
 class MovementAdmin(admin.OSMGeoAdmin):
+    actions = None
     list_display = (
-        'country', 'risk_level', 'movement_state', 'notified_immediately',
+        'boundary', 'risk_level', 'movement_state', 'notified_immediately',
         'notification_sent', 'last_updater', 'last_updated_time')
 
     list_filter = (
@@ -95,13 +98,14 @@ class MovementAdmin(admin.OSMGeoAdmin):
 
     fieldsets = (
         ('Information', {'fields': (
-            'country', 'risk_level', 'movement_state', 'notes')}),
+            'boundary', 'risk_level', 'movement_state',
+            'notes')}),
         ('Notification', {'fields': (
             'notified_immediately', 'notification_sent',)}),
         ('Update', {'fields': ('last_updated_time',)}),
     )
 
-    readonly_fields = ('last_updated_time', 'last_updater')
+    readonly_fields = ('last_updated_time', 'last_updater', 'boundary')
 
     def save_model(self, request, obj, form, change):
         obj.last_updater = request.user
@@ -114,7 +118,8 @@ class RatingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(User, MyUserAdmin)
-admin.site.register(Country, CountryAdmin)
+admin.site.register(Country, BoundaryAdmin)
+admin.site.register(Province, BoundaryAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(EventType, EventTypeAdmin)
 admin.site.register(Perpetrator, PerpetratorAdmin)

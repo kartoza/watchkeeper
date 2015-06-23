@@ -7,7 +7,9 @@ __date__ = '4/10/15'
 __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
 
+from boundary import Boundary
 from country import Country
+from province import Province
 from event import Event
 from event_type import EventType
 from perpetrator import Perpetrator

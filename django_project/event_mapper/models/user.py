@@ -29,14 +29,16 @@ class User(AbstractBaseUser):
 
     email = models.EmailField(
         verbose_name='Email',
-        help_text='Your email. It will be used as your username also.',
+        help_text=(
+            'Please enter your email address. '
+            'This will also be your login name.'),
         null=False,
         blank=False,
         unique=True
     )
 
     first_name = models.CharField(
-        verbose_name='First Name',
+        verbose_name='First name',
         help_text='Your first name.',
         max_length=100,
         null=False,
@@ -44,16 +46,18 @@ class User(AbstractBaseUser):
     )
 
     last_name = models.CharField(
-        verbose_name='Last Name',
-        help_text='Your first name.',
+        verbose_name='Last name',
+        help_text='Your last name.',
         max_length=100,
         null=False,
         blank=False
     )
 
     phone_number = models.CharField(
-        verbose_name='Your phone number.',
-        help_text='It will be used for sending a notification if you want.',
+        verbose_name='Phone number',
+        help_text=(
+            'This is optional. '
+            'If entered alerts will be sent to this number'),
         max_length=15,
         null=True,
         blank=True,
@@ -61,8 +65,8 @@ class User(AbstractBaseUser):
     )
 
     notified = models.BooleanField(
-        verbose_name='Notification status',
-        help_text='Set true to get sms notification.',
+        verbose_name='Receive notifications?',
+        help_text='Check this box to receive SMS notifications.',
         null=False,
         blank=True,
         default=False
@@ -70,72 +74,78 @@ class User(AbstractBaseUser):
 
     countries_notified = models.ManyToManyField(
         Country,
-        verbose_name='Notified countries',
-        help_text='The countries that user wants to be notified.',
+        verbose_name='Countries of interest',
+        help_text=(
+            'Select one or more countries for which you wish to '
+            'receive notifications.'),
         null=True,
         blank=True
     )
 
     is_active = models.BooleanField(
-        verbose_name='Active Status',
-        help_text='Whether this user is still active or not (a user could be '
-                  'banned or deleted).',
+        verbose_name='Active',
+        help_text=(
+            'Unchecked this to disable this user\'s account '
+            'without deleting it.'),
         default=True)
 
     is_admin = models.BooleanField(
-        verbose_name='Admin Status',
-        help_text='Whether this user is admin or not.',
+        verbose_name='Admin',
+        help_text='Check this to make the user an admin.',
         default=False)
 
     is_staff = models.BooleanField(
-        verbose_name='Staff Status',
+        verbose_name='Staff',
         help_text='Staff can access wk-admin page.',
         default=False)
 
     is_data_captor = models.BooleanField(
-        verbose_name='Data Captor Status',
-        help_text='Data Captor can add event.',
+        verbose_name='Data capturer',
+        help_text='Data capturer can add events.',
         default=False)
 
     north = models.FloatField(
         verbose_name='North',
-        help_text='The north boundary of area of interest',
+        help_text='The northern boundary of the area of interest.',
         default=40
     )
 
     east = models.FloatField(
         verbose_name='East',
-        help_text='The east boundary of area of interest',
+        help_text='The eastern boundary of the area of interest.',
         default=55
     )
 
     south = models.FloatField(
         verbose_name='South',
-        help_text='The south boundary of area of interest',
+        help_text='The southern boundary of the area of interest.',
         default=24
     )
 
     west = models.FloatField(
         verbose_name='West',
-        help_text='The west boundary of area of interest',
+        help_text='The western boundary of the area of interest.',
         default=28
     )
 
     key = models.CharField(
-        verbose_name='Confirmation Key',
-        help_text='Confirmation key for user to activate their account.',
+        verbose_name='Account confirmation key',
+        help_text='Account confirmation key as sent to the user by email.',
         max_length=40,
         default='0000000000000000000000000000000000000000')
 
     is_confirmed = models.BooleanField(
-        verbose_name='Confirmation Status',
-        help_text='Whether this user has approved their entry by email.',
+        verbose_name='Confirmed',
+        help_text='Whether this user has activated their account by email.',
         null=False,
         default=False)
 
     notify_immediately = models.BooleanField(
-        verbose_name='Notify Immediately',
-        help_text='If True, there will be immediate notification.',
+        verbose_name='Notify immediately',
+        help_text=(
+            'Check this to activate immediate notifications. '
+            'If unchecked, the user will only be notified by '
+            'nightly batch reports.'),
         default=False
     )
 

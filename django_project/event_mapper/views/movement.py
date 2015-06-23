@@ -9,15 +9,18 @@ __doc__ = ''
 
 import json
 
+from django.contrib.contenttypes.models import ContentType
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 from event_mapper.forms.movement import MovementUpdateForm
 from event_mapper.models.country import Country
+from event_mapper.models.province import Province
 from event_mapper.models.movement import Movement
 
 
@@ -28,10 +31,17 @@ def update_movement(request):
         form = MovementUpdateForm(request.POST, user=request.user)
         if form.is_valid():
             movement = form.update()
-            country_id = movement.country.id
+            movement.save()
+            if movement.boundary_type.model_class() == Country:
+                country_id = movement.boundary_id
+            else:
+                province_id = movement.boundary_id
+                province = Province.objects.get(pk=province_id)
+                country_id = province.country.id
+
             success_message = (
                 'You have successfully update new movement for %s.' %
-                movement.country.name)
+                movement.boundary.name)
             response = get_country_information(country_id)
             response['success_message'] = success_message
             response['success'] = True
@@ -41,7 +51,7 @@ def update_movement(request):
                 content_type='application/javascript')
         else:
             error_message = form.errors
-            response = {'error_message': error_message, 'success': False}
+            response = {'error_message': str(error_message), 'success': False}
             return HttpResponse(json.dumps(
                 response,
                 ensure_ascii=False),
@@ -59,30 +69,33 @@ def update_movement(request):
 def get_country_information(country_id):
     country = Country.objects.get(pk=country_id)
     country_name = country.name
+    provinces = Province.objects.filter(country=country).order_by('name')
+    provinces = [(province.id, province.name) for province in provinces]
     polygon = country.polygon_geometry.geojson
     polygon_extent = country.polygon_geometry.extent
-    try:
-        risk_level_id = country.movement.risk_level
-        movement_state_id = country.movement.movement_state
-        notes = country.movement.notes
-        notified_immediately = country.movement.notified_immediately
-
-        risk_level_label = Movement.get_risk_level_label(risk_level_id)
-        movement_state_label = Movement.get_movement_state_label(
-            movement_state_id)
-
-    except Movement.DoesNotExist:
+    country_type = ContentType.objects.get_for_model(Country)
+    movement_query = Movement.objects.filter(
+        boundary_type=country_type,
+        boundary_id=country_id)
+    if movement_query:
+        movement = movement_query[0]
+        risk_level_id = movement.risk_level
+        movement_state_id = movement.movement_state
+        notes = movement.notes
+        notified_immediately = movement.notified_immediately
+    else:
         risk_level_id = Movement.INSIGNIFICANT_CODE
         movement_state_id = Movement.NORMAL_CODE
         notes = ''
-
-        risk_level_label = Movement.get_risk_level_label(risk_level_id)
-        movement_state_label = Movement.get_movement_state_label(
-            movement_state_id)
         notified_immediately = False
+
+    risk_level_label = Movement.get_risk_level_label(risk_level_id)
+    movement_state_label = Movement.get_movement_state_label(
+        movement_state_id)
 
     response = {
         'country_id': country_id,
+        'provinces': provinces,
         'country_name': country_name,
         'polygon': polygon,
         'risk_level_id': risk_level_id,
@@ -97,11 +110,75 @@ def get_country_information(country_id):
     return response
 
 
+def get_province_information(province):
+    province_id = province.pk
+    province_name = province.name
+    country_name = province.country.name
+    polygon = province.polygon_geometry.geojson
+    province_type = ContentType.objects.get_for_model(Province)
+    movement_query = Movement.objects.filter(
+        boundary_type=province_type,
+        boundary_id=province_id)
+    if movement_query:
+        movement = movement_query[0]
+        risk_level_id = movement.risk_level
+        movement_state_id = movement.movement_state
+        notes = movement.notes
+        notified_immediately = movement.notified_immediately
+    else:
+        risk_level_id = Movement.INSIGNIFICANT_CODE
+        movement_state_id = Movement.NORMAL_CODE
+        notes = ''
+        notified_immediately = False
+
+    risk_level_label = Movement.get_risk_level_label(risk_level_id)
+    movement_state_label = Movement.get_movement_state_label(
+        movement_state_id)
+
+    response = {
+        'province_id': province_id,
+        'province_name': province_name,
+        'country_name': country_name,
+        'polygon': polygon,
+        'risk_level_id': risk_level_id,
+        'movement_state_id': movement_state_id,
+        'notes': notes,
+        'risk_level_label': risk_level_label,
+        'movement_state_label': movement_state_label,
+        'notified_immediately': notified_immediately
+    }
+
+    return response
+
+
 @login_required
 def get_country(request):
     if request.method == 'POST':
         country_id = request.POST.get('country_id')
         response = get_country_information(country_id)
+        return HttpResponse(json.dumps(
+            response,
+            ensure_ascii=False),
+            content_type='application/javascript')
+    else:
+        return HttpResponse(
+            json.dumps({'Nothing'}),
+            content_type="application/json"
+        )
+
+
+@login_required
+def get_province(request):
+    if request.method == 'POST':
+        province_id = request.POST.get('province_id')
+        try:
+            province = Province.objects.get(id=province_id)
+        except ObjectDoesNotExist:
+            return HttpResponse(
+                json.dumps({'Nothing'}),
+                content_type="application/json"
+            )
+        response = get_province_information(province)
         return HttpResponse(json.dumps(
             response,
             ensure_ascii=False),
