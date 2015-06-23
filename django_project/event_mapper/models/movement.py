@@ -10,10 +10,9 @@ __doc__ = ''
 from django.contrib.gis.db import models
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
-from event_mapper.models.boundary import Boundary
-from event_mapper.models.country import Country
 from event_mapper.models.user import User
 
 
@@ -62,10 +61,21 @@ class Movement(models.Model):
         help_text='Movement state of the region.'
     )
 
-    boundary = generic.GenericRelation(
-        Boundary,
-        blank=False,
-        null=False)
+    boundary_type = models.ForeignKey(
+        ContentType,
+        blank=True,
+        null=True
+    )
+
+    boundary_id = models.PositiveIntegerField(
+        blank=True,
+        null=True
+    )
+
+    boundary = GenericForeignKey(
+        'boundary_type',
+        'boundary_id'
+    )
 
     notes = models.TextField(
         verbose_name='Notes',
@@ -103,23 +113,23 @@ class Movement(models.Model):
     objects = models.GeoManager()
 
     def __str__(self):
-        return self.country.name
-
-    def save(self, *args, **kwargs):
-        """Overloaded save method."""
-        try:
-            original_object = Movement.objects.get(pk=self.pk)
-            is_change = (self.risk_level != original_object.risk_level or
-                         self.movement_state != original_object.movement_state)
-            if is_change:
-                self.notification_sent = False
-                self.last_updated_time = timezone.now()
-        except ObjectDoesNotExist:
-            # New object
-            self.notification_sent = False
-            self.last_updated_time = timezone.now()
-
-        super(Movement, self).save(*args, **kwargs)
+        return self.boundary.name
+    #
+    # def save(self, *args, **kwargs):
+    #     """Overloaded save method."""
+    #     try:
+    #         original_object = Movement.objects.get(pk=self.pk)
+    #         is_change = (self.risk_level != original_object.risk_level or
+    #                      self.movement_state != original_object.movement_state)
+    #         if is_change:
+    #             self.notification_sent = False
+    #             self.last_updated_time = timezone.now()
+    #     except ObjectDoesNotExist:
+    #         # New object
+    #         self.notification_sent = False
+    #         self.last_updated_time = timezone.now()
+    #
+    #     super(Movement, self).save(*args, **kwargs)
 
     @classmethod
     def get_movement_state_label(cls, index):

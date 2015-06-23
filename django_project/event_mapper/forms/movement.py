@@ -8,11 +8,13 @@ __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
 
 from django import forms
+from django.contrib.contenttypes.models import ContentType
 
 from event_mapper.utilities.commons import get_verbose_name, get_help_text
 
 from event_mapper.models.movement import Movement
 from event_mapper.models.country import Country
+from event_mapper.models.province import Province
 from datetime import datetime
 
 
@@ -28,8 +30,9 @@ class MovementUpdateForm(forms.Form):
         ),
     )
 
-    province = forms.ChoiceField(
+    province = forms.CharField(
         label='Province/State',
+        required=False,
         widget=forms.Select(
             attrs={
                 'class': 'form-control'
@@ -72,28 +75,42 @@ class MovementUpdateForm(forms.Form):
         self.country_id = kwargs.pop('country_id', None)
         super(MovementUpdateForm, self).__init__(*args, **kwargs)
 
-    def save(self, commit=True):
-        """Override save method."""
-        data = self.cleaned_data
-        movement = super(MovementUpdateForm, self).save(commit=False)
-
-        movement.last_updater = self.user
-        movement.country = data.region
-        if commit:
-            movement.save()
-        return movement
+    # def save(self, commit=True):
+    #     """Override save method."""
+    #     data = self.cleaned_data
+    #     movement = super(MovementUpdateForm, self).save(commit=False)
+    #
+    #     movement.last_updater = self.user
+    #     movement.country = data.region
+    #     if commit:
+    #         movement.save()
+    #     return movement
 
     def update(self):
         data = self.cleaned_data
-        country_id = self.cleaned_data['region'].id
-        country = Country.objects.get(pk=country_id)
-        if not hasattr(country, 'movement'):
-            country.movement = Movement()
-        country.movement.risk_level = data['risk_level']
-        country.movement.movement_state = data['movement_state']
-        country.movement.notes = data['notes']
-        country.movement.last_updater = self.user
-        country.movement.last_updated_time = datetime.now()
-        country.movement.save()
-        country.save()
-        return country.movement
+        country = self.cleaned_data['region']
+        province_id = self.cleaned_data['province']
+        if province_id != '0':
+            boundary = Province.objects.get(pk=province_id)
+            province_type = ContentType.objects.get_for_model(Province)
+            movement_query = Movement.objects.filter(
+                boundary_type=province_type,
+                boundary_id=province_id)
+        else:
+            boundary = country
+            country_type = ContentType.objects.get_for_model(Country)
+            movement_query = Movement.objects.filter(
+                boundary_type=country_type,
+                boundary_id=country.id)
+        if movement_query:
+            movement = movement_query[0]
+        else:
+            movement = Movement(boundary=boundary)
+        movement.risk_level = data['risk_level']
+        movement.movement_state = data['movement_state']
+        movement.notes = data['notes']
+        movement.last_updater = self.user
+        movement.last_updated_time = datetime.now()
+        movement.id = 3
+        movement.save()
+        return movement

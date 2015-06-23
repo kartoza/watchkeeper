@@ -9,6 +9,7 @@ __doc__ = ''
 
 import json
 
+from django.contrib.contenttypes.models import ContentType
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -30,10 +31,17 @@ def update_movement(request):
         form = MovementUpdateForm(request.POST, user=request.user)
         if form.is_valid():
             movement = form.update()
-            country_id = movement.country.id
+            movement.save()
+            if movement.boundary_type.model_class() == Country:
+                country_id = movement.boundary_id
+            else:
+                province_id = movement.boundary_id
+                province = Province.objects.get(pk=province_id)
+                country_id = province.country.id
+
             success_message = (
                 'You have successfully update new movement for %s.' %
-                movement.country.name)
+                movement.boundary.name)
             response = get_country_information(country_id)
             response['success_message'] = success_message
             response['success'] = True
@@ -43,7 +51,7 @@ def update_movement(request):
                 content_type='application/javascript')
         else:
             error_message = form.errors
-            response = {'error_message': error_message, 'success': False}
+            response = {'error_message': str(error_message), 'success': False}
             return HttpResponse(json.dumps(
                 response,
                 ensure_ascii=False),
@@ -65,25 +73,25 @@ def get_country_information(country_id):
     provinces = [(province.id, province.name) for province in provinces]
     polygon = country.polygon_geometry.geojson
     polygon_extent = country.polygon_geometry.extent
-    try:
-        risk_level_id = country.movement.risk_level
-        movement_state_id = country.movement.movement_state
-        notes = country.movement.notes
-        notified_immediately = country.movement.notified_immediately
-
-        risk_level_label = Movement.get_risk_level_label(risk_level_id)
-        movement_state_label = Movement.get_movement_state_label(
-            movement_state_id)
-
-    except Movement.DoesNotExist:
+    country_type = ContentType.objects.get_for_model(Country)
+    movement_query = Movement.objects.filter(
+        boundary_type=country_type,
+        boundary_id=country_id)
+    if movement_query:
+        movement = movement_query[0]
+        risk_level_id = movement.risk_level
+        movement_state_id = movement.movement_state
+        notes = movement.notes
+        notified_immediately = movement.notified_immediately
+    else:
         risk_level_id = Movement.INSIGNIFICANT_CODE
         movement_state_id = Movement.NORMAL_CODE
         notes = ''
-
-        risk_level_label = Movement.get_risk_level_label(risk_level_id)
-        movement_state_label = Movement.get_movement_state_label(
-            movement_state_id)
         notified_immediately = False
+
+    risk_level_label = Movement.get_risk_level_label(risk_level_id)
+    movement_state_label = Movement.get_movement_state_label(
+        movement_state_id)
 
     response = {
         'country_id': country_id,

@@ -84,6 +84,7 @@
             });
             $('#update_movement_form').submit(function(e){
                 console.log('Submitting form');
+                console.log($('#update_movement_form').serialize());
                 $.ajax({
                     type: 'POST',
                     url: '/update_movement/',
