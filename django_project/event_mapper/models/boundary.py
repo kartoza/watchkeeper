@@ -25,9 +25,6 @@ class Boundary(models.Model):
 
     objects = models.GeoManager()
 
-    def __str__(self):
-        return str(self.__unicode__())
-
     def __unicode__(self):
         return self.name
 
