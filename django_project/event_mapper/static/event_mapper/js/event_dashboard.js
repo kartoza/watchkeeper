@@ -147,7 +147,6 @@ function enable_custom_interval(show){
         end_date_picker.parent().parent().hide();
     }
 
-
 }
 
 function create_chart(mdata) {
