@@ -221,8 +221,8 @@ function show_event_detail(event){
     $('#event_detail_killed').text(event.options.event_killed);
     $('#event_detail_injured').text(event.options.event_injured);
     $('#event_detail_detained').text(event.options.event_detained);
-    $('#event_detail_source').text(event.options.event_source);
-    $('#event_detail_notes').text(event.options.event_notes);
+    $('#event_detail_source').html(event.options.event_source);
+    $('#event_detail_notes').html(event.options.event_notes);
     $('#event_detail_reported_by').text(event.options.event_reported_by);
 
 }
