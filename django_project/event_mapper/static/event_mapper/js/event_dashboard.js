@@ -140,11 +140,11 @@ function enable_custom_interval(show){
     var start_date_picker = $('#start_time_input');
     var end_date_picker = $('#end_time_input');
     if (show) {
-        start_date_picker.parent().parent().show();
-        end_date_picker.parent().parent().show();
+        start_date_picker.parent().parent().removeClass('hidden');
+        end_date_picker.parent().parent().removeClass('hidden');
     } else {
-        start_date_picker.parent().parent().hide();
-        end_date_picker.parent().parent().hide();
+        start_date_picker.parent().parent().addClass('hidden');
+        end_date_picker.parent().parent().addClass('hidden');
     }
 
 }
