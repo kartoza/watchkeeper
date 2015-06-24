@@ -8,6 +8,7 @@ __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
 
 
+import json
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
@@ -96,6 +97,15 @@ def get_events(request):
         events = events.filter(
             date_time__gt=start_time, date_time__lt=end_time)
 
+        for event in events:
+            note = event.notes
+            note = json.dumps(note)
+            event.clean_note = note
+
+            source = event.source
+            source = json.dumps(source)
+            event.clean_source = source
+
         context = {
             'events': events
         }
@@ -103,5 +113,7 @@ def get_events(request):
         events_json = loader.render_to_string(
             'event_mapper/event/events.json',
             context_instance=RequestContext(request, context))
+
+        # events_json = json.dumps(events_json)
 
         return HttpResponse(events_json, content_type='application/json')

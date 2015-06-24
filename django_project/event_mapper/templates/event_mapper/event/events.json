@@ -15,8 +15,8 @@
           "killed": {{ event.killed }},
           "injured": {{ event.injured }},
           "detained": {{ event.detained }},
-          "source": "{{ event.source }}",
-          "notes": "{{ event.notes }}",
+          "source": "{{ event.clean_source }}",
+          "notes": "{{ event.clean_notes }}",
           "reported_by": "{{ event.reported_by.get_full_name }}",
           "incident_icon": "{{ event.type.incident_icon.url }}",
           "advisory_icon": "{{ event.type.advisory_icon.url }}"
