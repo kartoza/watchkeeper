@@ -16,7 +16,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, loader
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-import json
+
 from django.contrib.gis.geos import Polygon
 from django.db.models import Q
 from django.utils import dateparse
