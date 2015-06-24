@@ -100,7 +100,7 @@ def get_events(request):
         for event in events:
             note = event.notes
             note = json.dumps(note)
-            event.clean_note = note
+            event.clean_notes = note
 
             source = event.source
             source = json.dumps(source)
