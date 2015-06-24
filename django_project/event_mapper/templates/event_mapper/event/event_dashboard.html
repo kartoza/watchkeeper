@@ -7,37 +7,58 @@
         <div align="center">
             <canvas id="incident_type_chart" width="200" height="200"></canvas>
         </div>
-        <div class="form-control empty" id="alert_box" class="form-control-wrapper">
-            Num of Alerts: <b id="num_events">0</b>
+        <div class="form-control empty" id="alert_box"
+             class="form-control-wrapper">
+            <div align="center">
+                <h3><span id="num_events">0</span> <span id="num_events_events">Alerts</span></h3>
+            </div>
         </div>
         <p>
-            <div id="time_option">Time options</div>
-            <label for="24h">
-                <div class="form-control-wrapper">
-                    <input class="form-control" type="radio" name="time_interval" id="24h" value="24h" checked="true">
-                </div>
-                24 Hours
-            </label>
-            <label for="week">
-                <div class="form-control-wrapper">
-                    <input class="form-control" type="radio" name="time_interval" id="week" value="week">
-                </div>
-                Week
-            </label>
-            <label for="custom">
-                <div class="form-control-wrapper">
-                    <input class="form-control" type="radio" name="time_interval" id="custom" value="custom">
-                </div>
-                Custom
-            </label>
-        </p>
-        <div class="form-control-wrapper" style="display: none;">
-            <label for="start_time_input">Start Time</label>
-            <input class="form-control empty" type="datetime" id="start_time_input">
+
+        <div id="time_option">Reporting period</div>
+
+        <div class="row">
+            <div class="form-control-wrapper col-md-3">
+                <input class="form-control"
+                       type="radio"
+                       name="time_interval"
+                       id="24h"
+                       value="24h"
+                       checked="true">
+                <label for="24h">24 Hours</label>
+            </div>
+
+            <div class="form-control-wrapper col-md-3">
+                <input class="form-control"
+                       type="radio"
+                       name="time_interval"
+                       id="week"
+                       value="week">
+
+                <label for="week">Week</label>
+            </div>
+
+            <div class="form-control-wrapper col-md-3">
+                <input class="form-control"
+                       type="radio"
+                       name="time_interval"
+                       id="custom"
+                       value="custom">
+                <label for="custom">Custom</label>
+            </div>
         </div>
-        <div class="form-control-wrapper" style="display: none;">
+
+        <div class="form-control-wrapper hidden">
+            <label for="start_time_input">Start Time</label>
+            <input class="form-control empty"
+                   type="datetime"
+                   id="start_time_input">
+        </div>
+        <div class="form-control-wrapper hidden">
             <label for="end_time_input">End Time</label>
-            <input class="form-control empty" type="datetime" id="end_time_input">
+            <input class="form-control empty"
+                   type="datetime"
+                   id="end_time_input">
         </div>
     </div>
 </div>

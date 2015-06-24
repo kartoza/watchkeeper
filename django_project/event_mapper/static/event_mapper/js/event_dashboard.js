@@ -140,13 +140,12 @@ function enable_custom_interval(show){
     var start_date_picker = $('#start_time_input');
     var end_date_picker = $('#end_time_input');
     if (show) {
-        start_date_picker.parent().parent().show();
-        end_date_picker.parent().parent().show();
+        start_date_picker.parent().parent().removeClass('hidden');
+        end_date_picker.parent().parent().removeClass('hidden');
     } else {
-        start_date_picker.parent().parent().hide();
-        end_date_picker.parent().parent().hide();
+        start_date_picker.parent().parent().addClass('hidden');
+        end_date_picker.parent().parent().addClass('hidden');
     }
-
 
 }
 
@@ -298,6 +297,12 @@ function show_event_markers(){
                 }
             }
             $('#num_events').text(events.length);
+            var num_events_events = $('#num_events_events');
+            if (events.length == 1){
+                num_events_events.text('Alert');
+            } else {
+                num_events_events.text('Alerts');
+            }
             var side_panel = $('#side_panel');
             if (side_panel.is(":visible")) {
                 // Only create chart when the side panel is visible

@@ -33,7 +33,7 @@ class Event(models.Model):
 
     category = models.IntegerField(
         choices=CATEGORY_CHOICES,
-        verbose_name='Category of the event.',
+        verbose_name='Category of the event',
         help_text='There are two event categories: Incident and Advisory'
     )
 
@@ -46,19 +46,19 @@ class Event(models.Model):
     )
 
     place_name = models.CharField(
-        verbose_name='Place Name',
+        verbose_name='Place name',
         help_text='The name of the event location.',
         max_length=100
     )
 
     date_time = models.DateTimeField(
-        verbose_name='Date and Time',
+        verbose_name='Date and time',
         help_text='Date and time when the event happened.'
     )
 
     type = models.ForeignKey(
         EventType,
-        verbose_name='Event Type',
+        verbose_name='Event type',
         help_text='The type of the event.'
     )
 
@@ -79,21 +79,21 @@ class Event(models.Model):
     )
 
     killed = models.IntegerField(
-        verbose_name='Killed People',
+        verbose_name='Killed people',
         help_text='The number of killed people of the incident.',
         default=0,
         blank=True
     )
 
     injured = models.IntegerField(
-        verbose_name='Injured People',
+        verbose_name='Injured people',
         help_text='The number of injured people of the incident.',
         default=0,
         blank=True
     )
 
     detained = models.IntegerField(
-        verbose_name='Detained People',
+        verbose_name='Detained people',
         help_text='The number of detained people of the incident.',
         default=0,
         blank=True
@@ -120,13 +120,13 @@ class Event(models.Model):
 
     notified_immediately = models.BooleanField(
         verbose_name='Notify Immediately',
-        help_text='If True, there will be immediate notification.',
+        help_text='If selected, there will be immediate notification.',
         default=False
     )
 
     notification_sent = models.BooleanField(
         verbose_name='Notification Sent',
-        help_text='If True, a notification has been sent for this event.',
+        help_text='If selected, a notification has been sent for this event.',
         default=False
     )
 
