@@ -133,8 +133,17 @@ class Event(models.Model):
     objects = models.GeoManager()
 
     def __str__(self):
-        return '%s of %s by %s' % (
-            self.get_category_display(), self.type.name, self.perpetrator.name)
+        if self.perpetrator:
+            return '%s of %s by %s' % (
+                self.get_category_display(),
+                self.type.name,
+                self.perpetrator.name
+            )
+        else:
+            return '%s of %s' % (
+                self.get_category_display(),
+                self.type.name
+            )
 
     def save(self, *args, **kwargs):
         super(Event, self).save(*args, **kwargs)
