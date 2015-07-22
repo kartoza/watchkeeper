@@ -111,6 +111,6 @@ class MovementUpdateForm(forms.Form):
         movement.notes = data['notes']
         movement.last_updater = self.user
         movement.last_updated_time = datetime.now()
-        movement.id = 3
+        movement.id = boundary.id
         movement.save()
         return movement

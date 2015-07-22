@@ -31,7 +31,6 @@ def update_movement(request):
         form = MovementUpdateForm(request.POST, user=request.user)
         if form.is_valid():
             movement = form.update()
-            movement.save()
             if movement.boundary_type.model_class() == Country:
                 country_id = movement.boundary_id
                 response = get_country_information(country_id)
@@ -104,7 +103,8 @@ def get_country_information(country_id):
         'risk_level_label': risk_level_label,
         'movement_state_label': movement_state_label,
         'polygon_extent': polygon_extent,
-        'notified_immediately': notified_immediately
+        'notified_immediately': notified_immediately,
+        'province_id': 0
     }
 
     return response

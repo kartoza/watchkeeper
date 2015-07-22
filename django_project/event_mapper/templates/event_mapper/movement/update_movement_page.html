@@ -26,14 +26,7 @@
                     success: function(json){
                         console.log('Ajax success');
                         if (json['success']){
-                            $('#id_risk_level').val(json['risk_level_id']);
-                            $('#id_movement_state').val(json['movement_state_id']);
-                            $('#id_notes').val(json['notes']);
-                            update_current(
-                                    json['country_name'],
-                                    json['risk_level_label'],
-                                    json['movement_state_label']
-                            );
+                            update_movement_view(json);
                             $('#success_panel').show();
                             $('#success_message').text(json['success_message']);
                         } else {
