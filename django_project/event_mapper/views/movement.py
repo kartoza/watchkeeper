@@ -31,18 +31,17 @@ def update_movement(request):
         form = MovementUpdateForm(request.POST, user=request.user)
         if form.is_valid():
             movement = form.update()
-            movement.save()
             if movement.boundary_type.model_class() == Country:
                 country_id = movement.boundary_id
+                response = get_country_information(country_id)
             else:
                 province_id = movement.boundary_id
                 province = Province.objects.get(pk=province_id)
-                country_id = province.country.id
+                response = get_province_information(province)
 
             success_message = (
                 'You have successfully update new movement for %s.' %
                 movement.boundary.name)
-            response = get_country_information(country_id)
             response['success_message'] = success_message
             response['success'] = True
             return HttpResponse(json.dumps(
@@ -104,7 +103,8 @@ def get_country_information(country_id):
         'risk_level_label': risk_level_label,
         'movement_state_label': movement_state_label,
         'polygon_extent': polygon_extent,
-        'notified_immediately': notified_immediately
+        'notified_immediately': notified_immediately,
+        'province_id': 0
     }
 
     return response
@@ -114,6 +114,8 @@ def get_province_information(province):
     province_id = province.pk
     province_name = province.name
     country_name = province.country.name
+    country_id = province.country.id
+    country_extent = province.country.polygon_geometry.extent
     polygon = province.polygon_geometry.geojson
     province_type = ContentType.objects.get_for_model(Province)
     movement_query = Movement.objects.filter(
@@ -139,13 +141,15 @@ def get_province_information(province):
         'province_id': province_id,
         'province_name': province_name,
         'country_name': country_name,
+        'country_id': country_id,
         'polygon': polygon,
         'risk_level_id': risk_level_id,
         'movement_state_id': movement_state_id,
         'notes': notes,
         'risk_level_label': risk_level_label,
         'movement_state_label': movement_state_label,
-        'notified_immediately': notified_immediately
+        'notified_immediately': notified_immediately,
+        'polygon_extent': country_extent
     }
 
     return response
