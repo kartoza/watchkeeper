@@ -299,9 +299,9 @@ function show_event_markers(){
             $('#num_events').text(events.length);
             var num_events_events = $('#num_events_events');
             if (events.length == 1){
-                num_events_events.text('Alert');
+                num_events_events.text(' Alert');
             } else {
-                num_events_events.text('Alerts');
+                num_events_events.text(' Alerts');
             }
             var side_panel = $('#side_panel');
             if (side_panel.is(":visible")) {
