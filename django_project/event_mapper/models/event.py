@@ -133,13 +133,13 @@ class Event(models.Model):
     objects = models.GeoManager()
 
     def __str__(self):
-        if self.perpetrator:
+        try:
             return '%s of %s by %s' % (
                 self.get_category_display(),
                 self.type.name,
                 self.perpetrator.name
             )
-        else:
+        except AttributeError:
             return '%s of %s' % (
                 self.get_category_display(),
                 self.type.name
