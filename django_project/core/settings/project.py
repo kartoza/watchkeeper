@@ -25,4 +25,6 @@ INSTALLED_APPS += (
     'notifications'
 )
 
+from .celery_setting import *  # noqa
+
 DEBUG = True
