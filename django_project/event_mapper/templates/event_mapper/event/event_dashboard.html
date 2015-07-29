@@ -7,15 +7,16 @@
         <div align="center">
             <canvas id="incident_type_chart" width="200" height="200"></canvas>
         </div>
-        <div class="form-control empty" id="alert_box"
-             class="form-control-wrapper">
+        <div class="form-control empty form-control-wrapper" id="alert_box">
             <div align="center">
-                <h3><span id="num_events">0</span> <span id="num_events_events">Alerts</span></h3>
+                <h3>
+                    <span id="num_events">0</span>
+                    <span id="num_events_events"> Alerts</span>
+                </h3>
             </div>
         </div>
-        <p>
 
-        <div id="time_option">Reporting period</div>
+        <div id="time_option"><h4>Reporting period (UTC)</h4></div>
 
         <div class="row">
             <div class="form-control-wrapper col-md-3">
@@ -34,7 +35,6 @@
                        name="time_interval"
                        id="week"
                        value="week">
-
                 <label for="week">Week</label>
             </div>
 
@@ -49,13 +49,13 @@
         </div>
 
         <div class="form-control-wrapper hidden">
-            <label for="start_time_input">Start Time</label>
+            <label for="start_time_input">Start Time (UTC)</label>
             <input class="form-control empty"
                    type="datetime"
                    id="start_time_input">
         </div>
         <div class="form-control-wrapper hidden">
-            <label for="end_time_input">End Time</label>
+            <label for="end_time_input">End Time (UTC)</label>
             <input class="form-control empty"
                    type="datetime"
                    id="end_time_input">

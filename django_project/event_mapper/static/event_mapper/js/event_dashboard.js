@@ -8,33 +8,7 @@ var INCIDENT_CODE = 1;
 var ADVISORY_CODE = 2;
 
 var event_layer = new L.LayerGroup();
-var icon_urls = [
-    'static/event_mapper/css/images/blast-blue.png',
-    'static/event_mapper/css/images/blast-red.png',
-    'static/event_mapper/css/images/blast-blue-selected.png',
-    'static/event_mapper/css/images/blast-red-selected.png'
-];
 var pie_chart;
-
-var incident_icon = L.icon({
-    iconUrl: icon_urls[0],
-    iconAnchor: [16, 37]
-});
-
-var advisory_icon = L.icon({
-    iconUrl: icon_urls[1],
-    iconAnchor: [16, 37]
-});
-
-var selected_incident_icon = L.icon({
-    iconUrl: icon_urls[2],
-    iconAnchor: [16, 37]
-});
-
-var selected_advisory_icon = L.icon({
-    iconUrl: icon_urls[3],
-    iconAnchor: [16, 37]
-});
 
 
 function create_icon(raw_event_icon){
@@ -255,10 +229,10 @@ function show_event_markers(){
         'input[name="time_interval"]:checked').val();
 
     if (selected_time_option == '24h'){
-        end_time = moment();
+        end_time = moment.utc();
         start_time = moment().subtract(1, 'days');
     } else if (selected_time_option == 'week'){
-        end_time = moment();
+        end_time = moment.utc();
         start_time = moment().subtract(7, 'days');
     } else if (selected_time_option == 'custom'){
         end_time = $('#end_time_input');
@@ -267,7 +241,7 @@ function show_event_markers(){
         start_time = $('#start_time_input');
         start_time = moment(start_time.val());
     } else{
-        end_time = moment();
+        end_time = moment.utc();
         start_time = moment().subtract(1, 'days');
     }
     console.log(start_time);
