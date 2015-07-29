@@ -75,6 +75,7 @@ class EventCreationForm(models.ModelForm):
 
     date_time = forms.DateTimeField(
         label=get_verbose_name(Event, 'date_time'),
+        help_text=get_help_text(Event, 'date_time'),
         widget=forms.DateTimeInput(
             attrs={'class': 'form-control datetimepicker'})
     )
