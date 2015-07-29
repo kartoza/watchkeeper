@@ -29,15 +29,18 @@ def daily_report():
         date_time__gt=start_time, date_time__lt=end_time)
     # Generate a report
     report = 'Daily Reports\n'
-    report += 'List of all events starting from %s to %s\n' % (
+    report += 'List of all events starting from %s to %s:\n' % (
         start_time.strftime('%H:%M:%S, %A %d %B %Y'),
         end_time.strftime('%H:%M:%S, %A %d %B %Y'))
-    i = 1
-    for event in events:
-        event_report = event.long_message()
-        event_report = '%s. %s\n' % (i, event_report)
-        report += event_report
-        i += 1
+    if len(events) > 0:
+        i = 1
+        for event in events:
+            event_report = event.long_message()
+            event_report = '%s. %s\n' % (i, event_report)
+            report += event_report
+            i += 1
+    else:
+        report += 'No event found in these period.'
     logger.info(report)
     # Send email to all user
     users = User.objects.all()

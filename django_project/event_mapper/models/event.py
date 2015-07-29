@@ -33,7 +33,7 @@ class Event(models.Model):
 
     category = models.IntegerField(
         choices=CATEGORY_CHOICES,
-        verbose_name='Category of the event',
+        verbose_name="Event's Category",
         help_text='There are two event categories: Incident and Advisory'
     )
 
@@ -46,19 +46,19 @@ class Event(models.Model):
     )
 
     place_name = models.CharField(
-        verbose_name='Place name',
+        verbose_name='Place Name',
         help_text='The name of the event location.',
         max_length=100
     )
 
     date_time = models.DateTimeField(
-        verbose_name='Date and time',
-        help_text='Date and time when the event happened.'
+        verbose_name='Date and Time (UTC)',
+        help_text='Date and time in UTC when the event happened.'
     )
 
     type = models.ForeignKey(
         EventType,
-        verbose_name='Event type',
+        verbose_name='Event Type',
         help_text='The type of the event.'
     )
 
@@ -79,21 +79,21 @@ class Event(models.Model):
     )
 
     killed = models.IntegerField(
-        verbose_name='Killed people',
+        verbose_name='Killed People',
         help_text='The number of killed people of the incident.',
         default=0,
         blank=True
     )
 
     injured = models.IntegerField(
-        verbose_name='Injured people',
+        verbose_name='Injured People',
         help_text='The number of injured people of the incident.',
         default=0,
         blank=True
     )
 
     detained = models.IntegerField(
-        verbose_name='Detained people',
+        verbose_name='Detained People',
         help_text='The number of detained people of the incident.',
         default=0,
         blank=True
