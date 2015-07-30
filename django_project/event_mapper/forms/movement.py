@@ -112,5 +112,6 @@ class MovementUpdateForm(forms.Form):
         movement.last_updater = self.user
         movement.last_updated_time = datetime.now()
         movement.id = boundary.id
+        movement.notified_immediately = data['notified_immediately']
         movement.save()
         return movement
