@@ -11,6 +11,7 @@ from event_mapper.models.perpetrator import Perpetrator
 from event_mapper.models.victim import Victim
 from event_mapper.models.movement import Movement
 from event_mapper.models.rating import Rating
+from event_mapper.models.daily_report import DailyReport
 
 
 class MyUserAdmin(UserAdmin):
@@ -117,6 +118,11 @@ class RatingAdmin(admin.ModelAdmin):
     ordering = ('level',)
 
 
+class DailyReportAdmin(admin.ModelAdmin):
+    list_display = ('date_time', 'event_number', 'movement_number')
+    ordering = ('date_time',)
+
+
 admin.site.register(User, MyUserAdmin)
 admin.site.register(Country, BoundaryAdmin)
 admin.site.register(Province, BoundaryAdmin)
@@ -126,3 +132,4 @@ admin.site.register(Perpetrator, PerpetratorAdmin)
 admin.site.register(Victim, VictimAdmin)
 admin.site.register(Movement, MovementAdmin)
 admin.site.register(Rating, RatingAdmin)
+admin.site.register(DailyReport, DailyReportAdmin)

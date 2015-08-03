@@ -22,14 +22,14 @@ class DailyReport(models.Model):
     )
 
     start_time = models.DateTimeField(
-        verbose_name='Date and Time (UTC)',
+        verbose_name='Start Period (UTC)',
         help_text='The starting period of the report in UTC ',
         null=False,
         blank=False
     )
 
     end_time = models.DateTimeField(
-        verbose_name='Date and Time (UTC)',
+        verbose_name='End Period (UTC)',
         help_text='The end period of the report in UTC ',
         null=False,
         blank=False
