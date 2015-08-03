@@ -15,6 +15,10 @@ CELERYBEAT_SCHEDULE = {
         'task': 'tasks.daily_report',
         'schedule': crontab(hour=0, minute=0),
     },
+    'daily-pdf-report': {
+        'task': 'tasks.daily_pdf_report',
+        'schedule': crontab(hour=0, minute=0),
+    },
 }
 
 CELERY_TIMEZONE = 'UTC'
