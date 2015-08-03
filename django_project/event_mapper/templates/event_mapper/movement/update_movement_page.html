@@ -12,58 +12,12 @@
             set_offset();
             $('#nav_movement').addClass("active");
             $('#id_region').change(function(){
-                $('#success_panel').hide();
-                $('#error_panel').hide();
-                console.log('drop down changed');
-                console.log($('option:selected', this).val() + $
-                ('option:selected', this).text());
-                $.ajax({
-                    type: 'POST',
-                    url: '/get_country/',
-                    data: {'country_id': $('option:selected', this).val()},
-                    dataType: 'json',
-                    success: function(json){
-                        console.log('Ajax success');
-                        $('#id_risk_level').val(json['risk_level_id']);
-                        $('#id_movement_state').val(json['movement_state_id']);
-                        $('#id_notes').val(json['notes']);
-                        $('#id_notified_immediately').prop(
-                                'checked', json['notified_immediately']);
-                        update_current(
-                                json['country_name'],
-                                json['risk_level_label'],
-                                json['movement_state_label']
-                        );
-                        add_current_region_geojson(
-                                jQuery.parseJSON(json['polygon']),
-                                jQuery.parseJSON(json['risk_level_id']) );
-                        context = {
-                            'bounds': [
-                                [
-                                    json['polygon_extent'][1],
-                                    json['polygon_extent'][0]
-                                ],
-                                [
-                                    json['polygon_extent'][3],
-                                    json['polygon_extent'][2]
-                                ]
-                            ]
-                        };
-                        show_map(context);
-                        add_provinces(json['provinces']);
-                        console.log('Ajax finished');
-                        set_chosen_risk_level_color();
-                    },
-                    error: function(xhr, errmsg, err){
-                        console.log(xhr.status + ": " + xhr.responseText);
-                    }
-                        }
-                );
+                set_offset();
+                id_region_change();
             });
 
             $('#update_movement_form').submit(function(e){
                 console.log('Submitting form');
-                console.log($('#update_movement_form').serialize());
                 $.ajax({
                     type: 'POST',
                     url: '/update_movement/',
@@ -72,14 +26,7 @@
                     success: function(json){
                         console.log('Ajax success');
                         if (json['success']){
-                            $('#id_risk_level').val(json['risk_level_id']);
-                            $('#id_movement_state').val(json['movement_state_id']);
-                            $('#id_notes').val(json['notes']);
-                            update_current(
-                                    json['country_name'],
-                                    json['risk_level_label'],
-                                    json['movement_state_label']
-                            );
+                            update_movement_view(json);
                             $('#success_panel').show();
                             $('#success_message').text(json['success_message']);
                         } else {
@@ -103,35 +50,7 @@
             });
             var province_dropdown = $('#id_province');
             province_dropdown.change(function(){
-                $('#success_panel').hide();
-                $('#error_panel').hide();
-                if ($('option:selected', this).val() == 0){
-                    $('#id_region').change();
-                } else {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/get_province/',
-                        data: {'province_id': $('option:selected', this).val()},
-                        dataType: 'json',
-                        success: function (json) {
-                            add_current_region_geojson(
-                                    jQuery.parseJSON(json['polygon']),
-                                    jQuery.parseJSON(json['risk_level_id']) );
-                            update_current(
-                                    json['country_name'] + ' - ' + json['province_name'],
-                                    json['risk_level_label'],
-                                    json['movement_state_label']
-                            );
-                            $('#id_risk_level').val(json['risk_level_id']);
-                            $('#id_movement_state').val(json['movement_state_id']);
-                            $('#id_notes').val(json['notes']);
-                            set_chosen_risk_level_color();
-                        },
-                        error: function (xhr, errmsg, err) {
-                            console.log(xhr.status + ": " + xhr.responseText);
-                        }
-                    });
-                }
+                province_drop_down_change()
             });
             province_dropdown.parent().parent().hide();
             set_dropdown_color();

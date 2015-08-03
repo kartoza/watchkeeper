@@ -9,11 +9,12 @@ __doc__ = ''
 
 from django.contrib.gis.db import models
 from django.utils import timezone
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 from event_mapper.models.user import User
+from event_mapper.models.country import Country
+from event_mapper.models.province import Province
 
 
 class Movement(models.Model):
@@ -142,3 +143,29 @@ class Movement(models.Model):
         for the_tuple in cls.RISK_LEVELS:
             if the_tuple[0] == index:
                 return the_tuple[1]
+
+    def report(self):
+        """Create a report from the current movement state.
+        :returns: A report that represent the movement.
+        :rtype: str
+        """
+        if self.boundary_type.model_class() == Country:
+            content = 'Movement state in %s (country) is ' % self.boundary.name
+        # elif self.boundary_type.model_class() == Province:
+        else:
+            content = (
+                'Movement state in %s (province) of %s (country) is ' %
+                (self.boundary.name, self.boundary.country)
+            )
+
+        content += (
+            '%s and has risk level %s. The last update of movement state is '
+            'on %s by %s' % (
+                self.get_movement_state_display(),
+                self.get_risk_level_display(),
+                self.last_updated_time,
+                self.last_updater.get_full_name()
+            )
+        )
+
+        return content
