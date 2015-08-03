@@ -9,17 +9,19 @@ __doc__ = ''
 
 
 import os
+import hashlib
+
 from datetime import datetime, timedelta
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from rst2pdf.createpdf import RstToPdf
 from django.conf.global_settings import MEDIA_ROOT
-import hashlib
 
 logger = get_task_logger(__name__)
 
 from event_mapper.models.event import Event
 from event_mapper.models.movement import Movement
+from event_mapper.models.daily_report import DailyReport
 
 reports_directory = os.path.abspath(os.path.join(
     MEDIA_ROOT,
@@ -28,13 +30,13 @@ reports_directory = os.path.abspath(os.path.join(
 
 
 def generate_rst_report(start_time, end_time):
-    """Return an rst report for event and movement.
+    """Return an rst report for event and movement and the number of them.
 
     :param start_time: Starting time.
     :param end_time: End time.
 
-    :returns: RST report.
-    :rtype: str
+    :returns: RST report and the number of event and movement
+    :rtype: (str, int, int)
     """
     title = 'IMMAP Daily Report\n'
     report = title + '=' * len(title) + '\n'
@@ -74,7 +76,7 @@ def generate_rst_report(start_time, end_time):
     else:
         report += 'There is no movement update in this period.\n'
 
-    return report
+    return report, len(events), len(movements)
 
 
 def test_report():
@@ -82,7 +84,7 @@ def test_report():
     from datetime import datetime, timedelta
     end_time = datetime.utcnow()
     start_time = end_time - timedelta(days=30)
-    rst_report = generate_rst_report(start_time, end_time)
+    rst_report, _, _ = generate_rst_report(start_time, end_time)
     return rst_report
 
 
@@ -93,7 +95,8 @@ def generate_report(start_time, end_time):
     :param end_time: End time.
 
     """
-    rst_report = generate_rst_report(start_time, end_time)
+    rst_report, num_event, num_movement = generate_rst_report(
+        start_time, end_time)
     sha = hashlib.sha1('%s' % datetime.utcnow()).hexdigest()[:6]
     filename = end_time.strftime('IMMAP_Report_%Y%m%d') + sha + '.pdf'
     file_path = os.path.join(reports_directory, filename)
@@ -106,6 +109,15 @@ def generate_report(start_time, end_time):
     pdf.createPdf(text=rst_report, output=file_path)
     logger.info('Report is created as %s' % filename)
 
+    if os.path.exists(file_path):
+        daily_report = DailyReport()
+        daily_report.start_time = start_time
+        daily_report.end_time = end_time
+        daily_report.event_number = num_event
+        daily_report.movement_number = num_movement
+        daily_report.file_path = file_path
+        daily_report.date_time = start_time
+        daily_report.save()
 
 @shared_task(name='tasks.daily_pdf_report')
 def daily_pdf_report():
