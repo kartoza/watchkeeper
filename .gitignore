@@ -90,12 +90,12 @@ deployment/pg/postgres_dev_data/9.3
 deployment/nginx-conf/
 deployment/static
 deployment/media
+deployment/reports
 
 # Mapproxy in docker
 mapproxy/cache_data/
 
 # logs in docker containers
-reports
 
 # Development
 django_project/media
@@ -103,4 +103,4 @@ django_project/media
 # Apt cacher
 deployment/docker-prod/71-apt-cacher-ng
 deployment/docker-dev/71-apt-cacher-ng
-deployment/docker-cron/71-apt-cacher-ng
+deployment/backups
