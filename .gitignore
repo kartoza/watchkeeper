@@ -104,3 +104,4 @@ django_project/media
 deployment/docker-prod/71-apt-cacher-ng
 deployment/docker-dev/71-apt-cacher-ng
 deployment/docker-cron/71-apt-cacher-ng
+deployment/backups
