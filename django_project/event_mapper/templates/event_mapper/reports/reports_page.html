@@ -37,8 +37,8 @@
                     {% for daily_report in daily_reports %}
                         <tr>
                             <td> {{ daily_report.date_time|date }}</td>
-                            <td> {{ daily_report.num_event }} </td>
-                            <td> {{ daily_report.num_movement }} </td>
+                            <td> {{ daily_report.event_number }} </td>
+                            <td> {{ daily_report.movement_number }} </td>
                             <td>
                                 <button class="btn btn-primary btn-sm"
                                         onclick="window.open('download_report/{{ daily_report.id }}','_self');">
