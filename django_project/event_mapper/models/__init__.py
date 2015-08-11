@@ -17,3 +17,4 @@ from user import User
 from victim import Victim
 from rating import Rating
 from movement import Movement
+from daily_report import DailyReport

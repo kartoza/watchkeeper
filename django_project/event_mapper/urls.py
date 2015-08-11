@@ -42,5 +42,9 @@ urlpatterns = patterns(
     # Static page urls
     url(r'^contact', 'event_mapper.views.front_end.contact', name='contact'),
 
-    url(r'^reports', 'event_mapper.views.front_end.contact', name='contact'),
+    url(r'^reports', 'event_mapper.views.reports.reports', name='reports'),
+
+    url(r'^download_report/(?P<report_id>[0-9A-Za-z_\-]+)/',
+        'event_mapper.views.reports.download_report',
+        name='download_report'),
 )
