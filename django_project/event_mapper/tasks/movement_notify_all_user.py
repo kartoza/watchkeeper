@@ -25,7 +25,7 @@ def movement_notify_all_users(movement_id):
     movement = Movement.objects.get(id=movement_id)
     users = User.objects.filter(
         countries_notified__polygon_geometry__contains=
-        movement.boundary.polygon_geometry, notify_immediately=True)
+        movement.boundary.polygon_geometry)
 
     message = movement.report()
 
