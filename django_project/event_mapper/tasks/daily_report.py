@@ -64,6 +64,11 @@ def daily_report():
         report += 'No movement updated found in these period.\n'
 
     logger.info(report)
+
+    # Do not send email notification if no events or movement updates
+    if len(events) == 0 and len(movements) == 0:
+        return
+
     # Send email to all user
     users = User.objects.all()
     for user in users:
