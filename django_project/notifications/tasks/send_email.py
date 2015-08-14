@@ -21,9 +21,10 @@ def send_email_message(user, message):
         message,
         'alert@immap.kartoza.com',
         [user.email],
-        fail_silently=False)
+        fail_silently=False,
+        html_message=message)
     notification = Notification(
-        alert_type='sms',
+        alert_type='email',
         recipient=user,
         message_content=message)
     notification.save()
