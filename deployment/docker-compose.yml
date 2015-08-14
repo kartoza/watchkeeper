@@ -142,8 +142,6 @@ web:
     - ./reports:/home/web/archive
   links:
     - uwsgi:uwsgi
-    - qgisserver:qgisserver
-    - mapproxy:mapproxy
   ports:
     - "49100:8080"
 
@@ -160,7 +158,5 @@ stagingweb:
     - ./reports:/home/web/reports
   links:
     - uwsgi:uwsgi
-    - qgisserver:qgisserver
-    - mapproxy:mapproxy
   ports:
     - "49101:8080"
