@@ -153,3 +153,51 @@ class Event(models.Model):
             self.__str__(),
             self.place_name,
             self.location.get_coords())
+
+    def html_table_row(self):
+        summary = ''
+        if self.category == self.INCIDENT_CODE:
+            summary = (
+                'A %(type)s launched by %(perpetrator)s against '
+                '%(victim)s was reported. %(killed)d people where killed.'
+                '%(injured)d people where injured. '
+                '%(detained)d people where detained.') % {
+                    'type': self.type.name,
+                    'perpetrator': self.perpetrator.name,
+                    'victim': self.victim.name,
+                    'killed': self.killed or 0,
+                    'injured': self.injured or 0,
+                    'detained': self.detained or 0}
+        if self.category == self.ADVISORY_CODE:
+            summary = (
+                'An advisory about a %s(type)s launched by '
+                '%(perpetrator)s against %(victim)s was issued. ') % {
+                    'type': self.type.name,
+                    'perpetrator': self.perpetrator.name,
+                    'victim': self.victim.name}
+        style = (
+            "font-family: trebuchet MS; font-size: 10pt;"
+            "border-bottom-color: rgb(128, 128, 128);"
+            "border-bottom-width: 0.75px; border-bottom-style: solid;")
+        html = u"""
+        <tr style=3D"margin-top: 5px; margin-bottom: 5px;">
+            <td width=3D"25%%" valign=3D"top" style=3D"%(style)s">
+                %(place)s (%(coordinates)s), %(date_time)s
+            </td>
+            <td width=3D"75%%" valign=3D"top"
+                style=3D"%(style)s">
+                %(summary)s
+                <br>
+                %(notes)s
+            </td>
+        </tr>
+        """ % {
+            'place': self.place_name,
+            'coordinates': self.location.get_coords(),
+            'date_time': self.date_time,
+            'style': style,
+            'summary': summary,
+            'notes': self.notes,
+        }
+        return html
+
