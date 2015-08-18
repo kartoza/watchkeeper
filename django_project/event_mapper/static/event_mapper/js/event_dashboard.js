@@ -11,6 +11,10 @@ var event_layer = new L.LayerGroup();
 var pie_chart;
 
 
+function normalize_json_string(string){
+    return string.replace(/\n/g, '<br>').slice(6, -6)
+}
+
 function create_icon(raw_event_icon){
     return L.icon({
         iconUrl: raw_event_icon,
@@ -194,8 +198,8 @@ function show_event_detail(event){
     $('#event_detail_killed').text(event.options.event_killed);
     $('#event_detail_injured').text(event.options.event_injured);
     $('#event_detail_detained').text(event.options.event_detained);
-    $('#event_detail_source').html(event.options.event_source);
-    $('#event_detail_notes').html(event.options.event_notes);
+    $('#event_detail_source').html(normalize_json_string(event.options.event_source));
+    $('#event_detail_notes').html(normalize_json_string(event.options.event_notes));
     $('#event_detail_reported_by').text(event.options.event_reported_by);
 
 }
