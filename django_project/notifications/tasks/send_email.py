@@ -15,16 +15,16 @@ from notifications.models import Notification
 
 
 @shared_task
-def send_email_message(user, message):
+def send_email_message(user, text_message, html_message):
     send_mail(
         'immap',
-        message,
+        text_message,
         'alert@immap.kartoza.com',
         [user.email],
         fail_silently=False,
-        html_message=message)
+        html_message=html_message)
     notification = Notification(
         alert_type='email',
         recipient=user,
-        message_content=message)
+        message_content=text_message)
     notification.save()

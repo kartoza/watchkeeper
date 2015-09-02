@@ -138,11 +138,17 @@ class Movement(models.Model):
             if the_tuple[0] == index:
                 return the_tuple[1]
 
+    def movement_state_label(self):
+        return Movement.get_movement_state_label(self.movement_state)
+
     @classmethod
     def get_risk_level_label(cls, index):
         for the_tuple in cls.RISK_LEVELS:
             if the_tuple[0] == index:
                 return the_tuple[1]
+
+    def risk_level_label(self):
+        return Movement.get_risk_level_label(self.risk_level)
 
     def report(self):
         """Create a report from the current movement state.
