@@ -40,6 +40,9 @@ def daily_report():
     movements = Movement.objects.filter(
         last_updated_time__gt=start_time,
         last_updated_time__lt=end_time)
+    events = Event.objects.filter(
+        last_updated_time__gt=start_time,
+        last_updated_time__lt=end_time)
     context = {
         'incident_events': incident_events,
         'incident_advisory': incident_advisory,
