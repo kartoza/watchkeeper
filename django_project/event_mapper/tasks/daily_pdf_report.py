@@ -7,9 +7,11 @@ __date__ = '8/3/15'
 __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
 
-
 import os
 import hashlib
+import pdfkit
+from xhtml2pdf import pisa
+import cStringIO as StringIO
 
 from datetime import datetime, timedelta
 from celery import shared_task
@@ -116,7 +118,7 @@ def generate_html_report(start_time, end_time):
         'email_templates/daily_alerts.html',
         context)
 
-    return report_html, len(events), len(movements)
+    return report_html.replace('\n', ''), len(events), len(movements)
 
 
 def test_report():
@@ -129,12 +131,26 @@ def test_report():
 
 
 def test_html_report():
-    """Test for generate_rst_report."""
+    """Test for generate_html_report."""
+    from datetime import datetime, timedelta
+    end_time = datetime.utcnow()
+    start_time = end_time - timedelta(days=15)
+    html_report, _, _ = generate_html_report(start_time, end_time)
+    return html_report
+
+
+def test_generate_pdf_report():
+    """Test for generate_pdf_report."""
     from datetime import datetime, timedelta
     end_time = datetime.utcnow()
     start_time = end_time - timedelta(days=45)
-    html_report, _, _ = generate_html_report(start_time, end_time)
-    return html_report.replace('\n', '')
+    generate_report(start_time, end_time)
+
+
+def html_to_pdf(data, filename):
+    a = 'a'
+    pdf = pisa.CreatePDF(StringIO.StringIO(data.encode('utf-8')), file(filename, "wb"), encoding='utf-8')
+    return not pdf.err
 
 
 def generate_report(start_time, end_time):
@@ -144,7 +160,7 @@ def generate_report(start_time, end_time):
     :param end_time: End time.
 
     """
-    rst_report, num_event, num_movement = generate_rst_report(
+    raw_report, num_event, num_movement = generate_html_report(
         start_time, end_time)
     sha = hashlib.sha1('%s' % datetime.utcnow()).hexdigest()[:6]
     filename = end_time.strftime('IMMAP_Report_%Y%m%d') + sha + '.pdf'
@@ -154,12 +170,18 @@ def generate_report(start_time, end_time):
         os.makedirs(reports_directory)
     else:
         logger.info('Reports directory exists')
-    pdf = RstToPdf()
-    pdf.createPdf(text=rst_report, output=file_path)
 
     # Put the pdf generation here
+    # RST to PDF
+    # pdf = RstToPdf()
+    # pdf.createPdf(text=raw_report, output=file_path)
 
-    logger.info('Report is created as %s' % filename)
+    # HTML to PDF (pdfkit)
+    # pdfkit.from_string(raw_report, file_path)
+    # logger.info('Report is created as %s' % filename)
+
+    # xhtml2pdf
+    html_to_pdf(raw_report, file_path)
 
     if os.path.exists(file_path):
         daily_report = DailyReport()
