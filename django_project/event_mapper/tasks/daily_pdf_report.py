@@ -9,7 +9,6 @@ __doc__ = ''
 
 import os
 import hashlib
-import pdfkit
 from xhtml2pdf import pisa
 import cStringIO as StringIO
 
