@@ -29,6 +29,7 @@ def daily_report():
     # All times are in UTC
     end_time = datetime.utcnow()
     start_time = end_time - timedelta(days=1)
+
     incident_events = Event.objects.filter(
         date_time__gt=start_time,
         date_time__lt=end_time,

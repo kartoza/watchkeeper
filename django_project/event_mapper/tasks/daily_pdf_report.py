@@ -16,6 +16,8 @@ from celery import shared_task
 from celery.utils.log import get_task_logger
 from rst2pdf.createpdf import RstToPdf
 from django.conf.global_settings import MEDIA_ROOT
+from django.template.loader import render_to_string
+
 
 logger = get_task_logger(__name__)
 
@@ -79,6 +81,44 @@ def generate_rst_report(start_time, end_time):
     return report, len(events), len(movements)
 
 
+def generate_html_report(start_time, end_time):
+    """Return an rst report for event and movement and the number of them.
+
+    :param start_time: Starting time.
+    :param end_time: End time.
+
+    :returns: RST report and the number of event and movement
+    :rtype: (str, int, int)
+    """
+    incident_events = Event.objects.filter(
+        date_time__gt=start_time,
+        date_time__lt=end_time,
+        category=1)
+    incident_advisory = Event.objects.filter(
+        date_time__gt=start_time,
+        date_time__lt=end_time,
+        category=2)
+    events = Event.objects.filter(
+        date_time__gt=start_time,
+        date_time__lt=end_time)
+    movements = Movement.objects.filter(
+        last_updated_time__gt=start_time,
+        last_updated_time__lt=end_time)
+    context = {
+        'incident_events': incident_events,
+        'incident_advisory': incident_advisory,
+        'movements': movements,
+        'start_date': start_time.strftime('%A %d %B %Y'),
+        'end_date': end_time.strftime('%H:%M:%S, %A %d %B %Y'),
+    }
+
+    report_html = render_to_string(
+        'email_templates/daily_alerts.html',
+        context)
+
+    return report_html, len(events), len(movements)
+
+
 def test_report():
     """Test for generate_rst_report."""
     from datetime import datetime, timedelta
@@ -86,6 +126,15 @@ def test_report():
     start_time = end_time - timedelta(days=30)
     rst_report, _, _ = generate_rst_report(start_time, end_time)
     return rst_report
+
+
+def test_html_report():
+    """Test for generate_rst_report."""
+    from datetime import datetime, timedelta
+    end_time = datetime.utcnow()
+    start_time = end_time - timedelta(days=45)
+    html_report, _, _ = generate_html_report(start_time, end_time)
+    return html_report.replace('\n', '')
 
 
 def generate_report(start_time, end_time):
@@ -107,6 +156,9 @@ def generate_report(start_time, end_time):
         logger.info('Reports directory exists')
     pdf = RstToPdf()
     pdf.createPdf(text=rst_report, output=file_path)
+
+    # Put the pdf generation here
+
     logger.info('Report is created as %s' % filename)
 
     if os.path.exists(file_path):
@@ -118,6 +170,7 @@ def generate_report(start_time, end_time):
         daily_report.file_path = file_path
         daily_report.date_time = start_time
         daily_report.save()
+
 
 @shared_task(name='tasks.daily_pdf_report')
 def daily_pdf_report():
