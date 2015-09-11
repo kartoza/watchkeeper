@@ -8,7 +8,6 @@ __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
 
 import os
-import hashlib
 import cStringIO as StringIO
 from xhtml2pdf import pisa
 
