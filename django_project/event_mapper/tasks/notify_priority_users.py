@@ -77,14 +77,11 @@ def notify_priority_users(event_id):
     users = User.objects.filter(
         countries_notified__polygon_geometry__contains=event.location,
         notify_immediately=True)
-
-    html_message = generate_email_report(event)
-
     text_message = render_to_string(
         'email_templates/event_alert.txt',
-        {'event': event})
+        {'event': event, 'category': event.get_category_display()})
     html_message = render_to_string(
         'email_templates/event_alert.html',
-        {'event': event})
+        {'event': event, 'category': event.get_category_display()})
     for user in users:
         send_email_message(user, text_message, html_message)

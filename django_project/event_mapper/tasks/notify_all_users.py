@@ -25,9 +25,9 @@ def notify_all_users(event_id):
         countries_notified__polygon_geometry__contains=event.location)
     text_message = render_to_string(
         'email_templates/event_alert.txt',
-        {'event': event})
+        {'event': event, 'category': event.get_category_display()})
     html_message = render_to_string(
         'email_templates/event_alert.html',
-        {'event': event})
+        {'event': event, 'category': event.get_category_display()})
     for user in users:
         send_email_message(user, text_message, html_message)
