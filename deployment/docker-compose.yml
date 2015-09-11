@@ -33,28 +33,11 @@ db:
   image: kartoza/postgis:9.4-2.1
   volumes:
     - ./pg/postgres_data:/var/lib/postgresql
+    - ./backups:/backups
   environment:
     - USERNAME=docker
     - PASS=docker
-
-qgisserver:
-  image: kartoza/qgis-server
-  hostname: qgis-server
-  volumes:
-    - ../maps:/web
-    - ./logs/qgisserver:/var/log/apache2
-  links:
-    - db:db
-
-mapproxy:
-  image: kartoza/mapproxy
-  hostname: mapproxy
-  volumes:
-    - ../mapproxy:/mapproxy
-  volumes_from:
-    - qgisserver
-  links:
-    - qgisserver:qgisserver
+  restart: on-failure:5
 
 rabbitmq:
   image: library/rabbitmq
@@ -113,14 +96,16 @@ uwsgi:
     - worker:worker
 
 dbbackups:
-  image: kartoza/pg-backup
+  image: kartoza/pg-backup:9.4
   hostname: pg-backups
   volumes:
     - ./backups:/backups
   links:
     - db:db
   environment:
-    - DUMPPREFIX=PG_WATCHKEEPER
+    # take care to let the project name below match that
+    # declared in the top of the makefile
+    - DUMPPREFIX=PG_watchkeeper
     # These are all defaults anyway, but setting explicitly in
     # case we ever want to ever use different credentials
     - PGUSER=docker
@@ -128,6 +113,7 @@ dbbackups:
     - PGPORT=5432
     - PGHOST=db
     - PGDATABASE=gis
+  restart: on-failure:5
 
 # This is normally the main entry point for a production server
 web:
@@ -142,7 +128,21 @@ web:
     - ./reports:/home/web/archive
   links:
     - uwsgi:uwsgi
-    - qgisserver:qgisserver
-    - mapproxy:mapproxy
   ports:
     - "49100:8080"
+
+# Exactly the same as web but for staging we use a different port.
+stagingweb:
+  image: nginx
+  hostname: nginx
+  volumes:
+    - ./sites-enabled:/etc/nginx/conf.d:ro
+    # I dont use volumes_from as I want to use the ro modifier
+    - ./static:/home/web/static:ro
+    - ./media:/home/web/media:ro
+    - ./logs:/var/log/nginx
+    - ./reports:/home/web/reports
+  links:
+    - uwsgi:uwsgi
+  ports:
+    - "49101:8080"

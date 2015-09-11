@@ -21,6 +21,5 @@ def notify_all_users(event_id):
     event = Event.objects.get(id=event_id)
     users = User.objects.filter(
         countries_notified__polygon_geometry__contains=event.location)
-    message = event.long_message()
     for user in users:
-        send_email_message(user, message)
+        send_email_message(user, event.text_report(), event.html_report())

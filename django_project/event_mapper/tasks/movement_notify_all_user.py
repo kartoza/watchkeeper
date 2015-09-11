@@ -27,12 +27,10 @@ def movement_notify_all_users(movement_id):
         countries_notified__polygon_geometry__contains=
         movement.boundary.polygon_geometry)
 
-    message = movement.report()
-
     logger.info('Send movement to all users on %s' % datetime.now())
-    logger.info(message)
+    logger.info(movement.text_report())
     logger.info(
         'Movement notified immediately: %s' % movement.notified_immediately)
 
     for user in users:
-        send_email_message(user, message)
+        send_email_message(user, movement.text_report(), movement.html_report())

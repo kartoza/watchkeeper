@@ -91,6 +91,7 @@ deployment/nginx-conf/
 deployment/static
 deployment/media
 deployment/reports
+deployment/backups
 
 # Mapproxy in docker
 mapproxy/cache_data/
@@ -103,4 +104,11 @@ django_project/media
 # Apt cacher
 deployment/docker-prod/71-apt-cacher-ng
 deployment/docker-dev/71-apt-cacher-ng
-deployment/backups
+
+# Celery
+/django_project/celerybeat-schedule.dat
+/django_project/celerybeat-schedule.bak
+/django_project/celerybeat-schedule.dir
+
+# Old data for recover.
+/old_data
