@@ -22,3 +22,10 @@ def test_generate_event_html():
     events = Event.objects.all()
     event = events[randint(0, len(events))]
     return event.html_report()
+
+
+def test_generate_movement_html():
+    from event_mapper.models.movement import Movement
+    movements = Movement.objects.all()
+    movement = movements[randint(0, len(movements))]
+    return movement.html_report()

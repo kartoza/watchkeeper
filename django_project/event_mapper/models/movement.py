@@ -11,6 +11,7 @@ from django.contrib.gis.db import models
 from django.utils import timezone
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.template.loader import render_to_string
 
 from event_mapper.models.user import User
 from event_mapper.models.country import Country
@@ -115,6 +116,7 @@ class Movement(models.Model):
 
     def __str__(self):
         return self.boundary.name
+
     #
     # def save(self, *args, **kwargs):
     #     """Overloaded save method."""
@@ -178,4 +180,7 @@ class Movement(models.Model):
 
     def html_report(self):
         """Generate html report for the movement."""
-        return self.text_report()
+        report = render_to_string(
+            'email_templates/movement_alert.html',
+            {'movement': self})
+        return report.replace('\n', '')
