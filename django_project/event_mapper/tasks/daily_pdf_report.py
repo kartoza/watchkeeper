@@ -9,13 +9,12 @@ __doc__ = ''
 
 import os
 import hashlib
-from xhtml2pdf import pisa
 import cStringIO as StringIO
+from xhtml2pdf import pisa
 
 from datetime import datetime, timedelta
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from rst2pdf.createpdf import RstToPdf
 from django.conf.global_settings import MEDIA_ROOT
 from django.template.loader import render_to_string
 
@@ -30,56 +29,6 @@ reports_directory = os.path.abspath(os.path.join(
     MEDIA_ROOT,
     os.path.pardir,
     'reports'))
-
-
-def generate_rst_report(start_time, end_time):
-    """Return an rst report for event and movement and the number of them.
-
-    :param start_time: Starting time.
-    :param end_time: End time.
-
-    :returns: RST report and the number of event and movement
-    :rtype: (str, int, int)
-    """
-    title = 'IMMAP Daily Report\n'
-    report = title + '=' * len(title) + '\n'
-    report += 'Period %s - %s\n\n' % (
-        start_time.strftime('%H:%M:%S, %A %d %B %Y'),
-        end_time.strftime('%H:%M:%S, %A %d %B %Y'))
-    event_subtitle = 'Event Report\n'
-    report += event_subtitle + '-' * len(event_subtitle) + '\n'
-    report += 'List of all report in this period of time:\n\n'
-    events = Event.objects.filter(
-        date_time__gt=start_time, date_time__lt=end_time)
-    if len(events) > 0:
-        i = 1
-        for event in events:
-            event_report = event.long_message()
-            event_report = '%s. %s\n' % (i, event_report)
-            report += event_report
-            i += 1
-    else:
-        report += 'There is no event in this period.\n'
-
-    report += '\n\n'
-
-    movement_subtitle = 'Movement Update Report\n'
-    report += movement_subtitle + '-' * len(movement_subtitle) + '\n'
-    report += 'List of all movement update in this period of time:\n\n'
-    movements = Movement.objects.filter(
-        last_updated_time__gt=start_time,
-        last_updated_time__lt=end_time)
-    if len(movements) > 0:
-        i = 1
-        for movement in movements:
-            movement_report = movement.report()
-            movement_report = '%s. %s\n' % (i, movement_report)
-            report += movement_report
-            i += 1
-    else:
-        report += 'There is no movement update in this period.\n'
-
-    return report, len(events), len(movements)
 
 
 def generate_html_report(start_time, end_time):
@@ -120,15 +69,6 @@ def generate_html_report(start_time, end_time):
     return report_html.replace('\n', ''), len(events), len(movements)
 
 
-def test_report():
-    """Test for generate_rst_report."""
-    from datetime import datetime, timedelta
-    end_time = datetime.utcnow()
-    start_time = end_time - timedelta(days=30)
-    rst_report, _, _ = generate_rst_report(start_time, end_time)
-    return rst_report
-
-
 def test_html_report():
     """Test for generate_html_report."""
     from datetime import datetime, timedelta
@@ -147,7 +87,6 @@ def test_generate_pdf_report():
 
 
 def html_to_pdf(data, filename):
-    a = 'a'
     pdf = pisa.CreatePDF(StringIO.StringIO(data.encode('utf-8')), file(filename, "wb"), encoding='utf-8')
     return not pdf.err
 
@@ -161,8 +100,7 @@ def generate_report(start_time, end_time):
     """
     raw_report, num_event, num_movement = generate_html_report(
         start_time, end_time)
-    sha = hashlib.sha1('%s' % datetime.utcnow()).hexdigest()[:6]
-    filename = end_time.strftime('IMMAP_Report_%Y%m%d') + sha + '.pdf'
+    filename = end_time.strftime('IMMAP_Report_%Y%m%d') + '.pdf'
     file_path = os.path.join(reports_directory, filename)
     if not os.path.exists(reports_directory):
         logger.info('Reports directory not exists')
@@ -171,16 +109,13 @@ def generate_report(start_time, end_time):
         logger.info('Reports directory exists')
 
     # Put the pdf generation here
-    # RST to PDF
-    # pdf = RstToPdf()
-    # pdf.createPdf(text=raw_report, output=file_path)
-
-    # HTML to PDF (pdfkit)
-    # pdfkit.from_string(raw_report, file_path)
-    # logger.info('Report is created as %s' % filename)
-
     # xhtml2pdf
-    html_to_pdf(raw_report, file_path)
+    success = html_to_pdf(raw_report, file_path)
+    if success:
+        logger.info(
+            'Success to generate daily report for %s in %s' % (end_time.strftime('%Y %m %d'), file_path))
+    else:
+        logger.info('Failed to generate daily report for  %s' % end_time.strftime('%Y %m %d'))
 
     if os.path.exists(file_path):
         daily_report = DailyReport()
