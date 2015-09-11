@@ -28,12 +28,10 @@ def movement_notify_priority_users(movement_id):
         movement.boundary.polygon_geometry,
         notify_immediately=True)
 
-    message = movement.report()
-
     logger.info('Send movement to all users on %s' % datetime.now())
-    logger.info(message)
+    logger.info(movement.text_report())
     logger.info(
         'Movement notified immediately: %s' % movement.notified_immediately)
 
     for user in users:
-        send_email_message(user, message)
+        send_email_message(user, movement.text_report(), movement.html_report())

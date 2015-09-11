@@ -150,7 +150,7 @@ class Movement(models.Model):
     def risk_level_label(self):
         return Movement.get_risk_level_label(self.risk_level)
 
-    def report(self):
+    def text_report(self):
         """Create a report from the current movement state.
         :returns: A report that represent the movement.
         :rtype: str
@@ -175,3 +175,7 @@ class Movement(models.Model):
         )
 
         return content
+
+    def html_report(self):
+        """Generate html report for the movement."""
+        return self.text_report()
