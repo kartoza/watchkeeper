@@ -99,7 +99,7 @@ def generate_report(start_time, end_time):
     """
     raw_report, num_event, num_movement = generate_html_report(
         start_time, end_time)
-    filename = end_time.strftime('IMMAP_Report_%Y%m%d') + '.pdf'
+    filename = start_time.strftime('IMMAP_Report_%Y%m%d') + '.pdf'
     file_path = os.path.join(reports_directory, filename)
     if not os.path.exists(reports_directory):
         logger.info('Reports directory not exists')
@@ -112,9 +112,9 @@ def generate_report(start_time, end_time):
     success = html_to_pdf(raw_report, file_path)
     if success:
         logger.info(
-            'Success to generate daily report for %s in %s' % (end_time.strftime('%Y %m %d'), file_path))
+            'Success to generate daily report for %s in %s' % (start_time.strftime('%Y %m %d'), file_path))
     else:
-        logger.info('Failed to generate daily report for  %s' % end_time.strftime('%Y %m %d'))
+        logger.info('Failed to generate daily report for  %s' % start_time.strftime('%Y %m %d'))
 
     if os.path.exists(file_path):
         daily_report = DailyReport()
