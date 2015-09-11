@@ -33,9 +33,11 @@ db:
   image: kartoza/postgis:9.4-2.1
   volumes:
     - ./pg/postgres_data:/var/lib/postgresql
+    - ./backups:/backups
   environment:
     - USERNAME=docker
     - PASS=docker
+  restart: on-failure:5
 
 rabbitmq:
   image: library/rabbitmq
@@ -94,14 +96,16 @@ uwsgi:
     - worker:worker
 
 dbbackups:
-  image: kartoza/pg-backup
+  image: kartoza/pg-backup:9.4
   hostname: pg-backups
   volumes:
     - ./backups:/backups
   links:
     - db:db
   environment:
-    - DUMPPREFIX=PG_WATCHKEEPER
+    # take care to let the project name below match that
+    # declared in the top of the makefile
+    - DUMPPREFIX=PG_watchkeeper
     # These are all defaults anyway, but setting explicitly in
     # case we ever want to ever use different credentials
     - PGUSER=docker
@@ -109,6 +113,7 @@ dbbackups:
     - PGPORT=5432
     - PGHOST=db
     - PGDATABASE=gis
+  restart: on-failure:5
 
 # This is normally the main entry point for a production server
 web:
