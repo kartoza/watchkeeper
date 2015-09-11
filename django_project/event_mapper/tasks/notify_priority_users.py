@@ -10,6 +10,8 @@ __doc__ = ''
 
 from celery import shared_task
 
+from django.template.loader import render_to_string
+
 from notifications.tasks.send_email import send_email_message
 from notifications.tasks.send_sms import send_sms_message
 
@@ -75,6 +77,14 @@ def notify_priority_users(event_id):
     users = User.objects.filter(
         countries_notified__polygon_geometry__contains=event.location,
         notify_immediately=True)
-    message = generate_email_report(event)
+
+    html_message = generate_email_report(event)
+
+    text_message = render_to_string(
+        'email_templates/event_alert.txt',
+        {'event': event})
+    html_message = render_to_string(
+        'email_templates/event_alert.html',
+        {'event': event})
     for user in users:
-        send_email_message(user, message)
+        send_email_message(user, text_message, html_message)
