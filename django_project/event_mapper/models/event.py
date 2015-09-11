@@ -8,6 +8,7 @@ __copyright__ = 'imajimatika@gmail.com'
 __doc__ = ''
 
 from django.contrib.gis.db import models
+from django.template.loader import render_to_string
 
 from event_type import EventType
 from perpetrator import Perpetrator
@@ -153,6 +154,20 @@ class Event(models.Model):
             self.__str__(),
             self.place_name,
             self.location.get_coords())
+
+    def text_report(self):
+        """Generate report for the event in html format."""
+        report = render_to_string(
+            'email_templates/event_alert.txt',
+            {'event': self, 'category': self.get_category_display()})
+        return report
+
+    def html_report(self):
+        """Generate report for the event in html format."""
+        report = render_to_string(
+            'email_templates/event_alert.html',
+            {'event': self, 'category': self.get_category_display()})
+        return report.replace('\n', '')
 
     def html_table_row(self):
         summary = ''
