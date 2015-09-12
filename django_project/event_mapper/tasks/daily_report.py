@@ -41,9 +41,6 @@ def daily_report():
     movements = Movement.objects.filter(
         last_updated_time__gt=start_time,
         last_updated_time__lt=end_time)
-    events = Event.objects.filter(
-        last_updated_time__gt=start_time,
-        last_updated_time__lt=end_time)
     context = {
         'incident_events': incident_events,
         'incident_advisory': incident_advisory,
@@ -61,7 +58,8 @@ def daily_report():
     logger.info(report_plain)
 
     # Do not send email notification if no events or movement updates
-    if len(events) == 0 and len(movements) == 0:
+    if len(incident_advisory) == 0 and len(movements) == 0 and len(incident_events) == 0:
+        logger.info('There is no event or movement, so we do not send daily email.')
         return
 
     # Send email to all user
