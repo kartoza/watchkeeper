@@ -33,13 +33,10 @@
           {% for event in incident_events %}
             <tr>
                 <td>
-                    {{ event.place_name }} {{ event.location.get_coords }}, {{ event.date_time }}
+                    {{ event.place_name }} {{ event.get_coords }}, {{ event.date_time }}
                 </td>
                 <td>
-                    A {{ event.type.name }} launched by {{ event.perpetrator.name }} against
-                    {{ event.victim.name }} was reported. {{ event.killed }} people where killed.
-                    {{ event.injured }} people where injured.
-                    {{ event.detained }} people where detained.
+                    <b>{{ event.type.name }}</b>
                     <br>
                     {{ event.notes }}
                 </td>
@@ -61,11 +58,10 @@
           {% for event in incident_advisory %}
             <tr>
                 <td>
-                    {{ event.place_name }} {{ event.location.get_coords }}, {{ event.date_time }}
+                    {{ event.place_name }} {{ event.get_coords }}, {{ event.date_time }}
                 </td>
                 <td>
-                    A {{ event.type.name }} is anticipated by {{ event.perpetrator.name }} against
-                    {{ event.victim.name }}.
+                    <b>{{ event.type.name }}</b>
                     <br>
                     {{ event.notes }}
                 </td>
@@ -74,7 +70,7 @@
         </tbody>
     </table>
     {% else %}
-        No security advisories added this period.
+        No security advisories reported during this period.
     {% endif %}
 
     <h2 style="color: rgb(149, 55, 53); font-size: 12pt; font-weight: bold; margin-bottom: 0px;">
@@ -115,7 +111,7 @@
         </tbody>
     </table>
     {% else %}
-        No movement updates for this period.
+        No movement updates during this period.
     {% endif %}
 </table>
 </div>

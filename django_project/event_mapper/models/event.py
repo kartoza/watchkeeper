@@ -149,6 +149,9 @@ class Event(models.Model):
     def save(self, *args, **kwargs):
         super(Event, self).save(*args, **kwargs)
 
+    def get_coords(self):
+        return '%.5f %.5f' % self.location.get_coords()
+
     def long_message(self):
         return '%s was reported at %s %s' % (
             self.__str__(),

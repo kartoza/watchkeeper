@@ -62,8 +62,10 @@ def daily_report():
         logger.info('There is no event or movement, so we do not send daily email.')
         return
 
+    title = 'iMMAP Watchkeeper Daily Situational Report - %s' % (
+        ed_date.strftime('%A %d %B %Y'))
     # Send email to all user
     users = User.objects.all()
     for user in users:
         logger.info('send email to %s' % user.get_full_name())
-        send_email_message(user, report_plain, report_html)
+        send_email_message(user, report_plain, report_html, title)

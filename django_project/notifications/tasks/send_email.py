@@ -15,11 +15,15 @@ from notifications.models import Notification
 
 
 @shared_task
-def send_email_message(user, text_message, html_message):
-    send_mail(
-        'immap',
+def send_email_message(
+        user,
         text_message,
-        'alert@immap.kartoza.com',
+        html_message,
+        subject='iMMAP Watchkeeper'):
+    send_mail(
+        subject,
+        text_message,
+        'iMMAP Watchkeeper <alert@immap.kartoza.com>',
         [user.email],
         fail_silently=False,
         html_message=html_message)
