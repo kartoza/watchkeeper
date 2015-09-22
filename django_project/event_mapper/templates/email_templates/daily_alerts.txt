@@ -7,10 +7,9 @@ SECURITY INCIDENTS - LAST 24 HOURS
 {% if incident_events %}
 {% for event in incident_events %}
 _____________________________________________________________________________________________________________________________
-{{ event.place_name }}              || A {{ event.type.name }} launched by {{ event.perpetrator.name }} against
-{{ event.location.get_coords }},    || {{ event.victim.name }} was reported. {{ event.killed }} people where killed.
-{{ event.date_time }}               || {{ event.injured }} people where injured. {{ event.detained }} people where detained.
-									|| {{ event.notes }}
+{{ event.place_name }}              || {{ event.type.name }}
+{{ event.get_coords }},             ||
+{{ event.date_time }}               || {{ event.notes }}
 _____________________________________________________________________________________________________________________________
 {% endfor %}
 {% else %}
@@ -23,13 +22,13 @@ SECURITY ADVISORY
 {% if incident_advisory %}
 {% for event in incident_advisory %}
 _____________________________________________________________________________________________________________________________
-{{ event.place_name }}              || A {{ event.type.name }} is anticipated by {{ event.perpetrator.name }} against
-{{ event.location.get_coords }},    || {{ event.victim.name }}.
+{{ event.place_name }}              || {{ event.type.name }}
+{{ event.get_coords }},             ||
 {{ event.date_time }}				|| {{ event.notes }}
 _____________________________________________________________________________________________________________________________
 {% endfor %}
 {% else %}
-No security advisories added this period.
+No advisories where reported during this period.
 {% endif %}
 
 Movement State Updates
@@ -42,7 +41,7 @@ Region                 Movement State           Risk Level Updates
 {% ifequal movement.boundary.name.verbose_name 'Province or State name'  %}{{ movement.boundary.country.name }}: {{ movement.boundary.name }} {% else %}{{ movement.boundary.name }}{% endifequal %}       {{ movement.movement_state_label }}        {{ movement.risk_level_label }}
 {% endfor %}
 {% else %}
-No movement updates for this period.
+No movement updates during this period.
 {% endif %}
 
 

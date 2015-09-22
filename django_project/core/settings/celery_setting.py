@@ -13,7 +13,7 @@ from celery.schedules import crontab
 CELERYBEAT_SCHEDULE = {
     'daily-report': {
         'task': 'tasks.daily_report',
-        'schedule': crontab(hour=0, minute=0),
+        'schedule': crontab(hour=20, minute=0),
     },
     'daily-pdf-report': {
         'task': 'tasks.daily_pdf_report',
@@ -21,4 +21,4 @@ CELERYBEAT_SCHEDULE = {
     },
 }
 
-CELERY_TIMEZONE = 'UTC'
+CELERY_TIMEZONE = 'CAT'

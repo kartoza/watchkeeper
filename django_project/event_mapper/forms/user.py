@@ -93,22 +93,22 @@ class UserCreationForm(forms.ModelForm):
                 'placeholder': 'Your s3cr3T password'})
     )
 
-    north = forms.CharField(
+    north = forms.FloatField(
         widget=forms.HiddenInput,
         required=False
     )
 
-    east = forms.CharField(
+    east = forms.FloatField(
         widget=forms.HiddenInput,
         required=False
     )
 
-    south = forms.CharField(
+    south = forms.FloatField(
         widget=forms.HiddenInput,
         required=False
     )
 
-    west = forms.CharField(
+    west = forms.FloatField(
         widget=forms.HiddenInput,
         required=False
     )
@@ -120,6 +120,30 @@ class UserCreationForm(forms.ModelForm):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords don't match")
         return password2
+
+    def clean_north(self):
+        north = self.cleaned_data.get("north")
+        if north is None:
+            north = 40
+        return north
+
+    def clean_east(self):
+        east = self.cleaned_data.get("east")
+        if east is None:
+            east = 55
+        return east
+
+    def clean_south(self):
+        south = self.cleaned_data.get("south")
+        if south is None:
+            south = 24
+        return south
+
+    def clean_west(self):
+        west = self.cleaned_data.get("west")
+        if west is None:
+            west = 28
+        return west
 
     def save(self, commit=True):
         # Save the provided password in hashed format

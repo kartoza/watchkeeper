@@ -2,9 +2,9 @@ iMMAP Watchkeeper Alerts - New Event
 ====================================
 
 _____________________________________________________________________________________________________________________________
-{{ event.place_name }}              || A {{ event.type.name }} launched by {{ event.perpetrator.name }} against
-{{ event.location.get_coords }},    || {{ event.victim.name }} was reported. {{ event.killed }} people where killed.
-{{ event.date_time }}               || {{ event.injured }} people where injured. {{ event.detained }} people where detained.
+{{ event.place_name }}              || {{ event.type.name }}
+{{ event.location.get_coords }},    ||
+{{ event.date_time }}               ||
 									|| {{ event.notes }}
 _____________________________________________________________________________________________________________________________
 
