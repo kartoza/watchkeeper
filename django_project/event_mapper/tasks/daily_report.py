@@ -65,7 +65,7 @@ def daily_report():
         return
 
     title = 'iMMAP Watchkeeper Daily Situational Report - %s' % (
-        ed_date.strftime('%A %d %B %Y'))
+        end_time.strftime('%A %d %B %Y'))
     # Send email to all user
     users = User.objects.all()
     for user in users:
