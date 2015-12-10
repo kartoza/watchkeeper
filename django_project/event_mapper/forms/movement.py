@@ -115,3 +115,31 @@ class MovementUpdateForm(forms.Form):
         movement.notified_immediately = data['notified_immediately']
         movement.save()
         return movement
+
+
+class MovementViewForm(forms.Form):
+    """A form for rating a movement."""
+    region = forms.ModelChoiceField(
+        label='Country',
+        queryset=Country.objects.order_by('name'),
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control'
+            }
+        ),
+    )
+
+    province = forms.CharField(
+        label='Province/State',
+        required=False,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control'
+            }
+        ),
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        self.country_id = kwargs.pop('country_id', None)
+        super(MovementViewForm, self).__init__(*args, **kwargs)
