@@ -17,6 +17,7 @@
             });
 
             $('#update_movement_form').submit(function(e){
+                {% if user.is_data_captor or user.is_staff or user.is_admin %}
                 console.log('Submitting form');
                 $.ajax({
                     type: 'POST',
@@ -46,6 +47,7 @@
                     }
 
                 });
+                {% endif %}
                 e.preventDefault();
             });
             var province_dropdown = $('#id_province');

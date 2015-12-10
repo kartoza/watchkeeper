@@ -23,7 +23,7 @@ def send_email_message(
     send_mail(
         subject,
         text_message,
-        'iMMAP Watchkeeper <alert@immap.kartoza.com>',
+        'iMMAP Watchkeeper <alert@watchkeeper.immap.org>',
         [user.email],
         fail_silently=False,
         html_message=html_message)
